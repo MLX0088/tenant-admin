@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增消息')" />
+    <th:block th:include="include :: datetimepicker-css" />
+    <th:block th:include="include :: summernote-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-ChatMessage-add">
+            <div class="form-group row">    
+                <div class="control-label is-required">发送者类型 0：真人 1：机器人 2服务器推送：</div>
+                <div class="">
+                    <select name="senderType" class="form-control m-b" th:with="type=${@dict.getType('sender_type')}" required>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">发送者ID：</div>
+                <div class="">
+                    <input name="senderId" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">接收者ID：</div>
+                <div class="">
+                    <input name="receiverId" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">群组ID：</div>
+                <div class="">
+                    <input name="groupId" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label is-required">文本内容或图片URL：</div>
+                <div class="">
+                    <input type="hidden" class="form-control" name="content">
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal_content">编辑</button>
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">：</div>
+                <div class="">
+                    <div class="input-group date">
+                        <input name="createdTime" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="modal inmodal fade" id="myModal_content" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" style="margin:0 auto;">
+                    <h4 class="modal-title">文本内容或图片URL</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="summernote" id="content"></div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <th:block th:include="include :: summernote-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "business/ChatMessage"
+        $("#form-ChatMessage-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-ChatMessage-add').serialize());
+            }
+        }
+
+        $("input[name='createdTime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+    </script>
+</body>
+</html>

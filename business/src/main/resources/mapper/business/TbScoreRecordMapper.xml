@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tenant.business.mapper.TbScoreRecordMapper">
+    
+    <resultMap type="TbScoreRecord" id="TbScoreRecordResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="drawId"    column="draw_id"    />
+        <result property="roomName"    column="room_name"    />
+        <result property="periodNumber"    column="period_number"    />
+        <result property="result"    column="result"    />
+        <result property="betting"    column="betting"    />
+        <result property="score"    column="score"    />
+        <result property="winScore"    column="win_score"    />
+        <result property="leftScore"    column="left_score"    />
+        <result property="diffSecond"    column="diff_second"    />
+        <result property="status"    column="status"    />
+        <result property="isSingle"    column="is_single"    />
+        <result property="isCombination"    column="is_combination"    />
+        <result property="isNumber"    column="is_number"    />
+        <result property="isAntiCombination"    column="is_anti_combination"    />
+        <result property="isBoldThree"    column="is_bold_three"    />
+        <result property="isSuperIgnore"    column="is_super_ignore"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="resultOne"    column="result_one"    />
+        <result property="resultTwo"    column="result_two"    />
+        <result property="resultThree"    column="result_three"    />
+        <result property="resultSum"    column="result_sum"    />
+        <result property="roomConfigId"    column="room_config_id"    />
+        <result property="registerIp"    column="register_ip"    />
+        <result property="registerAddress"    column="register_address"    />
+        <result property="registerIpRepeat"    column="register_ip_repeat"    />
+    </resultMap>
+
+    <sql id="selectTbScoreRecordVo">
+        select * from tb_score_record
+    </sql>
+
+    <select id="selectByIp" parameterType="TbScoreRecord" resultMap="TbScoreRecordResult">
+        select *
+        from tb_score_record
+        where status in (0,1,2,3) AND register_ip = #{registerIp} AND tenant_id = #{tenantId} and create_time>DATE_SUB(CURDATE(), INTERVAL 15 DAY) and user_id &lt;> #{userId}
+        limit 1
+    </select>
+
+    <select id="selectTbScoreRecordList" parameterType="TbScoreRecord" resultMap="TbScoreRecordResult">
+        <include refid="selectTbScoreRecordVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="periodNumber != null and periodNumber != ''"> and period_number = #{periodNumber}</if>
+            <if test="registerIp != null and registerIp != ''"> and register_ip = #{registerIp}</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="drawId != null "> and draw_id = #{drawId}</if>
+            <if test="roomName != null  and roomName != ''"> and room_name like concat('%', #{roomName}, '%')</if>
+            <if test="status != null and status != ''"> and status = #{status}</if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
+            <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+        </where>
+        order by create_time desc
+    </select>
+
+
+
+    <select id="statisticsPersonRecord" parameterType="TbScoreRecord" resultType="map">
+
+        select t.singleScore,ROUND(t.singleScore/t.totalScore, 1) singleRate,t.combinationScore,ROUND(t.combinationScore/t.totalScore, 1) combinationRate,t.numberScore,ROUND(t.numberScore/t.totalScore, 1) numberRate,t.antiCombinScore,ROUND(t.antiCombinScore/t.totalScore, 1) antiCombinRate,t.boldThreeScore,ROUND(t.boldThreeScore/t.totalScore, 1) boldThreeRate,t.superScore,ROUND(t.superScore/t.totalScore, 1) superRate,t.superCount,t.totalCount,t.winScore from (
+            select
+            IFNULL(sum(score),1) totalScore
+            ,IFNULL(sum(is_single),0) singleScore
+            ,IFNULL(sum(is_combination),0) combinationScore
+            ,IFNULL(sum(is_number),0) numberScore
+            ,IFNULL(sum(is_anti_combination),0) antiCombinScore
+            ,IFNULL(sum(is_bold_three),0) boldThreeScore
+            ,IFNULL(sum(is_super_ignore),0) superScore
+            ,IFNULL(count(case when is_super_ignore > 0 then 1 else null end),0) superCount
+            ,IFNULL(count(1),0) totalCount
+            ,IFNULL(sum(win_score),0) winScore
+            from tb_score_record
+            <where>
+                `status` in (1,2)
+                <if test="userId != null "> and user_id = #{userId}</if>
+                <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+                <if test="roomName != null  and roomName != ''"> and room_name like concat('%', #{roomName}, '%')</if>
+                <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
+                <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+            </where>
+        ) t
+    </select>
+
+    <select id="personWinRecord" parameterType="TbScoreRecord" resultType="com.tenant.business.domain.statistics.PersonWinRecord">
+
+        select dates.date
+        ,IFNULL(sum(case when o.type in (1,3) then o.score else 0 end),0) addScore
+        ,IFNULL(sum(case when o.type in (2,4) then o.score else 0 end),0) minusScore
+        ,IFNULL(sum(case when o.type > 4 then o.score else 0 end),0) otherScore
+        ,IFNULL(sum(s.score),0) totalScore
+        ,IFNULL(sum(s.win_score),0) totalWin
+        from (
+        SELECT DATE_SUB(CURDATE(), INTERVAL @i:=@i+1 DAY) AS `date`
+        FROM
+        (SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5
+        UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10) t1,
+        (SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5
+        UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10) t2,
+        (SELECT @i:=-1) vars
+        LIMIT 60
+        ) dates
+        left join tb_order_record o on(dates.date=DATE_FORMAT(o.create_time, '%Y-%m-%d') and o.`status` = 1 and o.user_id=#{userId} )
+        left join tb_score_record s on (dates.date = DATE_FORMAT(s.create_time, '%Y-%m-%d') and s.`status` in (1,2) and s.user_id = #{userId})
+        group by dates.date
+        ORDER BY dates.date desc
+
+    </select>
+
+    <select id="statisticsDashboardRecord" parameterType="TbScoreRecord" resultType="map">
+
+        select IFNULL(count(DISTINCT user_id),0) scorePerson,IFNULL(sum(win_score),0) totalWin
+        ,IFNULL(sum(case when room_name = '加拿大2.0' then win_score else 0 end),0) totalJnd20Win
+        ,IFNULL(sum(case when room_name = '加拿大2.8' then win_score else 0 end),0) totalJnd28Win
+        ,IFNULL(sum(case when room_name = '加拿大3.0' then win_score else 0 end),0) totalJnd30Win
+        ,IFNULL(sum(case when room_name = '加拿大4.0' then win_score else 0 end),0) totalJnd40Win
+        ,IFNULL(sum(case when room_name = '台湾2.0' then win_score else 0 end),0) totalTw20Win
+        ,IFNULL(sum(case when room_name = '台湾2.8' then win_score else 0 end),0) totalTw28Win
+        ,IFNULL(sum(case when room_name = '台湾3.0' then win_score else 0 end),0) totalTw30Win
+        ,IFNULL(sum(case when room_name = '台湾4.0' then win_score else 0 end),0) totalTw40Win
+        from tb_score_record
+        <where>
+            `status` in (1,2)
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="roomName != null  and roomName != ''"> and room_name like concat('%', #{roomName}, '%')</if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and create_time between #{params.beginCreateTime} and DATE_ADD(#{params.endCreateTime}, INTERVAL 1 DAY)  </if>
+            <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+        </where>
+    </select>
+
+    <select id="scoreSummaryList" parameterType="TbScoreRecord" resultType="com.tenant.business.domain.statistics.ScoreSummaryRecord">
+
+        select t1.user_id userId,u.user_name userName,t1.room,t1.win_score totalWin,t1.count scorePerson,t2.bs bsjl,t1.total_score totalScore,t2.ls lsjl,t2.hh fhjl from (
+        select a.user_id,GROUP_CONCAT(a.room_name,'、') room,sum(a.win_score) win_score,sum(a.bs) count,sum(a.total_score) total_score from (
+        select user_id,CONCAT(room_name,' : ',FLOOR(ifnull(sum(win_score),0))) room_name,FLOOR(ifnull(sum(win_score),0)) win_score,ifnull(count(1),0) bs,FLOOR(ifnull(sum(score),0)) total_score from tb_score_record where `status` in(1,2) <if test="roomName != null  and roomName != ''"> and room_name like concat('%', #{roomName}, '%')</if> and create_time between #{params.beginCreateTime} and DATE_ADD(#{params.endCreateTime}, INTERVAL 1 DAY) and tenant_id=#{tenantId} group by user_id,room_name
+        ) a group by a.user_id
+        ) t1
+        left join (select user_id,FLOOR(ifnull(sum(case when type = 5 then score end),0)) hh,FLOOR(ifnull(sum(case when type = 13 then score end),0)) bs,FLOOR(ifnull(sum(case when type = 15 then score end),0)) ls from tb_order_record
+        where type in(5,13,15) and create_time between #{params.beginCreateTime} and DATE_ADD(#{params.endCreateTime}, INTERVAL 1 DAY) and tenant_id=#{tenantId}
+        group by user_id) t2 on t1.user_id = t2.user_id
+        left join sys_user u on(u.user_id = t1.user_id)
+        <where>
+            1=1
+            <if test="userId != null "> and u.user_id = #{userId}</if>
+            <if test="userName != null  and userName != ''"> and u.user_name like concat('%', #{userName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectTbScoreRecordById" parameterType="Long" resultMap="TbScoreRecordResult">
+        <include refid="selectTbScoreRecordVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTbScoreRecord" parameterType="TbScoreRecord" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_score_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="drawId != null">draw_id,</if>
+            <if test="roomName != null">room_name,</if>
+            <if test="periodNumber != null">period_number,</if>
+            <if test="result != null">result,</if>
+            <if test="betting != null">betting,</if>
+            <if test="score != null">score,</if>
+            <if test="winScore != null">win_score,</if>
+            <if test="leftScore != null">left_score,</if>
+            <if test="diffSecond != null">diff_second,</if>
+            <if test="status != null">status,</if>
+            <if test="isSingle != null">is_single,</if>
+            <if test="isCombination != null">is_combination,</if>
+            <if test="isNumber != null">is_number,</if>
+            <if test="isAntiCombination != null">is_anti_combination,</if>
+            <if test="isBoldThree != null">is_bold_three,</if>
+            <if test="isSuperIgnore != null">is_super_ignore,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="tenantId != null">tenant_id,</if>
+            <if test="roomConfigId != null">room_config_id,</if>
+            <if test="registerIp != null ">register_ip,</if>
+            <if test="registerAddress != null ">register_address,</if>
+            <if test="registerIpRepeat != null ">register_ip_repeat,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="drawId != null">#{drawId},</if>
+            <if test="roomName != null">#{roomName},</if>
+            <if test="periodNumber != null">#{periodNumber},</if>
+            <if test="result != null">#{result},</if>
+            <if test="betting != null">#{betting},</if>
+            <if test="score != null">#{score},</if>
+            <if test="winScore != null">#{winScore},</if>
+            <if test="leftScore != null">#{leftScore},</if>
+            <if test="diffSecond != null">#{diffSecond},</if>
+            <if test="status != null">#{status},</if>
+            <if test="isSingle != null">#{isSingle},</if>
+            <if test="isCombination != null">#{isCombination},</if>
+            <if test="isNumber != null">#{isNumber},</if>
+            <if test="isAntiCombination != null">#{isAntiCombination},</if>
+            <if test="isBoldThree != null">#{isBoldThree},</if>
+            <if test="isSuperIgnore != null">#{isSuperIgnore},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+            <if test="roomConfigId != null">#{roomConfigId},</if>
+            <if test="registerIp != null ">#{registerIp},</if>
+            <if test="registerAddress != null ">#{registerAddress},</if>
+            <if test="registerIpRepeat != null ">#{registerIpRepeat},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbScoreRecord" parameterType="TbScoreRecord">
+        update tb_score_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="drawId != null">draw_id = #{drawId},</if>
+            <if test="roomName != null">room_name = #{roomName},</if>
+            <if test="periodNumber != null">period_number = #{periodNumber},</if>
+            <if test="result != null">result = #{result},</if>
+            <if test="betting != null">betting = #{betting},</if>
+            <if test="score != null">score = #{score},</if>
+            <if test="winScore != null">win_score = #{winScore},</if>
+            <if test="leftScore != null">left_score = #{leftScore},</if>
+            <if test="diffSecond != null">diff_second = #{diffSecond},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="isSingle != null">is_single = #{isSingle},</if>
+            <if test="isCombination != null">is_combination = #{isCombination},</if>
+            <if test="isNumber != null">is_number = #{isNumber},</if>
+            <if test="isAntiCombination != null">is_anti_combination = #{isAntiCombination},</if>
+            <if test="isBoldThree != null">is_bold_three = #{isBoldThree},</if>
+            <if test="isSuperIgnore != null">is_super_ignore = #{isSuperIgnore},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+            <if test="resultOne != null">result_one = #{resultOne},</if>
+            <if test="resultTwo != null">result_two = #{resultTwo},</if>
+            <if test="resultThree != null">result_three = #{resultThree},</if>
+            <if test="resultSum != null">result_sum = #{resultSum},</if>
+        </trim>
+        where id = #{id}
+        <if test="createBy != null  and createBy != ''"> and create_by = #{createBy}</if>
+    </update>
+
+    <delete id="deleteTbScoreRecordById" parameterType="Long">
+        delete from tb_score_record where id = #{id}
+    </delete>
+
+    <delete id="deleteByRange">
+        delete from tb_score_record where tenant_id = #{tenantId} and create_time between #{startTime} and #{endTime}
+    </delete>
+
+    <delete id="deleteTbScoreRecordByIds" parameterType="String">
+        delete from tb_score_record where
+        <if test="createBy != null and createBy != ''">  create_by = #{createBy} and</if>
+id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="insertWinReport" >
+        insert into tb_win_report(tenant_id,gen_date,add_people,total_score,user_count,add_score,minus_score,other_score,actual_win_score,win_score,create_time)
+        select t.dept_id,#{date},t.addPeople,t.totalScore,t.peopleCount,t.addScore,t.minusScore,t.giftScore,t.addScore-t.minusScore actulWinScore,t.winScore,now() from (
+        select dept.dept_id
+        ,count(case when u.create_time >= #{date} then 1 else null end  ) addPeople,sum(IFNULL(u.score,0)) totalScore,count(DISTINCT s.user_id ) peopleCount
+        ,IFNULL((case when o.type in (1,3) and o.`status`= 1 then o.score else 0 end),0) addScore,IFNULL(sum(case when o.type in (2,4) and o.`status`= 1 then o.score else 0 end),0) minusScore,IFNULL(sum(case when o.type > 4 then o.score else 0 end),0) giftScore
+        ,0-sum(IFNULL(s.win_score,0)) winScore
+        from sys_dept dept
+        left join sys_user u on dept.dept_id = u.dept_id
+        join tb_score_record s on dept.dept_id = s.tenant_id and s.`status` in(1,2) and s.create_time >= #{date}
+        left join tb_order_record o on dept.dept_id = o.tenant_id and o.create_time >= #{date}
+        group by dept.dept_id
+        ) t
+    </update>
+
+
+    <update id="insertHuiHongOrder" >
+        insert into tb_order_record(user_id,user_name,type,score,left_score,`status`,create_time,tenant_id)
+        select a.user_id,u.user_name,5,a.win_score*#{hh3},u.score+a.win_score*#{hh3},1,now(),#{tenantId} from (
+        select user_id,ifnull(sum(case when `status` = 2 then score end),0) - ifnull(sum(case when `status` = 1 then score end),0) win_score from tb_score_record where `status` in(1,2) and create_time BETWEEN #{date} and DATE_ADD(#{date}, INTERVAL 1 DAY) and tenant_id=#{tenantId} group by user_id HAVING ifnull(sum(case when `status` = 2 then score end),0) - ifnull(sum(case when `status` = 1 then score end),0) BETWEEN #{hh1} and #{hh2} <if test="roomName != null  and roomName != ''"> and room_name like concat('%', #{roomName}, '%')</if>
+        ) a
+        left join sys_user u on(a.user_id=u.user_id)
+    </update>
+    <update id="updateHuiHongUser" >
+        UPDATE sys_user u
+        JOIN (select a.user_id,a.win_score*#{hh3} add_score from (
+        select user_id,ifnull(sum(case when `status` = 2 then score end),0) - ifnull(sum(case when `status` = 1 then score end),0) win_score from tb_score_record where `status` in(1,2) and create_time BETWEEN #{date} and DATE_ADD(#{date}, INTERVAL 1 DAY) and tenant_id=#{tenantId} group by user_id HAVING ifnull(sum(case when `status` = 2 then score end),0) - ifnull(sum(case when `status` = 1 then score end),0) BETWEEN #{hh1} and #{hh2} <if test="roomName != null  and roomName != ''"> and room_name like concat('%', #{roomName}, '%')</if>
+        ) a) s ON u.user_id = s.user_id
+        SET u.score =  u.score+s.add_score
+    </update>
+    <update id="insertLiuShuiOrder" >
+        insert into tb_order_record(user_id,user_name,type,score,left_score,`status`,create_time,tenant_id)
+        select a.user_id,u.user_name,15,a.win_score*#{ls3},u.score+a.win_score*#{ls3},1,now(),#{tenantId} from (
+        select user_id,ifnull(sum(score),0) win_score from tb_score_record where `status` in(1,2) and create_time BETWEEN #{date} and DATE_ADD(#{date}, INTERVAL 1 DAY) and tenant_id=#{tenantId} group by user_id HAVING ifnull(sum(score),0) BETWEEN #{ls1} and #{ls2} <if test="roomName != null  and roomName != ''"> and room_name like concat('%', #{roomName}, '%')</if>
+        ) a
+        left join sys_user u on(a.user_id=u.user_id)
+    </update>
+    <update id="updateLiuShuiUser" >
+        UPDATE sys_user u
+        JOIN (select a.user_id,a.win_score*#{ls3} add_score from (
+        select user_id,ifnull(sum(score),0) win_score from tb_score_record where `status` in(1,2) and create_time BETWEEN #{date} and DATE_ADD(#{date}, INTERVAL 1 DAY) and tenant_id=#{tenantId} group by user_id HAVING ifnull(sum(score),0) BETWEEN #{ls1} and #{ls2} <if test="roomName != null  and roomName != ''"> and room_name like concat('%', #{roomName}, '%')</if>
+        ) a) s ON u.user_id = s.user_id
+        SET u.score =  u.score+s.add_score
+    </update>
+    <update id="insertBaShuOrder" >
+        insert into tb_order_record(user_id,user_name,type,score,left_score,`status`,create_time,tenant_id)
+        select a.user_id,u.user_name,13,#{bs3},u.score+#{bs3},1,now(),#{tenantId} from (
+        select user_id from tb_score_record where `status` in(1,2) and create_time BETWEEN #{date} and DATE_ADD(#{date}, INTERVAL 1 DAY) and tenant_id=#{tenantId} group by user_id HAVING ifnull(count(1),0) BETWEEN #{bs1} and #{bs2} <if test="roomName != null  and roomName != ''"> and room_name like concat('%', #{roomName}, '%')</if>
+        ) a
+        left join sys_user u on(a.user_id=u.user_id)
+    </update>
+    <update id="updateBaShuUser" >
+        UPDATE sys_user u
+        JOIN (select a.user_id,#{bs3} add_score from (
+        select user_id from tb_score_record where `status` in(1,2) and create_time BETWEEN #{date} and DATE_ADD(#{date}, INTERVAL 1 DAY) and tenant_id=#{tenantId} group by user_id HAVING ifnull(count(1),0) BETWEEN #{bs1} and #{bs2} <if test="roomName != null  and roomName != ''"> and room_name like concat('%', #{roomName}, '%')</if>
+        ) a) s ON u.user_id = s.user_id
+        SET u.score =  u.score+s.add_score
+    </update>
+</mapper>

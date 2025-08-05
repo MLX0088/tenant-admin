@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('房间赔率列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>房间配置表：</label>
+                                <input type="text" name="roomConfigId"/>
+                            </li>
+                            <li>
+                                <label>0码赔率：</label>
+                                <input type="text" name="rate0"/>
+                            </li>
+                            <li>
+                                <label>0码最大投分：</label>
+                                <input type="text" name="maxScore0"/>
+                            </li>
+                            <li>
+                                <label>1码赔率：</label>
+                                <input type="text" name="rate1"/>
+                            </li>
+                            <li>
+                                <label>1码最大投分：</label>
+                                <input type="text" name="maxScore1"/>
+                            </li>
+                            <li>
+                                <label>2码赔率：</label>
+                                <input type="text" name="rate2"/>
+                            </li>
+                            <li>
+                                <label>2码最大投分：</label>
+                                <input type="text" name="maxScore2"/>
+                            </li>
+                            <li>
+                                <label>3码赔率：</label>
+                                <input type="text" name="rate3"/>
+                            </li>
+                            <li>
+                                <label>3码最大投分：</label>
+                                <input type="text" name="maxScore3"/>
+                            </li>
+                            <li>
+                                <label>4码赔率：</label>
+                                <input type="text" name="rate4"/>
+                            </li>
+                            <li>
+                                <label>4码最大投分：</label>
+                                <input type="text" name="maxScore4"/>
+                            </li>
+                            <li>
+                                <label>5码赔率：</label>
+                                <input type="text" name="rate5"/>
+                            </li>
+                            <li>
+                                <label>5码最大投分：</label>
+                                <input type="text" name="maxScore5"/>
+                            </li>
+                            <li>
+                                <label>6码赔率：</label>
+                                <input type="text" name="rate6"/>
+                            </li>
+                            <li>
+                                <label>6码最大投分：</label>
+                                <input type="text" name="maxScore6"/>
+                            </li>
+                            <li>
+                                <label>7码赔率：</label>
+                                <input type="text" name="rate7"/>
+                            </li>
+                            <li>
+                                <label>7码最大投分：</label>
+                                <input type="text" name="maxScore7"/>
+                            </li>
+                            <li>
+                                <label>8码赔率：</label>
+                                <input type="text" name="rate8"/>
+                            </li>
+                            <li>
+                                <label>8码最大投分：</label>
+                                <input type="text" name="maxScore8"/>
+                            </li>
+                            <li>
+                                <label>9码赔率：</label>
+                                <input type="text" name="rate9"/>
+                            </li>
+                            <li>
+                                <label>9码最大投分：</label>
+                                <input type="text" name="maxScore9"/>
+                            </li>
+                            <li>
+                                <label>10码赔率：</label>
+                                <input type="text" name="rate10"/>
+                            </li>
+                            <li>
+                                <label>10码最大投分：</label>
+                                <input type="text" name="maxScore10"/>
+                            </li>
+                            <li>
+                                <label>11码赔率：</label>
+                                <input type="text" name="rate11"/>
+                            </li>
+                            <li>
+                                <label>11码最大投分：</label>
+                                <input type="text" name="maxScore11"/>
+                            </li>
+                            <li>
+                                <label>12码赔率：</label>
+                                <input type="text" name="rate12"/>
+                            </li>
+                            <li>
+                                <label>12码最大投分：</label>
+                                <input type="text" name="maxScore12"/>
+                            </li>
+                            <li>
+                                <label>13码赔率：</label>
+                                <input type="text" name="rate13"/>
+                            </li>
+                            <li>
+                                <label>13码最大投分：</label>
+                                <input type="text" name="maxScore13"/>
+                            </li>
+                            <li>
+                                <label>14码赔率：</label>
+                                <input type="text" name="rate14"/>
+                            </li>
+                            <li>
+                                <label>14码最大投分：</label>
+                                <input type="text" name="maxScore14"/>
+                            </li>
+                            <li>
+                                <label>15码赔率：</label>
+                                <input type="text" name="rate15"/>
+                            </li>
+                            <li>
+                                <label>15码最大投分：</label>
+                                <input type="text" name="maxScore15"/>
+                            </li>
+                            <li>
+                                <label>16码赔率：</label>
+                                <input type="text" name="rate16"/>
+                            </li>
+                            <li>
+                                <label>16码最大投分：</label>
+                                <input type="text" name="maxScore16"/>
+                            </li>
+                            <li>
+                                <label>17码赔率：</label>
+                                <input type="text" name="rate17"/>
+                            </li>
+                            <li>
+                                <label>17码最大投分：</label>
+                                <input type="text" name="maxScore17"/>
+                            </li>
+                            <li>
+                                <label>18码赔率：</label>
+                                <input type="text" name="rate18"/>
+                            </li>
+                            <li>
+                                <label>18码最大投分：</label>
+                                <input type="text" name="maxScore18"/>
+                            </li>
+                            <li>
+                                <label>19码赔率：</label>
+                                <input type="text" name="rate19"/>
+                            </li>
+                            <li>
+                                <label>19码最大投分：</label>
+                                <input type="text" name="maxScore19"/>
+                            </li>
+                            <li>
+                                <label>20码赔率：</label>
+                                <input type="text" name="rate20"/>
+                            </li>
+                            <li>
+                                <label>20码最大投分：</label>
+                                <input type="text" name="maxScore20"/>
+                            </li>
+                            <li>
+                                <label>21码赔率：</label>
+                                <input type="text" name="rate21"/>
+                            </li>
+                            <li>
+                                <label>21码最大投分：</label>
+                                <input type="text" name="maxScore21"/>
+                            </li>
+                            <li>
+                                <label>22码赔率：</label>
+                                <input type="text" name="rate22"/>
+                            </li>
+                            <li>
+                                <label>22码最大投分：</label>
+                                <input type="text" name="maxScore22"/>
+                            </li>
+                            <li>
+                                <label>23码赔率：</label>
+                                <input type="text" name="rate23"/>
+                            </li>
+                            <li>
+                                <label>23码最大投分：</label>
+                                <input type="text" name="maxScore23"/>
+                            </li>
+                            <li>
+                                <label>24码赔率：</label>
+                                <input type="text" name="rate24"/>
+                            </li>
+                            <li>
+                                <label>24码最大投分：</label>
+                                <input type="text" name="maxScore24"/>
+                            </li>
+                            <li>
+                                <label>25码赔率：</label>
+                                <input type="text" name="rate25"/>
+                            </li>
+                            <li>
+                                <label>25码最大投分：</label>
+                                <input type="text" name="maxScore25"/>
+                            </li>
+                            <li>
+                                <label>26码赔率：</label>
+                                <input type="text" name="rate26"/>
+                            </li>
+                            <li>
+                                <label>26码最大投分：</label>
+                                <input type="text" name="maxScore26"/>
+                            </li>
+                            <li>
+                                <label>27码赔率：</label>
+                                <input type="text" name="rate27"/>
+                            </li>
+                            <li>
+                                <label>27码最大投分：</label>
+                                <input type="text" name="maxScore27"/>
+                            </li>
+                            <li>
+                                <label>大码赔率：</label>
+                                <input type="text" name="rateBig"/>
+                            </li>
+                            <li>
+                                <label>大码最大投分：</label>
+                                <input type="text" name="maxScoreBig"/>
+                            </li>
+                            <li>
+                                <label>小码赔率：</label>
+                                <input type="text" name="rateSmall"/>
+                            </li>
+                            <li>
+                                <label>小码最大投分：</label>
+                                <input type="text" name="maxScoreSmall"/>
+                            </li>
+                            <li>
+                                <label>单码赔率：</label>
+                                <input type="text" name="rateSingle"/>
+                            </li>
+                            <li>
+                                <label>单码最大投分：</label>
+                                <input type="text" name="maxScoreSingle"/>
+                            </li>
+                            <li>
+                                <label>双单码赔率：</label>
+                                <input type="text" name="rateDoubleSingle"/>
+                            </li>
+                            <li>
+                                <label>双码最大投分：</label>
+                                <input type="text" name="maxScoreDoubleSingle"/>
+                            </li>
+                            <li>
+                                <label>大单码赔率：</label>
+                                <input type="text" name="rateBigSingle"/>
+                            </li>
+                            <li>
+                                <label>大单码最大投分：</label>
+                                <input type="text" name="maxScoreBigSingle"/>
+                            </li>
+                            <li>
+                                <label>大双码赔率：</label>
+                                <input type="text" name="rateBigDouble"/>
+                            </li>
+                            <li>
+                                <label>大双码最大投分：</label>
+                                <input type="text" name="maxScoreBigDouble"/>
+                            </li>
+                            <li>
+                                <label>小单码赔率：</label>
+                                <input type="text" name="rateSmallSingle"/>
+                            </li>
+                            <li>
+                                <label>小单码最大投分：</label>
+                                <input type="text" name="maxScoreSmallSingle"/>
+                            </li>
+                            <li>
+                                <label>小双码赔率：</label>
+                                <input type="text" name="rateSmallDouble"/>
+                            </li>
+                            <li>
+                                <label>小双码最大投分：</label>
+                                <input type="text" name="maxScoreSmallDouble"/>
+                            </li>
+                            <li>
+                                <label>对子码赔率：</label>
+                                <input type="text" name="ratePairs"/>
+                            </li>
+                            <li>
+                                <label>对子码最大投分：</label>
+                                <input type="text" name="maxScorePairs"/>
+                            </li>
+                            <li>
+                                <label>顺子码赔率：</label>
+                                <input type="text" name="rateStraight"/>
+                            </li>
+                            <li>
+                                <label>顺子码最大投分：</label>
+                                <input type="text" name="maxScoreStraight"/>
+                            </li>
+                            <li>
+                                <label>豹子码赔率：</label>
+                                <input type="text" name="rateAllSame"/>
+                            </li>
+                            <li>
+                                <label>豹子码最大投分：</label>
+                                <input type="text" name="maxScoreAllSame"/>
+                            </li>
+                            <li>
+                                <label>极大码赔率：</label>
+                                <input type="text" name="rateMax"/>
+                            </li>
+                            <li>
+                                <label>极大码最大投分：</label>
+                                <input type="text" name="maxScoreMax"/>
+                            </li>
+                            <li>
+                                <label>极小码赔率：</label>
+                                <input type="text" name="rateMin"/>
+                            </li>
+                            <li>
+                                <label>极小码最大投分：</label>
+                                <input type="text" name="maxScoreMin"/>
+                            </li>
+                            <li>
+                                <label>龙码赔率：</label>
+                                <input type="text" name="rateDragon"/>
+                            </li>
+                            <li>
+                                <label>龙码最大投分：</label>
+                                <input type="text" name="maxScoreDragon"/>
+                            </li>
+                            <li>
+                                <label>虎码赔率：</label>
+                                <input type="text" name="rateTiger"/>
+                            </li>
+                            <li>
+                                <label>虎码最大投分：</label>
+                                <input type="text" name="maxScoreTiger"/>
+                            </li>
+                            <li>
+                                <label>豹码赔率：</label>
+                                <input type="text" name="rateLeopard"/>
+                            </li>
+                            <li>
+                                <label>豹码最大投分：</label>
+                                <input type="text" name="maxScoreLeopard"/>
+                            </li>
+                            <li>
+                                <label>尾大码赔率：</label>
+                                <input type="text" name="rateTailBig"/>
+                            </li>
+                            <li>
+                                <label>尾大码最大投分：</label>
+                                <input type="text" name="maxScoreTailBig"/>
+                            </li>
+                            <li>
+                                <label>尾小码赔率：</label>
+                                <input type="text" name="rateTailSmall"/>
+                            </li>
+                            <li>
+                                <label>尾小码最大投分：</label>
+                                <input type="text" name="maxScoreTailSmall"/>
+                            </li>
+                            <li>
+                                <label>尾单码赔率：</label>
+                                <input type="text" name="rateTailSingle"/>
+                            </li>
+                            <li>
+                                <label>尾单码最大投分：</label>
+                                <input type="text" name="maxScoreTailSingle"/>
+                            </li>
+                            <li>
+                                <label>尾双码赔率：</label>
+                                <input type="text" name="rateTailDouble"/>
+                            </li>
+                            <li>
+                                <label>尾双码最大投分：</label>
+                                <input type="text" name="maxScoreTailDouble"/>
+                            </li>
+                            <li>
+                                <label>尾大双码赔率：</label>
+                                <input type="text" name="rateTailBigDouble"/>
+                            </li>
+                            <li>
+                                <label>尾大双码最大投分：</label>
+                                <input type="text" name="maxScoreTailBigDouble"/>
+                            </li>
+                            <li>
+                                <label>尾大单码赔率：</label>
+                                <input type="text" name="rateTailBigSingle"/>
+                            </li>
+                            <li>
+                                <label>尾大单码最大投分：</label>
+                                <input type="text" name="maxScoreTailBigSingle"/>
+                            </li>
+                            <li>
+                                <label>尾小双码赔率：</label>
+                                <input type="text" name="rateTailSmallDouble"/>
+                            </li>
+                            <li>
+                                <label>尾小双码最大投分：</label>
+                                <input type="text" name="maxScoreTailSmallDouble"/>
+                            </li>
+                            <li>
+                                <label>尾小单码赔率：</label>
+                                <input type="text" name="rateTailSmallSingle"/>
+                            </li>
+                            <li>
+                                <label>尾小单码最大投分：</label>
+                                <input type="text" name="maxScoreTailSmallSingle"/>
+                            </li>
+                            <li>
+                                <label>尾1码赔率：</label>
+                                <input type="text" name="rateTail1"/>
+                            </li>
+                            <li>
+                                <label>尾1码最大投分：</label>
+                                <input type="text" name="maxScoreTail1"/>
+                            </li>
+                            <li>
+                                <label>尾2码赔率：</label>
+                                <input type="text" name="rateTail2"/>
+                            </li>
+                            <li>
+                                <label>尾2码最大投分：</label>
+                                <input type="text" name="maxScoreTail2"/>
+                            </li>
+                            <li>
+                                <label>尾3码赔率：</label>
+                                <input type="text" name="rateTail3"/>
+                            </li>
+                            <li>
+                                <label>尾3码最大投分：</label>
+                                <input type="text" name="maxScoreTail3"/>
+                            </li>
+                            <li>
+                                <label>尾4码赔率：</label>
+                                <input type="text" name="rateTail4"/>
+                            </li>
+                            <li>
+                                <label>尾4码最大投分：</label>
+                                <input type="text" name="maxScoreTail4"/>
+                            </li>
+                            <li>
+                                <label>尾5码赔率：</label>
+                                <input type="text" name="rateTail5"/>
+                            </li>
+                            <li>
+                                <label>尾5码最大投分：</label>
+                                <input type="text" name="maxScoreTail5"/>
+                            </li>
+                            <li>
+                                <label>尾6码赔率：</label>
+                                <input type="text" name="rateTail6"/>
+                            </li>
+                            <li>
+                                <label>尾6码最大投分：</label>
+                                <input type="text" name="maxScoreTail6"/>
+                            </li>
+                            <li>
+                                <label>尾7码赔率：</label>
+                                <input type="text" name="rateTail7"/>
+                            </li>
+                            <li>
+                                <label>尾7码最大投分：</label>
+                                <input type="text" name="maxScoreTail7"/>
+                            </li>
+                            <li>
+                                <label>尾8码赔率：</label>
+                                <input type="text" name="rateTail8"/>
+                            </li>
+                            <li>
+                                <label>尾8码最大投分：</label>
+                                <input type="text" name="maxScoreTail8"/>
+                            </li>
+                            <li>
+                                <label>租户id：</label>
+                                <input type="text" name="tenantId"/>
+                            </li>
+                            <li>
+                                <label>房间名称：</label>
+                                <input type="text" name="roomName"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="business:RoomOdds:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="business:RoomOdds:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="business:RoomOdds:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="business:RoomOdds:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('business:RoomOdds:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('business:RoomOdds:remove')}]];
+        var prefix = ctx + "business/RoomOdds";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "房间赔率",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'id',
+                    title: '自增ID',
+                    visible: false
+                },
+                {
+                    field: 'roomConfigId',
+                    title: '房间配置表',
+                },
+                {
+                    field: 'rate0',
+                    title: '0码赔率',
+                },
+                {
+                    field: 'maxScore0',
+                    title: '0码最大投分',
+                },
+                {
+                    field: 'rate1',
+                    title: '1码赔率',
+                },
+                {
+                    field: 'maxScore1',
+                    title: '1码最大投分',
+                },
+                {
+                    field: 'rate2',
+                    title: '2码赔率',
+                },
+                {
+                    field: 'maxScore2',
+                    title: '2码最大投分',
+                },
+                {
+                    field: 'rate3',
+                    title: '3码赔率',
+                },
+                {
+                    field: 'maxScore3',
+                    title: '3码最大投分',
+                },
+                {
+                    field: 'rate4',
+                    title: '4码赔率',
+                },
+                {
+                    field: 'maxScore4',
+                    title: '4码最大投分',
+                },
+                {
+                    field: 'rate5',
+                    title: '5码赔率',
+                },
+                {
+                    field: 'maxScore5',
+                    title: '5码最大投分',
+                },
+                {
+                    field: 'rate6',
+                    title: '6码赔率',
+                },
+                {
+                    field: 'maxScore6',
+                    title: '6码最大投分',
+                },
+                {
+                    field: 'rate7',
+                    title: '7码赔率',
+                },
+                {
+                    field: 'maxScore7',
+                    title: '7码最大投分',
+                },
+                {
+                    field: 'rate8',
+                    title: '8码赔率',
+                },
+                {
+                    field: 'maxScore8',
+                    title: '8码最大投分',
+                },
+                {
+                    field: 'rate9',
+                    title: '9码赔率',
+                },
+                {
+                    field: 'maxScore9',
+                    title: '9码最大投分',
+                },
+                {
+                    field: 'rate10',
+                    title: '10码赔率',
+                },
+                {
+                    field: 'maxScore10',
+                    title: '10码最大投分',
+                },
+                {
+                    field: 'rate11',
+                    title: '11码赔率',
+                },
+                {
+                    field: 'maxScore11',
+                    title: '11码最大投分',
+                },
+                {
+                    field: 'rate12',
+                    title: '12码赔率',
+                },
+                {
+                    field: 'maxScore12',
+                    title: '12码最大投分',
+                },
+                {
+                    field: 'rate13',
+                    title: '13码赔率',
+                },
+                {
+                    field: 'maxScore13',
+                    title: '13码最大投分',
+                },
+                {
+                    field: 'rate14',
+                    title: '14码赔率',
+                },
+                {
+                    field: 'maxScore14',
+                    title: '14码最大投分',
+                },
+                {
+                    field: 'rate15',
+                    title: '15码赔率',
+                },
+                {
+                    field: 'maxScore15',
+                    title: '15码最大投分',
+                },
+                {
+                    field: 'rate16',
+                    title: '16码赔率',
+                },
+                {
+                    field: 'maxScore16',
+                    title: '16码最大投分',
+                },
+                {
+                    field: 'rate17',
+                    title: '17码赔率',
+                },
+                {
+                    field: 'maxScore17',
+                    title: '17码最大投分',
+                },
+                {
+                    field: 'rate18',
+                    title: '18码赔率',
+                },
+                {
+                    field: 'maxScore18',
+                    title: '18码最大投分',
+                },
+                {
+                    field: 'rate19',
+                    title: '19码赔率',
+                },
+                {
+                    field: 'maxScore19',
+                    title: '19码最大投分',
+                },
+                {
+                    field: 'rate20',
+                    title: '20码赔率',
+                },
+                {
+                    field: 'maxScore20',
+                    title: '20码最大投分',
+                },
+                {
+                    field: 'rate21',
+                    title: '21码赔率',
+                },
+                {
+                    field: 'maxScore21',
+                    title: '21码最大投分',
+                },
+                {
+                    field: 'rate22',
+                    title: '22码赔率',
+                },
+                {
+                    field: 'maxScore22',
+                    title: '22码最大投分',
+                },
+                {
+                    field: 'rate23',
+                    title: '23码赔率',
+                },
+                {
+                    field: 'maxScore23',
+                    title: '23码最大投分',
+                },
+                {
+                    field: 'rate24',
+                    title: '24码赔率',
+                },
+                {
+                    field: 'maxScore24',
+                    title: '24码最大投分',
+                },
+                {
+                    field: 'rate25',
+                    title: '25码赔率',
+                },
+                {
+                    field: 'maxScore25',
+                    title: '25码最大投分',
+                },
+                {
+                    field: 'rate26',
+                    title: '26码赔率',
+                },
+                {
+                    field: 'maxScore26',
+                    title: '26码最大投分',
+                },
+                {
+                    field: 'rate27',
+                    title: '27码赔率',
+                },
+                {
+                    field: 'maxScore27',
+                    title: '27码最大投分',
+                },
+                {
+                    field: 'rateBig',
+                    title: '大码赔率',
+                },
+                {
+                    field: 'maxScoreBig',
+                    title: '大码最大投分',
+                },
+                {
+                    field: 'rateSmall',
+                    title: '小码赔率',
+                },
+                {
+                    field: 'maxScoreSmall',
+                    title: '小码最大投分',
+                },
+                {
+                    field: 'rateSingle',
+                    title: '单码赔率',
+                },
+                {
+                    field: 'maxScoreSingle',
+                    title: '单码最大投分',
+                },
+                {
+                    field: 'rateDoubleSingle',
+                    title: '双单码赔率',
+                },
+                {
+                    field: 'maxScoreDoubleSingle',
+                    title: '双码最大投分',
+                },
+                {
+                    field: 'rateBigSingle',
+                    title: '大单码赔率',
+                },
+                {
+                    field: 'maxScoreBigSingle',
+                    title: '大单码最大投分',
+                },
+                {
+                    field: 'rateBigDouble',
+                    title: '大双码赔率',
+                },
+                {
+                    field: 'maxScoreBigDouble',
+                    title: '大双码最大投分',
+                },
+                {
+                    field: 'rateSmallSingle',
+                    title: '小单码赔率',
+                },
+                {
+                    field: 'maxScoreSmallSingle',
+                    title: '小单码最大投分',
+                },
+                {
+                    field: 'rateSmallDouble',
+                    title: '小双码赔率',
+                },
+                {
+                    field: 'maxScoreSmallDouble',
+                    title: '小双码最大投分',
+                },
+                {
+                    field: 'ratePairs',
+                    title: '对子码赔率',
+                },
+                {
+                    field: 'maxScorePairs',
+                    title: '对子码最大投分',
+                },
+                {
+                    field: 'rateStraight',
+                    title: '顺子码赔率',
+                },
+                {
+                    field: 'maxScoreStraight',
+                    title: '顺子码最大投分',
+                },
+                {
+                    field: 'rateAllSame',
+                    title: '豹子码赔率',
+                },
+                {
+                    field: 'maxScoreAllSame',
+                    title: '豹子码最大投分',
+                },
+                {
+                    field: 'rateMax',
+                    title: '极大码赔率',
+                },
+                {
+                    field: 'maxScoreMax',
+                    title: '极大码最大投分',
+                },
+                {
+                    field: 'rateMin',
+                    title: '极小码赔率',
+                },
+                {
+                    field: 'maxScoreMin',
+                    title: '极小码最大投分',
+                },
+                {
+                    field: 'rateDragon',
+                    title: '龙码赔率',
+                },
+                {
+                    field: 'maxScoreDragon',
+                    title: '龙码最大投分',
+                },
+                {
+                    field: 'rateTiger',
+                    title: '虎码赔率',
+                },
+                {
+                    field: 'maxScoreTiger',
+                    title: '虎码最大投分',
+                },
+                {
+                    field: 'rateLeopard',
+                    title: '豹码赔率',
+                },
+                {
+                    field: 'maxScoreLeopard',
+                    title: '豹码最大投分',
+                },
+                {
+                    field: 'rateTailBig',
+                    title: '尾大码赔率',
+                },
+                {
+                    field: 'maxScoreTailBig',
+                    title: '尾大码最大投分',
+                },
+                {
+                    field: 'rateTailSmall',
+                    title: '尾小码赔率',
+                },
+                {
+                    field: 'maxScoreTailSmall',
+                    title: '尾小码最大投分',
+                },
+                {
+                    field: 'rateTailSingle',
+                    title: '尾单码赔率',
+                },
+                {
+                    field: 'maxScoreTailSingle',
+                    title: '尾单码最大投分',
+                },
+                {
+                    field: 'rateTailDouble',
+                    title: '尾双码赔率',
+                },
+                {
+                    field: 'maxScoreTailDouble',
+                    title: '尾双码最大投分',
+                },
+                {
+                    field: 'rateTailBigDouble',
+                    title: '尾大双码赔率',
+                },
+                {
+                    field: 'maxScoreTailBigDouble',
+                    title: '尾大双码最大投分',
+                },
+                {
+                    field: 'rateTailBigSingle',
+                    title: '尾大单码赔率',
+                },
+                {
+                    field: 'maxScoreTailBigSingle',
+                    title: '尾大单码最大投分',
+                },
+                {
+                    field: 'rateTailSmallDouble',
+                    title: '尾小双码赔率',
+                },
+                {
+                    field: 'maxScoreTailSmallDouble',
+                    title: '尾小双码最大投分',
+                },
+                {
+                    field: 'rateTailSmallSingle',
+                    title: '尾小单码赔率',
+                },
+                {
+                    field: 'maxScoreTailSmallSingle',
+                    title: '尾小单码最大投分',
+                },
+                {
+                    field: 'rateTail1',
+                    title: '尾1码赔率',
+                },
+                {
+                    field: 'maxScoreTail1',
+                    title: '尾1码最大投分',
+                },
+                {
+                    field: 'rateTail2',
+                    title: '尾2码赔率',
+                },
+                {
+                    field: 'maxScoreTail2',
+                    title: '尾2码最大投分',
+                },
+                {
+                    field: 'rateTail3',
+                    title: '尾3码赔率',
+                },
+                {
+                    field: 'maxScoreTail3',
+                    title: '尾3码最大投分',
+                },
+                {
+                    field: 'rateTail4',
+                    title: '尾4码赔率',
+                },
+                {
+                    field: 'maxScoreTail4',
+                    title: '尾4码最大投分',
+                },
+                {
+                    field: 'rateTail5',
+                    title: '尾5码赔率',
+                },
+                {
+                    field: 'maxScoreTail5',
+                    title: '尾5码最大投分',
+                },
+                {
+                    field: 'rateTail6',
+                    title: '尾6码赔率',
+                },
+                {
+                    field: 'maxScoreTail6',
+                    title: '尾6码最大投分',
+                },
+                {
+                    field: 'rateTail7',
+                    title: '尾7码赔率',
+                },
+                {
+                    field: 'maxScoreTail7',
+                    title: '尾7码最大投分',
+                },
+                {
+                    field: 'rateTail8',
+                    title: '尾8码赔率',
+                },
+                {
+                    field: 'maxScoreTail8',
+                    title: '尾8码最大投分',
+                },
+                {
+                    field: 'remark',
+                    title: '备注',
+                },
+                {
+                    field: 'tenantId',
+                    title: '租户id',
+                },
+                {
+                    field: 'roomName',
+                    title: '房间名称',
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-sm ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-sm ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

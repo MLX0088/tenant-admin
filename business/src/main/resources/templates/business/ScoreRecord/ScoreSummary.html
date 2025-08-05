@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('投注记录列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <input type="hidden" name="tenantId" th:value="${selectDeptId}"/>
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>房间：</label>
+                                <select name="roomName" th:with="type=${@dict.getType('room_name')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li class="select-time">
+                                <label>投注时间：</label>
+                                <input type="hidden" id="time" />
+                                <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginCreateTime]"/>
+                                <span>-</span>
+                                <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endCreateTime]"/>
+                            </li>
+                            <li>
+                                <label>用户ID：</label>
+                                <input type="text" name="userId" />
+                            </li>
+                            <li>
+                                <label>用户名：</label>
+                                <input type="text" name="userName"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="loadStatistics();$.table.search();"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+
+                <div class="panel-body" style="clear:both;margin:10px 0px 10px 20px;">
+                    <div class="panel-group" id="accordion">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h5 class="panel-title">
+                                    <a data-toggle="collapse" style="font-size:25px;color:red;" data-parent="#accordion" href="#collapseOne">针对当天日期，数据 一键回红 <span style="font-size:20px;">(由于处理数据量过大,请先关盘再使用此功能,否则后果自负)</span></a>
+                                </h5>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <form id="hh-formId">
+                                        <input name="type" id="hhType" type="hidden">
+                                        <input type="hidden" name="tenantId" th:value="${tenantId}"/>
+                                        <div class="row col-sm-12">
+                                            <div class="form-group col-sm-12" style="color:red;">由于处理数据量过大,请先关盘再使用此功能,否则后果自负</div>
+                                            <div class="form-group mx-3 row">
+                                                <div class="control-label">*回红日期：</div>
+                                                <div class="select-time">
+                                                    <input type="text" class="time-input form-control" placeholder="回红日期" name="hhDate" id="hhDate"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group mx-3 row">
+                                                <div class="control-label">*回红房间：</div>
+                                                <div class="">
+                                                    <select name="roomName" th:with="type=${@dict.getType('room_name')}">
+                                                        <option value="">所有</option>
+                                                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row col-sm-12">
+                                            <div class="form-group mx-3 row">
+                                                <div class="control-label">*亏损范围：</div>
+                                                <div class="form-group row">
+                                                    <div class="">
+                                                        <input name="hh1" id="hh1" placeholder="大于等于" class="form-control" type="number">
+                                                    </div>
+                                                    <div class="ml-2">
+                                                        <input name="hh2" id="hh2" placeholder="小于等于" class="form-control" type="number">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group mx-3 row">
+                                                <div class="control-label">*回红百分比：</div>
+                                                <div class="">
+                                                    <input name="hh3" id="hh3" placeholder="请输入" class="form-control" type="number"><span>例如：10=10%</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group mx-3 row"><button class="btn btn-primary btn-sm" onclick="backScore(1);">确定返红奖励</button></div>
+
+                                        </div>
+                                        <div class="row col-sm-12">
+                                            <div class="form-group mx-3 row">
+                                                <div class="control-label">*流水范围：</div>
+                                                <div class="form-group row">
+                                                    <div class="">
+                                                        <input name="ls1" id="ls1" placeholder="大于等于" class="form-control" type="number">
+                                                    </div>
+                                                    <div class="ml-2">
+                                                        <input name="ls2" id="ls2" placeholder="小于等于" class="form-control" type="number">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group mx-3 row">
+                                                <div class="control-label">*回红百分比：</div>
+                                                <div class="">
+                                                    <input name="ls3" id="ls3" placeholder="请输入" class="form-control" type="number"><span>例如：10=10%</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group mx-3 row"><button class="btn btn-primary btn-sm" onclick="backScore(2);">确定流水奖励</button></div>
+
+                                        </div>
+                                        <div class="row col-sm-12">
+                                            <div class="form-group mx-3 row">
+                                                <div class="control-label">*把数范围：</div>
+                                                <div class="form-group row">
+                                                    <div class="">
+                                                        <input name="bs1" id="bs1" placeholder="大于等于" class="form-control" type="number">
+                                                    </div>
+                                                    <div class="ml-2">
+                                                        <input name="bs2" id="bs2" placeholder="小于等于" class="form-control" type="number">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group mx-3 row">
+                                                <div class="control-label">*奖励分额：</div>
+                                                <div class="">
+                                                    <input name="bs3" id="bs3" placeholder="请输入" class="form-control" type="number">
+                                                </div>
+                                            </div>
+                                            <div class="form-group mx-3 row"><button class="btn btn-primary btn-sm" onclick="backScore(3);">确定把数奖励</button></div>
+
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="" style="font-size:15px;clear:both;margin:10px 0px 10px 20px;">投注人数：<span id="scorePerson"></span> &nbsp; 盈亏：<span id="totalWin" style="color:red"></span></div>
+                <div class="" style="font-size:15px;clear:both;margin-left:20px;">汇总：<span id="list"></span></div>
+                <div class="col-sm-12" style="clear:both;margin-top:10px;">
+                    <a style="font-weight:bold;color:red;" class="h5" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">单独回红</a>
+                </div>
+                <div class="col-sm-12 mt-3">
+                    <div id="collapseTwo" class="col-sm-12 panel-collapse collapse in">
+                        <form class="col-sm-12 row" id="form-OrderRecord-add">
+                            <input type="hidden" name="tenantId" th:value="${tenantId}"/>
+                            <input type="hidden" name="status" value="1"/>
+                            <input id="createTime" name="type" type="hidden" >
+                            <div class="form-group col-sm-3 row">
+                                <label>用户ID：</label>
+                                <div class="">
+                                    <input name="userId" class="form-control" type="text" required>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-3row">
+                                <label>财务类型：</label>
+                                <div class="">
+                                    <select name="type" class="form-control" th:with="type=${@dict.getType('finance_type')}">
+                                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" required></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-3 row">
+                                <label>分数：</label>
+                                <div class="">
+                                    <input name="score" class="form-control" type="text" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-sm-3 row">
+                                <button type="button" class="btn btn-primary btn-sm" onclick="submitHandler()">提交</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+         <div class="modal inmodal fade" id="myModal_addScore" tabindex="-1" role="dialog" aria-hidden="true">
+             <div class="modal-dialog modal-lg">
+                 <div class="modal-content">
+                     <div class="modal-header" style="margin:0 auto;">
+                         <h4 id="modal-title" class="modal-title">回红</h4>
+                     </div>
+                     <div class="modal-body">
+                         <div class="summernote" th:id="${tbRoomConfigJnd20.id}+'-content'+${loopStatus.count}" ></div>
+                     </div>
+                     <div class="form-group row text-center mt-2">
+                         <form id="form-OrderRecord-add-row">
+                             <input type="hidden" name="tenantId" th:value="${tenantId}"/>
+                             <input type="hidden" name="status" value="1"/>
+                             <input id="userId-row" name="userId" type="hidden" >
+                             <input id="type-row" name="type" type="hidden" >
+                             <input id="createTime-row" name="type" type="hidden" >
+                             <div class="control-label">分数：</div>
+                             <div class="">
+                                 <input id="score-row" name="score" class="form-control" type="number" required>
+                             </div>
+                         </form>
+                     </div>
+                     <div class="modal-footer">
+                         <button type="button" class="btn btn-primary" onclick="orderRecordAddSubmit()">提交</button>
+                         <button type="button" id="myModal_addScore_close" class="btn btn-white" data-dismiss="modal">关闭</button>
+                     </div>
+                 </div>
+             </div>
+         </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('business:ScoreRecord:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('business:ScoreRecord:remove')}]];
+        var statusDatas = [[${@dict.getType('bet_status')}]];
+        var prefix = ctx + "business/ScoreRecord";
+
+        function orderRecordAddSubmit(){
+            $('#createTime-row').val($('#time').val());
+            if ($.validate.form('form-OrderRecord-add-row')) {
+                $.operate.saveModal(ctx + "business/OrderRecord" + "/add", $('#form-OrderRecord-add-row').serialize(),function(result){
+                    if(result.code == 0){
+                        $("#myModal_addScore_close").click();
+                        $("#form-OrderRecord-add-row")[0].reset();
+                        $.table.refresh();
+                    }
+                });
+            }
+        }
+
+        function orderRecordAdd(op1,op2){
+            $("#form-OrderRecord-add-row")[0].reset();
+            $('#userId-row').val(op1);
+            $('#type-row').val(op2);
+
+            if(op2==5){
+               $('#modal-title').text("返红");
+            }else if(op2==13){
+               $('#modal-title').text("把数");
+            }else if(op2==15){
+               $('#modal-title').text("流水");
+            }
+        }
+
+        function submitHandler() {
+
+            $('#createTime').val($('#time').val());
+            if ($.validate.form('form-OrderRecord-add')) {
+                $.operate.saveModal(ctx + "business/OrderRecord" + "/add", $('#form-OrderRecord-add').serialize(),function(result){
+                    if(result.code == 0){
+                        $("#form-OrderRecord-add")[0].reset();
+                        $.table.refresh();
+                    }
+                });
+            }
+        }
+
+        function backScore(type){
+            event.preventDefault();
+            event.stopPropagation();
+            if(type == 1){
+                if(!$('#hh1').val() || !$('#hh2').val() ||!$('#hh3').val()){
+                    $.modal.alertWarning("亏损范围和回红百分比不能为空");
+                    return;
+                }
+            }
+            if(type == 2){
+                if(!$('#ls1').val() || !$('#ls2').val() ||!$('#ls3').val()){
+                    $.modal.alertWarning("流水范围和回红百分比不能为空");
+                    return;
+                }
+            }
+            if(type == 3){
+                if(!$('#bs1').val() || !$('#bs2').val() ||!$('#bs3').val()){
+                    $.modal.alertWarning("把数范围和奖励分额不能为空");
+                    return;
+                }
+            }
+            $('#hhType').val(type);
+            $.operate.post(prefix+"/backScore",$('#hh-formId').serialize(),function(result){
+                if (result.code == 0){
+                    $.table.refresh();
+                }
+            });
+        }
+
+        function loadStatistics(){
+            $('#time').val($('#startTime').val());
+            $("#list").html("");
+            $.operate.postWithoutAlert(prefix+"/ScoreSummary",$('#formId').serialize(),function(result){
+                if (result.code == 0){
+                    $('#scorePerson').text(result.data.scorePerson);
+                    $('#totalWin').text(result.data.totalWin);
+                    var listHTML = "";
+                    for(var i = 0;i<result.data.list.length ; i++){
+                        listHTML += "<span class='ml-3'>"+result.data.list[i].key+"(<span "+ (result.data.list[i].value > 0?"style='color:red;'":"style='color:blue;'") +">"+result.data.list[i].value+"</span>)</span>";
+                    }
+                    listHTML = "<span>"+listHTML+"</span>"
+                    $("#list").append(listHTML);
+                }
+            });
+        }
+
+        $(function() {
+
+            // 获取当前时间
+            var currentDate = new Date();
+
+            // 减去一天
+            currentDate.setDate(currentDate.getDate() - 1);
+
+            // 格式化为 YYYY-MM-DD
+            var year = currentDate.getFullYear();
+            var month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+            var day = currentDate.getDate().toString().padStart(2, '0');
+
+            var formattedDate = year + '-' + month + '-' + day;
+            $('#hhDate').val(formattedDate);
+            $('#startTime').val(formattedDate);
+            $('#time').val(formattedDate);
+            $('#endTime').val(formattedDate);
+            loadStatistics();
+            var options = {
+                url: prefix + "/scoreSummaryList",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "投注记录",
+                columns: [
+                {
+                    field: 'userId',
+                    title: '用户ID',
+                    formatter: function(value, row, index) {
+                       return '<a href="javascript:void(0)" onclick="$.modal.openTab(\'个人中心\',\'/system/user/edit/' + row.userId+'\' ,true)"><i class="fa fa-edit">'+row.userId+'</i></a> ';
+                    }
+                },
+                {
+                    field: 'userName',
+                    title: '用户名',
+                },
+                {
+                    field: 'room',
+                    title: '房间盈利',
+                },
+                {
+                    field: 'totalWin',
+                    title: '盈亏总和',
+                },
+                {
+                    field: 'scorePerson',
+                    title: '投注把数',
+                },
+                {
+                    field: 'bsjl',
+                    title: '把数奖励',
+                },
+                {
+                    field: 'totalScore',
+                    title: '总流水',
+                },
+                {
+                    field: 'lsjl',
+                    title: '流水奖励',
+                },
+                {
+                    field: 'fhjl',
+                    title: '当日返红',
+                },
+		        {
+		            title: '查看投注详情',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+                        var actions = [];
+                        var param = "?userId="+row.userId+"&beginCreateTime="+$("#startTime").val()+"&endCreateTime="+$("#endTime").val();
+                        actions.push('<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="$.modal.openTab(\'注项记录\',\'/business/ScoreRecord' + param + '\',false)"><i class="fa fa-edit"></i>查看</a> ');
+                        actions.push('<a class="btn btn-success btn-xs" href="javascript:void(0)" data-toggle="modal" data-target="#myModal_addScore" onclick="orderRecordAdd(5,' + row.userId + ')"><i class="fa fa-edit"></i>返红</a> ');
+                        actions.push('<a class="btn btn-success btn-xs" href="javascript:void(0)" data-toggle="modal" data-target="#myModal_addScore" onclick="orderRecordAdd(13,' + row.userId + ')"><i class="fa fa-edit"></i>把数</a> ');
+                        actions.push('<a class="btn btn-success btn-xs" href="javascript:void(0)" data-toggle="modal" data-target="#myModal_addScore" onclick="orderRecordAdd(15,' + row.userId + ')"><i class="fa fa-edit"></i>流水</a> ');
+                        return actions.join('');
+		            }
+		        }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+<style>
+    select{
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background: transparent;
+        outline: none;
+        height: 30px;
+        width: 200px;
+    }
+</style>
+</html>

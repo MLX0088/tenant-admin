@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增房间')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-RoomConfig-add">
+            <div class="form-group row">    
+                <div class="control-label">房间名称：</div>
+                <div class="">
+                    <input name="roomName" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">最大注额：</div>
+                <div class="">
+                    <input name="maxScore" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">前几秒关盘：</div>
+                <div class="">
+                    <input name="closeSecond" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">是否关盘：</div>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-sm btn-secondary" >
+                        <input type="radio" th:id="${'isOpen_0'}" name="isOpen" value="0" checked> 0
+                    </label>
+                    <label class="btn btn-sm btn-secondary" >
+                        <input type="radio" th:id="${'isOpen_1'}" name="isOpen" value="1"> 1
+                    </label>
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">隐藏游戏房间：</div>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-sm btn-secondary" >
+                        <input type="radio" th:id="${'hideRoom_0'}" name="hideRoom" value="0" checked> 0
+                    </label>
+                    <label class="btn btn-sm btn-secondary" >
+                        <input type="radio" th:id="${'hideRoom_1'}" name="hideRoom" value="1"> 1
+                    </label>
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">反压：</div>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-sm btn-secondary" >
+                        <input type="radio" th:id="${'isBackPressure_0'}" name="isBackPressure" value="0" checked> 0
+                    </label>
+                    <label class="btn btn-sm btn-secondary" >
+                        <input type="radio" th:id="${'isBackPressure_1'}" name="isBackPressure" value="1"> 1
+                    </label>
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">尾码：</div>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-sm btn-secondary" >
+                        <input type="radio" th:id="${'isTailCode_0'}" name="isTailCode" value="0" checked> 0
+                    </label>
+                    <label class="btn btn-sm btn-secondary" >
+                        <input type="radio" th:id="${'isTailCode_1'}" name="isTailCode" value="1"> 1
+                    </label>
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">假人/托：</div>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-sm btn-secondary" >
+                        <input type="radio" th:id="${'isRobot_0'}" name="isRobot" value="0" checked> 0
+                    </label>
+                    <label class="btn btn-sm btn-secondary" >
+                        <input type="radio" th:id="${'isRobot_1'}" name="isRobot" value="1"> 1
+                    </label>
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">是否禁言：</div>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-sm btn-secondary" >
+                        <input type="radio" th:id="${'isBanned_0'}" name="isBanned" value="0" checked> 0
+                    </label>
+                    <label class="btn btn-sm btn-secondary" >
+                        <input type="radio" th:id="${'isBanned_1'}" name="isBanned" value="1"> 1
+                    </label>
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">对应赔率规则：</div>
+                <div class="">
+                    <select name="rateRule" class="form-control m-b" th:with="type=${@dict.getType('odds_rule')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="control-label">2.0超无视玩法设置：</div>
+                <div class="">
+                    <textarea name="superIgnoreRule" class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">自动处理猜数字：</div>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-sm btn-secondary" >
+                        <input type="radio" th:id="${'handleNumber_0'}" name="handleNumber" value="0" checked> 0
+                    </label>
+                    <label class="btn btn-sm btn-secondary" >
+                        <input type="radio" th:id="${'handleNumber_1'}" name="handleNumber" value="1"> 1
+                    </label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="control-label">猜数字处理规则：</div>
+                <div class="">
+                    <textarea name="handleNumberRule" class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="control-label">备注：</div>
+                <div class="">
+                    <textarea name="remark" class="form-control"></textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "business/RoomConfig"
+        $("#form-RoomConfig-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-RoomConfig-add').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

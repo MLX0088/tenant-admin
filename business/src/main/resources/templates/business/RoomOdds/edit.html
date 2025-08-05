@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改房间赔率')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-RoomOdds-edit" th:object="${tbRoomOdds}">
+            <input name="id" th:field="*{id}" type="hidden">
+            <div class="form-group row">    
+                <div class="control-label is-required">房间配置表：</div>
+                <div class="">
+                    <input name="roomConfigId" th:field="*{roomConfigId}" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">0码赔率：</div>
+                <div class="">
+                    <input name="rate0" th:field="*{rate0}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">0码最大投分：</div>
+                <div class="">
+                    <input name="maxScore0" th:field="*{maxScore0}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">1码赔率：</div>
+                <div class="">
+                    <input name="rate1" th:field="*{rate1}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">1码最大投分：</div>
+                <div class="">
+                    <input name="maxScore1" th:field="*{maxScore1}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">2码赔率：</div>
+                <div class="">
+                    <input name="rate2" th:field="*{rate2}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">2码最大投分：</div>
+                <div class="">
+                    <input name="maxScore2" th:field="*{maxScore2}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">3码赔率：</div>
+                <div class="">
+                    <input name="rate3" th:field="*{rate3}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">3码最大投分：</div>
+                <div class="">
+                    <input name="maxScore3" th:field="*{maxScore3}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">4码赔率：</div>
+                <div class="">
+                    <input name="rate4" th:field="*{rate4}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">4码最大投分：</div>
+                <div class="">
+                    <input name="maxScore4" th:field="*{maxScore4}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">5码赔率：</div>
+                <div class="">
+                    <input name="rate5" th:field="*{rate5}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">5码最大投分：</div>
+                <div class="">
+                    <input name="maxScore5" th:field="*{maxScore5}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">6码赔率：</div>
+                <div class="">
+                    <input name="rate6" th:field="*{rate6}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">6码最大投分：</div>
+                <div class="">
+                    <input name="maxScore6" th:field="*{maxScore6}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">7码赔率：</div>
+                <div class="">
+                    <input name="rate7" th:field="*{rate7}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">7码最大投分：</div>
+                <div class="">
+                    <input name="maxScore7" th:field="*{maxScore7}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">8码赔率：</div>
+                <div class="">
+                    <input name="rate8" th:field="*{rate8}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">8码最大投分：</div>
+                <div class="">
+                    <input name="maxScore8" th:field="*{maxScore8}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">9码赔率：</div>
+                <div class="">
+                    <input name="rate9" th:field="*{rate9}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">9码最大投分：</div>
+                <div class="">
+                    <input name="maxScore9" th:field="*{maxScore9}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">10码赔率：</div>
+                <div class="">
+                    <input name="rate10" th:field="*{rate10}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">10码最大投分：</div>
+                <div class="">
+                    <input name="maxScore10" th:field="*{maxScore10}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">11码赔率：</div>
+                <div class="">
+                    <input name="rate11" th:field="*{rate11}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">11码最大投分：</div>
+                <div class="">
+                    <input name="maxScore11" th:field="*{maxScore11}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">12码赔率：</div>
+                <div class="">
+                    <input name="rate12" th:field="*{rate12}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">12码最大投分：</div>
+                <div class="">
+                    <input name="maxScore12" th:field="*{maxScore12}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">13码赔率：</div>
+                <div class="">
+                    <input name="rate13" th:field="*{rate13}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">13码最大投分：</div>
+                <div class="">
+                    <input name="maxScore13" th:field="*{maxScore13}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">14码赔率：</div>
+                <div class="">
+                    <input name="rate14" th:field="*{rate14}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">14码最大投分：</div>
+                <div class="">
+                    <input name="maxScore14" th:field="*{maxScore14}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">15码赔率：</div>
+                <div class="">
+                    <input name="rate15" th:field="*{rate15}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">15码最大投分：</div>
+                <div class="">
+                    <input name="maxScore15" th:field="*{maxScore15}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">16码赔率：</div>
+                <div class="">
+                    <input name="rate16" th:field="*{rate16}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">16码最大投分：</div>
+                <div class="">
+                    <input name="maxScore16" th:field="*{maxScore16}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">17码赔率：</div>
+                <div class="">
+                    <input name="rate17" th:field="*{rate17}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">17码最大投分：</div>
+                <div class="">
+                    <input name="maxScore17" th:field="*{maxScore17}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">18码赔率：</div>
+                <div class="">
+                    <input name="rate18" th:field="*{rate18}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">18码最大投分：</div>
+                <div class="">
+                    <input name="maxScore18" th:field="*{maxScore18}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">19码赔率：</div>
+                <div class="">
+                    <input name="rate19" th:field="*{rate19}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">19码最大投分：</div>
+                <div class="">
+                    <input name="maxScore19" th:field="*{maxScore19}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">20码赔率：</div>
+                <div class="">
+                    <input name="rate20" th:field="*{rate20}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">20码最大投分：</div>
+                <div class="">
+                    <input name="maxScore20" th:field="*{maxScore20}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">21码赔率：</div>
+                <div class="">
+                    <input name="rate21" th:field="*{rate21}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">21码最大投分：</div>
+                <div class="">
+                    <input name="maxScore21" th:field="*{maxScore21}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">22码赔率：</div>
+                <div class="">
+                    <input name="rate22" th:field="*{rate22}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">22码最大投分：</div>
+                <div class="">
+                    <input name="maxScore22" th:field="*{maxScore22}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">23码赔率：</div>
+                <div class="">
+                    <input name="rate23" th:field="*{rate23}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">23码最大投分：</div>
+                <div class="">
+                    <input name="maxScore23" th:field="*{maxScore23}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">24码赔率：</div>
+                <div class="">
+                    <input name="rate24" th:field="*{rate24}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">24码最大投分：</div>
+                <div class="">
+                    <input name="maxScore24" th:field="*{maxScore24}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">25码赔率：</div>
+                <div class="">
+                    <input name="rate25" th:field="*{rate25}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">25码最大投分：</div>
+                <div class="">
+                    <input name="maxScore25" th:field="*{maxScore25}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">26码赔率：</div>
+                <div class="">
+                    <input name="rate26" th:field="*{rate26}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">26码最大投分：</div>
+                <div class="">
+                    <input name="maxScore26" th:field="*{maxScore26}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">27码赔率：</div>
+                <div class="">
+                    <input name="rate27" th:field="*{rate27}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">27码最大投分：</div>
+                <div class="">
+                    <input name="maxScore27" th:field="*{maxScore27}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">大码赔率：</div>
+                <div class="">
+                    <input name="rateBig" th:field="*{rateBig}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">大码最大投分：</div>
+                <div class="">
+                    <input name="maxScoreBig" th:field="*{maxScoreBig}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">小码赔率：</div>
+                <div class="">
+                    <input name="rateSmall" th:field="*{rateSmall}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">小码最大投分：</div>
+                <div class="">
+                    <input name="maxScoreSmall" th:field="*{maxScoreSmall}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">单码赔率：</div>
+                <div class="">
+                    <input name="rateSingle" th:field="*{rateSingle}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">单码最大投分：</div>
+                <div class="">
+                    <input name="maxScoreSingle" th:field="*{maxScoreSingle}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">双单码赔率：</div>
+                <div class="">
+                    <input name="rateDoubleSingle" th:field="*{rateDoubleSingle}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">双码最大投分：</div>
+                <div class="">
+                    <input name="maxScoreDoubleSingle" th:field="*{maxScoreDoubleSingle}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">大单码赔率：</div>
+                <div class="">
+                    <input name="rateBigSingle" th:field="*{rateBigSingle}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">大单码最大投分：</div>
+                <div class="">
+                    <input name="maxScoreBigSingle" th:field="*{maxScoreBigSingle}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">大双码赔率：</div>
+                <div class="">
+                    <input name="rateBigDouble" th:field="*{rateBigDouble}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">大双码最大投分：</div>
+                <div class="">
+                    <input name="maxScoreBigDouble" th:field="*{maxScoreBigDouble}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">小单码赔率：</div>
+                <div class="">
+                    <input name="rateSmallSingle" th:field="*{rateSmallSingle}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">小单码最大投分：</div>
+                <div class="">
+                    <input name="maxScoreSmallSingle" th:field="*{maxScoreSmallSingle}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">小双码赔率：</div>
+                <div class="">
+                    <input name="rateSmallDouble" th:field="*{rateSmallDouble}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">小双码最大投分：</div>
+                <div class="">
+                    <input name="maxScoreSmallDouble" th:field="*{maxScoreSmallDouble}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">对子码赔率：</div>
+                <div class="">
+                    <input name="ratePairs" th:field="*{ratePairs}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">对子码最大投分：</div>
+                <div class="">
+                    <input name="maxScorePairs" th:field="*{maxScorePairs}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">顺子码赔率：</div>
+                <div class="">
+                    <input name="rateStraight" th:field="*{rateStraight}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">顺子码最大投分：</div>
+                <div class="">
+                    <input name="maxScoreStraight" th:field="*{maxScoreStraight}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">豹子码赔率：</div>
+                <div class="">
+                    <input name="rateAllSame" th:field="*{rateAllSame}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">豹子码最大投分：</div>
+                <div class="">
+                    <input name="maxScoreAllSame" th:field="*{maxScoreAllSame}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">极大码赔率：</div>
+                <div class="">
+                    <input name="rateMax" th:field="*{rateMax}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">极大码最大投分：</div>
+                <div class="">
+                    <input name="maxScoreMax" th:field="*{maxScoreMax}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">极小码赔率：</div>
+                <div class="">
+                    <input name="rateMin" th:field="*{rateMin}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">极小码最大投分：</div>
+                <div class="">
+                    <input name="maxScoreMin" th:field="*{maxScoreMin}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">龙码赔率：</div>
+                <div class="">
+                    <input name="rateDragon" th:field="*{rateDragon}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">龙码最大投分：</div>
+                <div class="">
+                    <input name="maxScoreDragon" th:field="*{maxScoreDragon}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">虎码赔率：</div>
+                <div class="">
+                    <input name="rateTiger" th:field="*{rateTiger}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">虎码最大投分：</div>
+                <div class="">
+                    <input name="maxScoreTiger" th:field="*{maxScoreTiger}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">豹码赔率：</div>
+                <div class="">
+                    <input name="rateLeopard" th:field="*{rateLeopard}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">豹码最大投分：</div>
+                <div class="">
+                    <input name="maxScoreLeopard" th:field="*{maxScoreLeopard}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">尾大码赔率：</div>
+                <div class="">
+                    <input name="rateTailBig" th:field="*{rateTailBig}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">尾大码最大投分：</div>
+                <div class="">
+                    <input name="maxScoreTailBig" th:field="*{maxScoreTailBig}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">尾小码赔率：</div>
+                <div class="">
+                    <input name="rateTailSmall" th:field="*{rateTailSmall}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">尾小码最大投分：</div>
+                <div class="">
+                    <input name="maxScoreTailSmall" th:field="*{maxScoreTailSmall}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">尾单码赔率：</div>
+                <div class="">
+                    <input name="rateTailSingle" th:field="*{rateTailSingle}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">尾单码最大投分：</div>
+                <div class="">
+                    <input name="maxScoreTailSingle" th:field="*{maxScoreTailSingle}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">尾双码赔率：</div>
+                <div class="">
+                    <input name="rateTailDouble" th:field="*{rateTailDouble}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">尾双码最大投分：</div>
+                <div class="">
+                    <input name="maxScoreTailDouble" th:field="*{maxScoreTailDouble}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">尾大双码赔率：</div>
+                <div class="">
+                    <input name="rateTailBigDouble" th:field="*{rateTailBigDouble}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">尾大双码最大投分：</div>
+                <div class="">
+                    <input name="maxScoreTailBigDouble" th:field="*{maxScoreTailBigDouble}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">尾大单码赔率：</div>
+                <div class="">
+                    <input name="rateTailBigSingle" th:field="*{rateTailBigSingle}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">尾大单码最大投分：</div>
+                <div class="">
+                    <input name="maxScoreTailBigSingle" th:field="*{maxScoreTailBigSingle}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">尾小双码赔率：</div>
+                <div class="">
+                    <input name="rateTailSmallDouble" th:field="*{rateTailSmallDouble}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">尾小双码最大投分：</div>
+                <div class="">
+                    <input name="maxScoreTailSmallDouble" th:field="*{maxScoreTailSmallDouble}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">尾小单码赔率：</div>
+                <div class="">
+                    <input name="rateTailSmallSingle" th:field="*{rateTailSmallSingle}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">尾小单码最大投分：</div>
+                <div class="">
+                    <input name="maxScoreTailSmallSingle" th:field="*{maxScoreTailSmallSingle}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">尾1码赔率：</div>
+                <div class="">
+                    <input name="rateTail1" th:field="*{rateTail1}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">尾1码最大投分：</div>
+                <div class="">
+                    <input name="maxScoreTail1" th:field="*{maxScoreTail1}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">尾2码赔率：</div>
+                <div class="">
+                    <input name="rateTail2" th:field="*{rateTail2}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">尾2码最大投分：</div>
+                <div class="">
+                    <input name="maxScoreTail2" th:field="*{maxScoreTail2}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">尾3码赔率：</div>
+                <div class="">
+                    <input name="rateTail3" th:field="*{rateTail3}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">尾3码最大投分：</div>
+                <div class="">
+                    <input name="maxScoreTail3" th:field="*{maxScoreTail3}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">尾4码赔率：</div>
+                <div class="">
+                    <input name="rateTail4" th:field="*{rateTail4}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">尾4码最大投分：</div>
+                <div class="">
+                    <input name="maxScoreTail4" th:field="*{maxScoreTail4}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">尾5码赔率：</div>
+                <div class="">
+                    <input name="rateTail5" th:field="*{rateTail5}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">尾5码最大投分：</div>
+                <div class="">
+                    <input name="maxScoreTail5" th:field="*{maxScoreTail5}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">尾6码赔率：</div>
+                <div class="">
+                    <input name="rateTail6" th:field="*{rateTail6}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">尾6码最大投分：</div>
+                <div class="">
+                    <input name="maxScoreTail6" th:field="*{maxScoreTail6}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">尾7码赔率：</div>
+                <div class="">
+                    <input name="rateTail7" th:field="*{rateTail7}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">尾7码最大投分：</div>
+                <div class="">
+                    <input name="maxScoreTail7" th:field="*{maxScoreTail7}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">尾8码赔率：</div>
+                <div class="">
+                    <input name="rateTail8" th:field="*{rateTail8}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">尾8码最大投分：</div>
+                <div class="">
+                    <input name="maxScoreTail8" th:field="*{maxScoreTail8}" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "business/RoomOdds";
+        $("#form-RoomOdds-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-RoomOdds-edit').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tenant.business.mapper.TbRoomPushMapper">
+    
+    <resultMap type="TbRoomPush" id="TbRoomPushResult">
+        <result property="id"    column="id"    />
+        <result property="roomConfigId"    column="room_config_id"    />
+        <result property="second"    column="second"    />
+        <result property="content"    column="content"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="roomName"    column="room_name"    />
+    </resultMap>
+
+    <sql id="selectTbRoomPushVo">
+        select * from tb_room_push
+    </sql>
+
+    <select id="selectTbRoomPushList" parameterType="TbRoomPush" resultMap="TbRoomPushResult">
+        <include refid="selectTbRoomPushVo"/>
+        <where>  
+            <if test="roomConfigId != null "> and room_config_id = #{roomConfigId}</if>
+            <if test="second != null "> and second = #{second}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+            <if test="roomName != null  and roomName != ''"> and room_name = #{roomName}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbRoomPushById" parameterType="Long" resultMap="TbRoomPushResult">
+        <include refid="selectTbRoomPushVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTbRoomPush" parameterType="TbRoomPush" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_room_push
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roomConfigId != null">room_config_id,</if>
+            <if test="second != null">second,</if>
+            <if test="content != null">content,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="tenantId != null">tenant_id,</if>
+            <if test="roomName != null">room_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roomConfigId != null">#{roomConfigId},</if>
+            <if test="second != null">#{second},</if>
+            <if test="content != null">#{content},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+            <if test="roomName != null">#{roomName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbRoomPush" parameterType="TbRoomPush">
+        update tb_room_push
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roomConfigId != null">room_config_id = #{roomConfigId},</if>
+            <if test="second != null">second = #{second},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+            <if test="roomName != null">room_name = #{roomName},</if>
+        </trim>
+        where id = #{id}
+        <if test="createBy != null  and createBy != ''"> and create_by = #{createBy}</if>
+    </update>
+
+    <delete id="deleteTbRoomPushById" parameterType="Long">
+        delete from tb_room_push where id = #{id}
+    </delete>
+
+    <delete id="deleteTbRoomPushByTenantIdAndRoomName" >
+        delete from tb_room_push where tenant_id = #{tenantId} and room_name = #{roomName}
+    </delete>
+
+    <delete id="deleteTbRoomPushByIds" parameterType="String">
+        delete from tb_room_push where
+        <if test="createBy != null and createBy != ''">  create_by = #{createBy} and</if>
+id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

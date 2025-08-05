@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改游戏房间封面')" />
+    <th:block th:include="include :: bootstrap-fileinput-css"/>
+    <th:block th:include="include :: summernote-css" />
+</head>
+<body class="white-bg">
+    <div class="col-sm-12 row">
+        <div class="col-sm-12 alert alert-info alert-dismissable ml-3">
+            <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+            游戏房间封面图宽高比为1:1
+        </div>
+        <div class="col-sm-6">
+            <form class="form-horizontal m col-sm-10" id="form-GameRoomCover-edit-Jnd20" th:object="${tbGameRoomCoverJnd20}" th:if="${tbGameRoomCoverJnd20!=null}">
+                <input name="id" th:field="*{id}" type="hidden">
+                <input name="tenantId" th:field="*{tenantId}" type="hidden">
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">房间名称：</div>
+                    <div class="col">
+                        <span style="font-weight:bold;">[[*{type}]]</span>
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">封面图：</div>
+                    <div class="col">
+                        <img id="coverImagesId_Jnd20_img" th:src="(${tbGameRoomCoverJnd20.coverImagesId!=null && tbGameRoomCoverJnd20.coverImagesId>0}) ? @{'/business/images/'+${tbGameRoomCoverJnd20.coverImagesId}} : @{'/img/blank.jpg'}" style="height:150px;" >
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">赔率提示：</div>
+                    <div class="col">
+                        <input name="rateTips" th:field="*{rateTips}" class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">玩法说明：</div>
+                    <div class="col">
+                        <input type="hidden" class="form-control" id="rateDesc_Jnd20_text" name="rateDesc" th:field="*{rateDesc}">
+                        <input type="hidden" class="form-control" id="eventContent_Jnd20_text" name="eventContent" th:field="*{eventContent}">
+                        <input type="hidden" class="form-control" id="commissionDesc_Jnd20_text" name="commissionDesc" th:field="*{commissionDesc}">
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal_rateDesc_Jnd20">赔率说明</button>
+                        <button type="button" class="btn btn-primary btn-sm ml-3" data-toggle="modal" data-target="#myModal_eventContent_Jnd20">活动内容</button>
+                        <button type="button" class="btn btn-primary btn-sm ml-3" data-toggle="modal" data-target="#myModal_commissionDesc_Jnd20">回红说明</button>
+
+                        <div class="modal inmodal fade" id="myModal_rateDesc_Jnd20" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="margin:0 auto;">
+                                        <h4 class="modal-title">赔率说明</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="summernote" id="rateDesc_Jnd20"></div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal inmodal fade" id="myModal_eventContent_Jnd20" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="margin:0 auto;">
+                                        <h4 class="modal-title">活动内容</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="summernote" id="eventContent_Jnd20"></div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal inmodal fade" id="myModal_commissionDesc_Jnd20" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="margin:0 auto;">
+                                        <h4 class="modal-title">回红说明</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="summernote" id="commissionDesc_Jnd20"></div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">更换封面图：</div>
+                    <div class="col">
+                        <input type="hidden" id="coverImagesId_Jnd20_text_old" th:value="*{coverImagesId}">
+                        <input type="hidden" id="coverImagesId_Jnd20_text" name="coverImagesId" th:field="*{coverImagesId}">
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal_cover_Jnd20">更换</button>
+                        <button type="button" class="btn btn-primary btn-sm ml-3" onclick="restoreImg('coverImagesId_Jnd20_text','coverImagesId_Jnd20_img')">还原</button>
+
+                        <div class="modal inmodal fade" id="myModal_cover_Jnd20" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="margin:0 auto;">
+                                        <h4 class="modal-title">更换封面</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="file-loading">
+                                            <input class="form-control file-upload" id="coverImagesId_Jnd20" name="file" type="file">
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-group row col-sm-12">
+                    <button type="button" class="btn btn-primary btn-sm" onclick="submitHandler('form-GameRoomCover-edit-Jnd20')">确定编辑</button>
+                </div>
+            </form>
+            <div class="border-bottom col-sm-12 my-4"></div>
+            <form class="form-horizontal m col-sm-10" id="form-GameRoomCover-edit-Jnd28" th:object="${tbGameRoomCoverJnd28}" th:if="${tbGameRoomCoverJnd28!=null}">
+                <input name="id" th:field="*{id}" type="hidden">
+                <input name="tenantId" th:field="*{tenantId}" type="hidden">
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">房间名称：</div>
+                    <div class="col">
+                        <span style="font-weight:bold;">[[*{type}]]</span>
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">封面图：</div>
+                    <div class="col">
+                        <img id="coverImagesId_Jnd28_img" th:src="(${tbGameRoomCoverJnd28.coverImagesId!=null && tbGameRoomCoverJnd28.coverImagesId>0}) ? @{'/business/images/'+${tbGameRoomCoverJnd28.coverImagesId}} : @{'/img/blank.jpg'}" style="height:150px;" >
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">赔率提示：</div>
+                    <div class="col">
+                        <input name="rateTips" th:field="*{rateTips}" class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">玩法说明：</div>
+                    <div class="col">
+                        <input type="hidden" class="form-control" id="rateDesc_Jnd28_text" name="rateDesc" th:field="*{rateDesc}">
+                        <input type="hidden" class="form-control" id="eventContent_Jnd28_text" name="eventContent" th:field="*{eventContent}">
+                        <input type="hidden" class="form-control" id="commissionDesc_Jnd28_text" name="commissionDesc" th:field="*{commissionDesc}">
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal_rateDesc_Jnd28">赔率说明</button>
+                        <button type="button" class="btn btn-primary btn-sm ml-3" data-toggle="modal" data-target="#myModal_eventContent_Jnd28">活动内容</button>
+                        <button type="button" class="btn btn-primary btn-sm ml-3" data-toggle="modal" data-target="#myModal_commissionDesc_Jnd28">回红说明</button>
+
+                        <div class="modal inmodal fade" id="myModal_rateDesc_Jnd28" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="margin:0 auto;">
+                                        <h4 class="modal-title">赔率说明</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="summernote" id="rateDesc_Jnd28"></div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal inmodal fade" id="myModal_eventContent_Jnd28" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="margin:0 auto;">
+                                        <h4 class="modal-title">活动内容</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="summernote" id="eventContent_Jnd28"></div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal inmodal fade" id="myModal_commissionDesc_Jnd28" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="margin:0 auto;">
+                                        <h4 class="modal-title">回红说明</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="summernote" id="commissionDesc_Jnd28"></div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">更换封面图：</div>
+                    <div class="col">
+                        <input type="hidden" id="coverImagesId_Jnd28_text_old" th:value="*{coverImagesId}">
+                        <input type="hidden" id="coverImagesId_Jnd28_text" name="coverImagesId" th:field="*{coverImagesId}">
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal_cover_Jnd28">更换</button>
+                        <button type="button" class="btn btn-primary btn-sm ml-3" onclick="restoreImg('coverImagesId_Jnd28_text','coverImagesId_Jnd28_img')">还原</button>
+
+                        <div class="modal inmodal fade" id="myModal_cover_Jnd28" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="margin:0 auto;">
+                                        <h4 class="modal-title">更换封面</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="file-loading">
+                                            <input class="form-control file-upload" id="coverImagesId_Jnd28" name="file" type="file">
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-group row col-sm-12">
+                    <button type="button" class="btn btn-primary btn-sm" onclick="submitHandler('form-GameRoomCover-edit-Jnd28')">确定编辑</button>
+                </div>
+            </form>
+            <div class="border-bottom col-sm-12 my-4"></div>
+            <form class="form-horizontal m col-sm-10" id="form-GameRoomCover-edit-Jnd30" th:object="${tbGameRoomCoverJnd30}" th:if="${tbGameRoomCoverJnd30!=null}">
+                <input name="id" th:field="*{id}" type="hidden">
+                <input name="tenantId" th:field="*{tenantId}" type="hidden">
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">房间名称：</div>
+                    <div class="col">
+                        <span style="font-weight:bold;">[[*{type}]]</span>
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">封面图：</div>
+                    <div class="col">
+                        <img id="coverImagesId_Jnd30_img" th:src="(${tbGameRoomCoverJnd30.coverImagesId!=null && tbGameRoomCoverJnd30.coverImagesId>0}) ? @{'/business/images/'+${tbGameRoomCoverJnd30.coverImagesId}} : @{'/img/blank.jpg'}" style="height:150px;" >
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">赔率提示：</div>
+                    <div class="col">
+                        <input name="rateTips" th:field="*{rateTips}" class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">玩法说明：</div>
+                    <div class="col">
+                        <input type="hidden" class="form-control" id="rateDesc_Jnd30_text" name="rateDesc" th:field="*{rateDesc}">
+                        <input type="hidden" class="form-control" id="eventContent_Jnd30_text" name="eventContent" th:field="*{eventContent}">
+                        <input type="hidden" class="form-control" id="commissionDesc_Jnd30_text" name="commissionDesc" th:field="*{commissionDesc}">
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal_rateDesc_Jnd30">赔率说明</button>
+                        <button type="button" class="btn btn-primary btn-sm ml-3" data-toggle="modal" data-target="#myModal_eventContent_Jnd30">活动内容</button>
+                        <button type="button" class="btn btn-primary btn-sm ml-3" data-toggle="modal" data-target="#myModal_commissionDesc_Jnd30">回红说明</button>
+
+                        <div class="modal inmodal fade" id="myModal_rateDesc_Jnd30" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="margin:0 auto;">
+                                        <h4 class="modal-title">赔率说明</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="summernote" id="rateDesc_Jnd30"></div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal inmodal fade" id="myModal_eventContent_Jnd30" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="margin:0 auto;">
+                                        <h4 class="modal-title">活动内容</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="summernote" id="eventContent_Jnd30"></div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal inmodal fade" id="myModal_commissionDesc_Jnd30" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="margin:0 auto;">
+                                        <h4 class="modal-title">回红说明</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="summernote" id="commissionDesc_Jnd30"></div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">更换封面图：</div>
+                    <div class="col">
+                        <input type="hidden" id="coverImagesId_Jnd30_text_old" th:value="*{coverImagesId}">
+                        <input type="hidden" id="coverImagesId_Jnd30_text" name="coverImagesId" th:field="*{coverImagesId}">
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal_cover_Jnd30">更换</button>
+                        <button type="button" class="btn btn-primary btn-sm ml-3" onclick="restoreImg('coverImagesId_Jnd30_text','coverImagesId_Jnd30_img')">还原</button>
+
+                        <div class="modal inmodal fade" id="myModal_cover_Jnd30" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="margin:0 auto;">
+                                        <h4 class="modal-title">更换封面</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="file-loading">
+                                            <input class="form-control file-upload" id="coverImagesId_Jnd30" name="file" type="file">
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-group row col-sm-12">
+                    <button type="button" class="btn btn-primary btn-sm" onclick="submitHandler('form-GameRoomCover-edit-Jnd30')">确定编辑</button>
+                </div>
+            </form>
+            <div class="border-bottom col-sm-12 my-4"></div>
+            <form class="form-horizontal m col-sm-10" id="form-GameRoomCover-edit-Jnd40" th:object="${tbGameRoomCoverJnd40}" th:if="${tbGameRoomCoverJnd40!=null}">
+                <input name="id" th:field="*{id}" type="hidden">
+                <input name="tenantId" th:field="*{tenantId}" type="hidden">
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">房间名称：</div>
+                    <div class="col">
+                        <span style="font-weight:bold;">[[*{type}]]</span>
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">封面图：</div>
+                    <div class="col">
+                        <img id="coverImagesId_Jnd40_img" th:src="(${tbGameRoomCoverJnd40.coverImagesId!=null && tbGameRoomCoverJnd40.coverImagesId>0}) ? @{'/business/images/'+${tbGameRoomCoverJnd40.coverImagesId}} : @{'/img/blank.jpg'}" style="height:150px;" >
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">赔率提示：</div>
+                    <div class="col">
+                        <input name="rateTips" th:field="*{rateTips}" class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">玩法说明：</div>
+                    <div class="col">
+                        <input type="hidden" class="form-control" id="rateDesc_Jnd40_text" name="rateDesc" th:field="*{rateDesc}">
+                        <input type="hidden" class="form-control" id="eventContent_Jnd40_text" name="eventContent" th:field="*{eventContent}">
+                        <input type="hidden" class="form-control" id="commissionDesc_Jnd40_text" name="commissionDesc" th:field="*{commissionDesc}">
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal_rateDesc_Jnd40">赔率说明</button>
+                        <button type="button" class="btn btn-primary btn-sm ml-3" data-toggle="modal" data-target="#myModal_eventContent_Jnd40">活动内容</button>
+                        <button type="button" class="btn btn-primary btn-sm ml-3" data-toggle="modal" data-target="#myModal_commissionDesc_Jnd40">回红说明</button>
+
+                        <div class="modal inmodal fade" id="myModal_rateDesc_Jnd40" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="margin:0 auto;">
+                                        <h4 class="modal-title">赔率说明</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="summernote" id="rateDesc_Jnd40"></div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal inmodal fade" id="myModal_eventContent_Jnd40" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="margin:0 auto;">
+                                        <h4 class="modal-title">活动内容</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="summernote" id="eventContent_Jnd40"></div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal inmodal fade" id="myModal_commissionDesc_Jnd40" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="margin:0 auto;">
+                                        <h4 class="modal-title">回红说明</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="summernote" id="commissionDesc_Jnd40"></div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">更换封面图：</div>
+                    <div class="col">
+                        <input type="hidden" id="coverImagesId_Jnd40_text_old" th:value="*{coverImagesId}">
+                        <input type="hidden" id="coverImagesId_Jnd40_text" name="coverImagesId" th:field="*{coverImagesId}">
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal_cover_Jnd40">更换</button>
+                        <button type="button" class="btn btn-primary btn-sm ml-3" onclick="restoreImg('coverImagesId_Jnd40_text','coverImagesId_Jnd40_img')">还原</button>
+
+                        <div class="modal inmodal fade" id="myModal_cover_Jnd40" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="margin:0 auto;">
+                                        <h4 class="modal-title">更换封面</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="file-loading">
+                                            <input class="form-control file-upload" id="coverImagesId_Jnd40" name="file" type="file">
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-group row col-sm-12">
+                    <button type="button" class="btn btn-primary btn-sm" onclick="submitHandler('form-GameRoomCover-edit-Jnd40')">确定编辑</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-6">
+            <form class="form-horizontal m col-sm-10" id="form-GameRoomCover-edit-Am20" th:object="${tbGameRoomCoverTw20}" th:if="${tbGameRoomCoverTw20!=null}">
+                <input name="id" th:field="*{id}" type="hidden">
+                <input name="tenantId" th:field="*{tenantId}" type="hidden">
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">房间名称：</div>
+                    <div class="col">
+                        <span style="font-weight:bold;">[[*{type}]]</span>
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">封面图：</div>
+                    <div class="col">
+                        <img id="coverImagesId_Am20_img" th:src="(${tbGameRoomCoverTw20.coverImagesId!=null && tbGameRoomCoverTw20.coverImagesId>0}) ? @{'/business/images/'+${tbGameRoomCoverTw20.coverImagesId}} : @{'/img/blank.jpg'}" style="height:150px;" >
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">赔率提示：</div>
+                    <div class="col">
+                        <input name="rateTips" th:field="*{rateTips}" class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">玩法说明：</div>
+                    <div class="col">
+                        <input type="hidden" class="form-control" id="rateDesc_Am20_text" name="rateDesc" th:field="*{rateDesc}">
+                        <input type="hidden" class="form-control" id="eventContent_Am20_text" name="eventContent" th:field="*{eventContent}">
+                        <input type="hidden" class="form-control" id="commissionDesc_Am20_text" name="commissionDesc" th:field="*{commissionDesc}">
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal_rateDesc_Am20">赔率说明</button>
+                        <button type="button" class="btn btn-primary btn-sm ml-3" data-toggle="modal" data-target="#myModal_eventContent_Am20">活动内容</button>
+                        <button type="button" class="btn btn-primary btn-sm ml-3" data-toggle="modal" data-target="#myModal_commissionDesc_Am20">回红说明</button>
+
+                        <div class="modal inmodal fade" id="myModal_rateDesc_Am20" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="margin:0 auto;">
+                                        <h4 class="modal-title">赔率说明</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="summernote" id="rateDesc_Am20"></div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal inmodal fade" id="myModal_eventContent_Am20" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="margin:0 auto;">
+                                        <h4 class="modal-title">活动内容</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="summernote" id="eventContent_Am20"></div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal inmodal fade" id="myModal_commissionDesc_Am20" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="margin:0 auto;">
+                                        <h4 class="modal-title">回红说明</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="summernote" id="commissionDesc_Am20"></div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">更换封面图：</div>
+                    <div class="col">
+                        <input type="hidden" id="coverImagesId_Am20_text_old" th:value="*{coverImagesId}">
+                        <input type="hidden" id="coverImagesId_Am20_text" name="coverImagesId" th:field="*{coverImagesId}">
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal_cover_Am20">更换</button>
+                        <button type="button" class="btn btn-primary btn-sm ml-3" onclick="restoreImg('coverImagesId_Am20_text','coverImagesId_Am20_img')">还原</button>
+
+                        <div class="modal inmodal fade" id="myModal_cover_Am20" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="margin:0 auto;">
+                                        <h4 class="modal-title">更换封面</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="file-loading">
+                                            <input class="form-control file-upload" id="coverImagesId_Am20" name="file" type="file">
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-group row col-sm-12">
+                    <button type="button" class="btn btn-primary btn-sm" onclick="submitHandler('form-GameRoomCover-edit-Am20')">确定编辑</button>
+                </div>
+            </form>
+            <div class="border-bottom col-sm-12 my-4"></div>
+            <form class="form-horizontal m col-sm-10" id="form-GameRoomCover-edit-Am28" th:object="${tbGameRoomCoverTw28}" th:if="${tbGameRoomCoverTw28!=null}">
+                <input name="id" th:field="*{id}" type="hidden">
+                <input name="tenantId" th:field="*{tenantId}" type="hidden">
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">房间名称：</div>
+                    <div class="col">
+                        <span style="font-weight:bold;">[[*{type}]]</span>
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">封面图：</div>
+                    <div class="col">
+                        <img id="coverImagesId_Am28_img" th:src="(${tbGameRoomCoverTw28.coverImagesId!=null && tbGameRoomCoverTw28.coverImagesId>0}) ? @{'/business/images/'+${tbGameRoomCoverTw28.coverImagesId}} : @{'/img/blank.jpg'}" style="height:150px;" >
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">赔率提示：</div>
+                    <div class="col">
+                        <input name="rateTips" th:field="*{rateTips}" class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">玩法说明：</div>
+                    <div class="col">
+                        <input type="hidden" class="form-control" id="rateDesc_Am28_text" name="rateDesc" th:field="*{rateDesc}">
+                        <input type="hidden" class="form-control" id="eventContent_Am28_text" name="eventContent" th:field="*{eventContent}">
+                        <input type="hidden" class="form-control" id="commissionDesc_Am28_text" name="commissionDesc" th:field="*{commissionDesc}">
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal_rateDesc_Am28">赔率说明</button>
+                        <button type="button" class="btn btn-primary btn-sm ml-3" data-toggle="modal" data-target="#myModal_eventContent_Am28">活动内容</button>
+                        <button type="button" class="btn btn-primary btn-sm ml-3" data-toggle="modal" data-target="#myModal_commissionDesc_Am28">回红说明</button>
+
+                        <div class="modal inmodal fade" id="myModal_rateDesc_Am28" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="margin:0 auto;">
+                                        <h4 class="modal-title">赔率说明</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="summernote" id="rateDesc_Am28"></div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal inmodal fade" id="myModal_eventContent_Am28" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="margin:0 auto;">
+                                        <h4 class="modal-title">活动内容</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="summernote" id="eventContent_Am28"></div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal inmodal fade" id="myModal_commissionDesc_Am28" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="margin:0 auto;">
+                                        <h4 class="modal-title">回红说明</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="summernote" id="commissionDesc_Am28"></div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">更换封面图：</div>
+                    <div class="col">
+                        <input type="hidden" id="coverImagesId_Am28_text_old" th:value="*{coverImagesId}">
+                        <input type="hidden" id="coverImagesId_Am28_text" name="coverImagesId" th:field="*{coverImagesId}">
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal_cover_Am28">更换</button>
+                        <button type="button" class="btn btn-primary btn-sm ml-3" onclick="restoreImg('coverImagesId_Am28_text','coverImagesId_Am28_img')">还原</button>
+
+                        <div class="modal inmodal fade" id="myModal_cover_Am28" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="margin:0 auto;">
+                                        <h4 class="modal-title">更换封面</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="file-loading">
+                                            <input class="form-control file-upload" id="coverImagesId_Am28" name="file" type="file">
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-group row col-sm-12">
+                    <button type="button" class="btn btn-primary btn-sm" onclick="submitHandler('form-GameRoomCover-edit-Am28')">确定编辑</button>
+                </div>
+            </form>
+            <div class="border-bottom col-sm-12 my-4"></div>
+            <form class="form-horizontal m col-sm-10" id="form-GameRoomCover-edit-Am30" th:object="${tbGameRoomCoverTw30}" th:if="${tbGameRoomCoverTw30!=null}">
+                <input name="id" th:field="*{id}" type="hidden">
+                <input name="tenantId" th:field="*{tenantId}" type="hidden">
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">房间名称：</div>
+                    <div class="col">
+                        <span style="font-weight:bold;">[[*{type}]]</span>
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">封面图：</div>
+                    <div class="col">
+                        <img id="coverImagesId_Am30_img" th:src="(${tbGameRoomCoverTw30.coverImagesId!=null && tbGameRoomCoverTw30.coverImagesId>0}) ? @{'/business/images/'+${tbGameRoomCoverTw30.coverImagesId}} : @{'/img/blank.jpg'}" style="height:150px;" >
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">赔率提示：</div>
+                    <div class="col">
+                        <input name="rateTips" th:field="*{rateTips}" class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">玩法说明：</div>
+                    <div class="col">
+                        <input type="hidden" class="form-control" id="rateDesc_Am30_text" name="rateDesc" th:field="*{rateDesc}">
+                        <input type="hidden" class="form-control" id="eventContent_Am30_text" name="eventContent" th:field="*{eventContent}">
+                        <input type="hidden" class="form-control" id="commissionDesc_Am30_text" name="commissionDesc" th:field="*{commissionDesc}">
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal_rateDesc_Am30">赔率说明</button>
+                        <button type="button" class="btn btn-primary btn-sm ml-3" data-toggle="modal" data-target="#myModal_eventContent_Am30">活动内容</button>
+                        <button type="button" class="btn btn-primary btn-sm ml-3" data-toggle="modal" data-target="#myModal_commissionDesc_Am30">回红说明</button>
+
+                        <div class="modal inmodal fade" id="myModal_rateDesc_Am30" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="margin:0 auto;">
+                                        <h4 class="modal-title">赔率说明</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="summernote" id="rateDesc_Am30"></div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal inmodal fade" id="myModal_eventContent_Am30" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="margin:0 auto;">
+                                        <h4 class="modal-title">活动内容</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="summernote" id="eventContent_Am30"></div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal inmodal fade" id="myModal_commissionDesc_Am30" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="margin:0 auto;">
+                                        <h4 class="modal-title">回红说明</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="summernote" id="commissionDesc_Am30"></div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">更换封面图：</div>
+                    <div class="col">
+                        <input type="hidden" id="coverImagesId_Am30_text_old" th:value="*{coverImagesId}">
+                        <input type="hidden" id="coverImagesId_Am30_text" name="coverImagesId" th:field="*{coverImagesId}">
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal_cover_Am30">更换</button>
+                        <button type="button" class="btn btn-primary btn-sm ml-3" onclick="restoreImg('coverImagesId_Am30_text','coverImagesId_Am30_img')">还原</button>
+
+                        <div class="modal inmodal fade" id="myModal_cover_Am30" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="margin:0 auto;">
+                                        <h4 class="modal-title">更换封面</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="file-loading">
+                                            <input class="form-control file-upload" id="coverImagesId_Am30" name="file" type="file">
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-group row col-sm-12">
+                    <button type="button" class="btn btn-primary btn-sm" onclick="submitHandler('form-GameRoomCover-edit-Am30')">确定编辑</button>
+                </div>
+            </form>
+            <div class="border-bottom col-sm-12 my-4"></div>
+            <form class="form-horizontal m col-sm-10" id="form-GameRoomCover-edit-Am40" th:object="${tbGameRoomCoverTw40}" th:if="${tbGameRoomCoverTw40!=null}">
+                <input name="id" th:field="*{id}" type="hidden">
+                <input name="tenantId" th:field="*{tenantId}" type="hidden">
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">房间名称：</div>
+                    <div class="col">
+                        <span style="font-weight:bold;">[[*{type}]]</span>
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">封面图：</div>
+                    <div class="col">
+                        <img id="coverImagesId_Am40_img" th:src="(${tbGameRoomCoverTw40.coverImagesId!=null && tbGameRoomCoverTw40.coverImagesId>0}) ? @{'/business/images/'+${tbGameRoomCoverTw40.coverImagesId}} : @{'/img/blank.jpg'}" style="height:150px;" >
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">赔率提示：</div>
+                    <div class="col">
+                        <input name="rateTips" th:field="*{rateTips}" class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">玩法说明：</div>
+                    <div class="col">
+                        <input type="hidden" class="form-control" id="rateDesc_Am40_text" name="rateDesc" th:field="*{rateDesc}">
+                        <input type="hidden" class="form-control" id="eventContent_Am40_text" name="eventContent" th:field="*{eventContent}">
+                        <input type="hidden" class="form-control" id="commissionDesc_Am40_text" name="commissionDesc" th:field="*{commissionDesc}">
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal_rateDesc_Am40">赔率说明</button>
+                        <button type="button" class="btn btn-primary btn-sm ml-3" data-toggle="modal" data-target="#myModal_eventContent_Am40">活动内容</button>
+                        <button type="button" class="btn btn-primary btn-sm ml-3" data-toggle="modal" data-target="#myModal_commissionDesc_Am40">回红说明</button>
+
+                        <div class="modal inmodal fade" id="myModal_rateDesc_Am40" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="margin:0 auto;">
+                                        <h4 class="modal-title">赔率说明</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="summernote" id="rateDesc_Am40"></div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal inmodal fade" id="myModal_eventContent_Am40" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="margin:0 auto;">
+                                        <h4 class="modal-title">活动内容</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="summernote" id="eventContent_Am40"></div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal inmodal fade" id="myModal_commissionDesc_Am40" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="margin:0 auto;">
+                                        <h4 class="modal-title">回红说明</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="summernote" id="commissionDesc_Am40"></div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">更换封面图：</div>
+                    <div class="col">
+                        <input type="hidden" id="coverImagesId_Am40_text_old" th:value="*{coverImagesId}">
+                        <input type="hidden" id="coverImagesId_Am40_text" name="coverImagesId" th:field="*{coverImagesId}">
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal_cover_Am40">更换</button>
+                        <button type="button" class="btn btn-primary btn-sm ml-3" onclick="restoreImg('coverImagesId_Am40_text','coverImagesId_Am40_img')">还原</button>
+
+                        <div class="modal inmodal fade" id="myModal_cover_Am40" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="margin:0 auto;">
+                                        <h4 class="modal-title">更换封面</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="file-loading">
+                                            <input class="form-control file-upload" id="coverImagesId_Am40" name="file" type="file">
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-group row col-sm-12">
+                    <button type="button" class="btn btn-primary btn-sm" onclick="submitHandler('form-GameRoomCover-edit-Am40')">确定编辑</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: bootstrap-fileinput-js"/>
+    <th:block th:include="include :: summernote-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "business/GameRoomCover";
+        $("#form-GameRoomCover-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler(id) {
+            if ($.validate.form()) {
+                $.operate.saveModal(prefix + "/edit", $('#'+id).serialize());
+            }
+        }
+
+        function restoreImg(name,img){
+            $("#"+name).val($("#"+name+"_old").val());
+            $("input[name='" + name + "']").val($("input[name='" + name + "_old" + "']").val());
+            $("#"+img).attr("src","/business/images/"+$("#"+name+"_old").val());
+        }
+
+        $(".file-upload").each(function (i) {
+            $(this).fileinput({
+                uploadUrl: ctx + 'business/images/imageUpload',
+                initialPreviewAsData: true,
+                maxFileCount: 1,
+                autoReplace: true
+            }).on('fileuploaded', function (event, data, previewId, index) {
+                $("#"+event.currentTarget.id + "_text").val(data.response)
+                $("#"+event.currentTarget.id + "_img").attr("src","/business/images/"+data.response);
+            }).on('fileremoved', function (event, id, index) {
+                $("input[name='" + event.currentTarget.id + "_text" + "']").val('')
+            })
+            $(this).fileinput('_initFileActions');
+        });
+
+        $(function() {
+            $('.summernote').each(function(i) {
+                $('#' + this.id).summernote({
+                    lang: 'zh-CN',
+                    dialogsInBody: true,
+                    callbacks: {
+                        onChange: function(contents, $edittable) {
+                            $("#"+this.id+"_text").val(contents);
+                        },
+                        onImageUpload: function(files) {
+                            var obj = this;
+                            var data = new FormData();
+                            data.append("file", files[0]);
+                            $.ajax({
+                                type: "post",
+                                url: ctx + "common/upload",
+                                data: data,
+                                cache: false,
+                                contentType: false,
+                                processData: false,
+                                dataType: 'json',
+                                success: function(result) {
+                                    if (result.code == web_status.SUCCESS) {
+                                        $('#' + obj.id).summernote('insertImage', result.url);
+                                    } else {
+                                        $.modal.alertError(result.msg);
+                                    }
+                                },
+                                error: function(error) {
+                                    $.modal.alertWarning("图片上传失败。");
+                                }
+                            });
+                        }
+                    }
+                });
+                var content = $("#"+this.id+"_text").val();
+                $('#' + this.id).summernote('code', content);
+            })
+        });
+    </script>
+</body>
+</html>

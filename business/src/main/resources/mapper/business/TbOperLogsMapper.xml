@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tenant.business.mapper.TbOperLogsMapper">
+    
+    <resultMap type="TbOperLogs" id="TbOperLogsResult">
+        <result property="id"    column="id"    />
+        <result property="objUserId"    column="obj_user_id"    />
+        <result property="objUserName"    column="obj_user_name"    />
+        <result property="type"    column="type"    />
+        <result property="detail"    column="detail"    />
+        <result property="ip"    column="ip"    />
+        <result property="ipCity"    column="ip_city"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="tenantId"    column="tenant_id"    />
+    </resultMap>
+
+    <sql id="selectTbOperLogsVo">
+        select * from tb_oper_logs
+    </sql>
+
+    <select id="selectTbOperLogsList" parameterType="TbOperLogs" resultMap="TbOperLogsResult">
+        <include refid="selectTbOperLogsVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+            <if test="objUserId != null "> and obj_user_id = #{objUserId}</if>
+            <if test="objUserName != null  and objUserName != ''"> and obj_user_name like concat('%', #{objUserName}, '%')</if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
+            <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbOperLogsById" parameterType="Long" resultMap="TbOperLogsResult">
+        <include refid="selectTbOperLogsVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTbOperLogs" parameterType="TbOperLogs" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_oper_logs
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="objUserId != null">obj_user_id,</if>
+            <if test="objUserName != null">obj_user_name,</if>
+            <if test="type != null">type,</if>
+            <if test="detail != null">detail,</if>
+            <if test="ip != null">ip,</if>
+            <if test="ipCity != null">ip_city,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="tenantId != null">tenant_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="objUserId != null">#{objUserId},</if>
+            <if test="objUserName != null">#{objUserName},</if>
+            <if test="type != null">#{type},</if>
+            <if test="detail != null">#{detail},</if>
+            <if test="ip != null">#{ip},</if>
+            <if test="ipCity != null">#{ipCity},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbOperLogs" parameterType="TbOperLogs">
+        update tb_oper_logs
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="objUserId != null">obj_user_id = #{objUserId},</if>
+            <if test="objUserName != null">obj_user_name = #{objUserName},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="detail != null">detail = #{detail},</if>
+            <if test="ip != null">ip = #{ip},</if>
+            <if test="ipCity != null">ip_city = #{ipCity},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+        </trim>
+        where id = #{id}
+        <if test="createBy != null  and createBy != ''"> and create_by = #{createBy}</if>
+    </update>
+
+    <delete id="deleteTbOperLogsById" parameterType="Long">
+        delete from tb_oper_logs where id = #{id}
+    </delete>
+
+    <delete id="deleteTbOperLogsByIds" parameterType="String">
+        delete from tb_oper_logs where
+        <if test="createBy != null and createBy != ''">  create_by = #{createBy} and</if>
+id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

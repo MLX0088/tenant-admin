@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tenant.business.mapper.TbVipPayMapper">
+    
+    <resultMap type="TbVipPay" id="TbVipPayResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="payType"    column="pay_type"    />
+        <result property="name"    column="name"    />
+        <result property="account"    column="account"    />
+        <result property="imageId"    column="image_id"    />
+        <result property="bankName"    column="bank_name"    />
+        <result property="isSame"    column="is_same"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="openBankName"    column="open_bank_name"    />
+    </resultMap>
+
+    <sql id="selectTbVipPayVo">
+        select * from tb_vip_pay
+    </sql>
+
+    <select id="selectTbVipPayList" parameterType="TbVipPay" resultMap="TbVipPayResult">
+        <include refid="selectTbVipPayVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbVipPayById" parameterType="Long" resultMap="TbVipPayResult">
+        <include refid="selectTbVipPayVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTbVipPay" parameterType="TbVipPay" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_vip_pay
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="payType != null">pay_type,</if>
+            <if test="name != null">name,</if>
+            <if test="account != null">account,</if>
+            <if test="imageId != null">image_id,</if>
+            <if test="bankName != null">bank_name,</if>
+            <if test="isSame != null">is_same,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="tenantId != null">tenant_id,</if>
+            <if test="openBankName != null">open_bank_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="payType != null">#{payType},</if>
+            <if test="name != null">#{name},</if>
+            <if test="account != null">#{account},</if>
+            <if test="imageId != null">#{imageId},</if>
+            <if test="bankName != null">#{bankName},</if>
+            <if test="isSame != null">#{isSame},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+            <if test="openBankName != null">#{openBankName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateVipGradeDaily">
+        UPDATE sys_user u
+        JOIN (
+        SELECT
+        u.user_id,
+        (SELECT grade
+        FROM tb_vip_grade g
+        WHERE g.tenant_id = u.dept_id
+        AND u.total_amount >= g.amount
+        ORDER BY g.amount DESC
+        LIMIT 1) AS new_grade
+        FROM sys_user u where u.score >= 0
+        ) t ON u.user_id = t.user_id
+        SET u.grade = IFNULL(t.new_grade, u.grade)
+        WHERE t.new_grade IS NOT NULL;
+    </update>
+
+    <update id="updateTbVipPay" parameterType="TbVipPay">
+        update tb_vip_pay
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="payType != null">pay_type = #{payType},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="account != null">account = #{account},</if>
+            <if test="imageId != null">image_id = #{imageId},</if>
+            <if test="bankName != null">bank_name = #{bankName},</if>
+            <if test="isSame != null">is_same = #{isSame},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+        </trim>
+        where id = #{id}
+        <if test="createBy != null  and createBy != ''"> and create_by = #{createBy}</if>
+    </update>
+
+    <delete id="deleteTbVipPayById" parameterType="Long">
+        delete from tb_vip_pay where id = #{id}
+    </delete>
+
+    <delete id="deleteTbVipPayByIds" parameterType="String">
+        delete from tb_vip_pay where
+        <if test="createBy != null and createBy != ''">  create_by = #{createBy} and</if>
+id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

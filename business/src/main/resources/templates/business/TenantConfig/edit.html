@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改租客基础设置')" />
+    <th:block th:include="include :: laydate-css" />
+    <th:block th:include="include :: bootstrap-fileinput-css"/>
+    <th:block th:include="include :: summernote-css" />
+</head>
+<body class="white-bg">
+    <div class="">
+        <form class="form-horizontal m" id="form-TenantConfig-edit" th:object="${tbTenantConfig}">
+            <input name="id" th:field="*{id}" type="hidden">
+            <input name="tenantId" th:field="*{tenantId}" type="hidden">
+
+            <div class="form-group col-sm-12">
+                <h1 class="h4 font-weight-bold text-dark">登陆/注册设置</h1>
+            </div>
+            <div class="form-group row col-sm-12">
+                <div class="form-group row col-sm-3">
+                    <div class="control-label">登录验证码：</div>
+
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-sm btn-secondary" th:each="dict : ${@dict.getType('enable_status')}">
+                            <input type="radio" th:id="${'needLoginCode_' + dict.dictCode}" name="needLoginCode" th:value="${dict.dictValue}" th:checked="${tbTenantConfig.needLoginCode.contains(dict.dictValue)?true:false}"> <span th:text="${dict.dictLabel}"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group row col-sm-3">
+                    <div class="control-label">注册邀请：</div>
+
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-sm btn-secondary" th:each="dict : ${@dict.getType('enable_status')}">
+                            <input type="radio" th:id="${'canInvite_' + dict.dictCode}" name="canInvite" th:value="${dict.dictValue}" th:checked="${tbTenantConfig.canInvite.contains(dict.dictValue)?true:false}"> <span th:text="${dict.dictLabel}"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group row col-sm-3">
+                    <div class="control-label">邀请码：</div>
+                    <div class="">
+                        <input name="inviteCode" th:field="*{inviteCode}" disabled class="form-control" type="text">
+                    </div>
+                </div>
+
+                <div class="form-group row col-sm-3">
+                    <div class="control-label">短信验证码：</div>
+
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-sm btn-secondary" th:each="dict : ${@dict.getType('enable_status')}">
+                            <input type="radio" th:id="${'needSmsCode_' + dict.dictCode}" name="needSmsCode" th:value="${dict.dictValue}" th:checked="${tbTenantConfig.needSmsCode.contains(dict.dictValue)?true:false}"> <span th:text="${dict.dictLabel}"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-bottom col-sm-12 my-4"></div>
+            <div class="form-group col-sm-12">
+                <h1 class="h4 font-weight-bold text-dark">设置</h1>
+            </div>
+            <div class="form-group row col-sm-12">
+                <div class="form-group row col-sm-3">
+                    <div class="control-label">机器人头像：</div>
+                    <div class="form-group">
+                        <input type="hidden" id="rebotImageId" name="rebotImageId" th:field="*{rebotImageId}">
+                        <img style="max-width:45px;" id="headImage" th:src="${tbTenantConfig.rebotImageId!=null && tbTenantConfig.rebotImageId>0} ? '/business/images/'+${tbTenantConfig.rebotImageId} : '/img/blank.jpg'" th:onerror="this.src='/img/blank.jpg'" class="img-circle" alt="User Image">
+                    </div>
+                    <div class="form-group ml-3"><a th:data="*{rebotImageId}" href="javascript:avatar(this)">修改头像</a></div>
+                </div>
+                <div class="form-group row col-sm-3">
+                    <div class="control-label">APP名字：</div>
+                    <div class="">
+                        <input name="appName" th:field="*{appName}" class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="form-group row col-sm-3">
+                    <div class="control-label">机器人名字：</div>
+                    <div class="">
+                        <input name="rebotName" th:field="*{rebotName}" class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="form-group row col-sm-3">
+                    <div class="control-label">客服名字：</div>
+                    <div class="">
+                        <input name="csName" th:field="*{csName}" class="form-control" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row col-sm-12">
+                <div class="form-group row col-sm-3">
+                    <div class="control-label">公告弹窗：</div>
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-sm btn-secondary" >
+                            <input type="radio" th:id="${'popAction_0'}" name="popAction" th:field="*{popAction}" value="0" > 持续弹
+                        </label>
+                        <label class="btn btn-sm btn-secondary" >
+                            <input type="radio" th:id="${'popAction_1'}" name="popAction" th:field="*{popAction}" value="1" > 更新弹
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group row col-sm-3">
+                    <div class="control-label">开奖信息人数排列：</div>
+                    <div class="">
+                        <input name="arrangement" th:field="*{arrangement}" class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="form-group row col-sm-3">
+                    <div class="control-label">版本号：</div>
+                    <div class="">
+                        <input name="version" th:field="*{version}" class="form-control" type="text">
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-bottom col-sm-12 my-4"></div>
+            <div class="form-group col-sm-12">
+                <h1 class="h4 font-weight-bold text-dark">上/下分限制</h1>
+            </div>
+            <div class="form-group row col-sm-12">
+                <div class="form-group row col-sm-3">
+                    <div class="control-label">最低上分：</div>
+                    <div class="">
+                        <input name="minAddScore" th:field="*{minAddScore}" class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="form-group row col-sm-3">
+                    <div class="control-label">最低下分：</div>
+                    <div class="">
+                        <input name="minMinusScore" th:field="*{minMinusScore}" class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="form-group row col-sm-3">
+                    <div class="control-label">满把下分：</div>
+                    <div class="">
+                        <input name="fullMinusScore" th:field="*{fullMinusScore}" class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="form-group row col-sm-3">
+                    <div class="control-label">用户每天下分次数：</div>
+                    <div class="">
+                        <input name="maxMinusCount" th:field="*{maxMinusCount}" class="form-control" type="text">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row col-sm-12">
+                <div class="form-group row col-sm-3">
+                    <div class="control-label">限时上分：</div>
+
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-sm btn-secondary" th:each="dict : ${@dict.getType('enable_status')}">
+                            <input type="radio" th:id="${'isLimitAdd_' + dict.dictCode}" name="isLimitAdd" th:value="${dict.dictValue}" onchange="$(this).is(':checked')&&$(this).val()==0?$('#limit-add-content').show():$('#limit-add-content').hide();" th:checked="${tbTenantConfig.isLimitAdd.contains(dict.dictValue)?true:false}"> <span th:text="${dict.dictLabel}"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group row col-sm-3">
+                    <div class="control-label">限时下分：</div>
+
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-sm btn-secondary" th:each="dict : ${@dict.getType('enable_status')}">
+                            <input type="radio" th:id="${'isLimitMinus_' + dict.dictCode}" name="isLimitMinus" th:value="${dict.dictValue}" onchange="$(this).is(':checked')&&$(this).val()==0?$('#limit-minus-content').show():$('#limit-minus-content').hide();" th:checked="${tbTenantConfig.isLimitMinus.contains(dict.dictValue)?true:false}"> <span th:text="${dict.dictLabel}"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group row col-sm-3">
+                    <div class="control-label">用户二次修改提现信息：</div>
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-sm btn-secondary" >
+                            <input type="radio" th:id="${'allowChangeWithdraw_0'}" name="allowChangeWithdraw" th:field="*{allowChangeWithdraw}" value="0" > 支持
+                        </label>
+                        <label class="btn btn-sm btn-secondary" >
+                            <input type="radio" th:id="${'allowChangeWithdraw_1'}" name="allowChangeWithdraw" th:field="*{allowChangeWithdraw}" value="1" > 禁止
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group row col-sm-3">
+                    <div class="control-label">绑定提现才能看到上分账户：</div>
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-sm btn-secondary" >
+                            <input type="radio" th:id="${'associationWithdraw_0'}" name="associationWithdraw" th:field="*{associationWithdraw}" value="0" > 是
+                        </label>
+                        <label class="btn btn-sm btn-secondary" >
+                            <input type="radio" th:id="${'associationWithdraw_1'}" name="associationWithdraw" th:field="*{associationWithdraw}" value="1" > 否
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="" th:style="*{isLimitAdd}==0? 'display: block;' : 'display: none;'" id="limit-add-content">
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">限时上分时间：</div>
+                    <div class="">
+                        <div class="input-group date">
+                            <input id="limitAddStarttime" name="limitAddStarttime" th:field="*{limitAddStarttime}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="input-group date">
+                            <input id="limitAddEndtime" name="limitAddEndtime" th:field="*{limitAddEndtime}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">限时上分备注：</div>
+                    <div class="">
+                        <textarea name="limitAddRemark" class="form-control">[[*{limitAddRemark}]]</textarea>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="" th:style="*{isLimitMinus}==0? 'display: block;' : 'display: none;'" id="limit-minus-content">
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">限时下分时间：</div>
+                    <div class="">
+                        <div class="input-group date">
+                            <input id="limitMinusStarttime" name="limitMinusStarttime" th:field="*{limitMinusStarttime}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="input-group date">
+                            <input id="limitMinusEndtime" name="limitMinusEndtime" th:field="*{limitMinusEndtime}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">限时下分备注：</div>
+                    <div class="">
+                        <textarea name="limitMinusRemark" class="form-control">[[*{limitMinusRemark}]]</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-bottom col-sm-12 my-4"></div>
+            <div class="form-group col-sm-12">
+                <h1 class="h4 font-weight-bold text-dark">投注限制</h1>
+            </div>
+            <div class="form-group row col-sm-12">
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">单注最低投注：</div>
+                    <div class="">
+                        <input name="minScore" th:field="*{minScore}" class="form-control" type="text">
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-bottom col-sm-12 my-4"></div>
+            <div class="form-group col-sm-12">
+                <h1 class="h4 font-weight-bold text-dark">幸运转盘功能设置</h1>
+            </div>
+            <div class="form-group row col-sm-12">
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">是否开启转盘：</div>
+
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-sm btn-secondary" th:each="dict : ${@dict.getType('enable_status')}">
+                            <input type="radio" th:id="${'openTurntable_' + dict.dictCode}" name="openTurntable" th:value="${dict.dictValue}" th:checked="${tbTenantConfig.openTurntable.contains(dict.dictValue)?true:false}"> <span th:text="${dict.dictLabel}"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-bottom col-sm-12 my-4"></div>
+            <div class="form-group col-sm-12">
+                <h1 class="h4 font-weight-bold text-dark">客服系统设置</h1>
+            </div>
+            <div class="form-group row col-sm-12">
+                <div class="form-group row col-sm-3">
+                    <div class="control-label">站外客服：</div>
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-sm btn-secondary" >
+                            <input type="radio" th:id="${'offSiteCs_0'}" name="offSiteCs" th:field="*{offSiteCs}" value="0" > 开启
+                        </label>
+                        <label class="btn btn-sm btn-secondary" >
+                            <input type="radio" th:id="${'offSiteCs_1'}" name="offSiteCs" th:field="*{offSiteCs}" value="1" > 关闭
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="control-label">用户私聊第一句：</div>
+                    <div class="">
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal_chatSayHello">编辑</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-bottom col-sm-12 my-4"></div>
+            <div class="form-group col-sm-12">
+                <h1 class="h4 font-weight-bold text-dark">介绍红设置</h1>
+            </div>
+            <div class="form-group row col-sm-12">
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">介绍红：</div>
+                    <div class="">
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal_introduceCommission">编辑</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-bottom col-sm-12 my-4"></div>
+            <div class="form-group col-sm-12">
+                <h1 class="h4 font-weight-bold text-dark">其他设置</h1>
+            </div>
+            <div class="form-group row col-sm-12">
+                <div class="form-group row col-sm-6">
+                    <div class="control-label">客户端链接：</div>
+                    <div class="">
+                        <input name="clientUrl" th:field="*{clientUrl}" disabled class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="form-group row col-sm-6">
+                    <div class="control-label">H5导航链接：</div>
+                    <div class="">
+                        <input name="navUrl" th:field="*{navUrl}" disabled class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="form-group row col-sm-6">
+                    <div class="control-label">安卓APP文件名：</div>
+                    <div class="">
+                        <input name="androidUrl" th:field="*{androidUrl}" disabled class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="form-group row col-sm-6">
+                    <div class="control-label">IOSAPP文件名：</div>
+                    <div class="">
+                        <input name="iosUrl" th:field="*{iosUrl}" disabled class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="form-group row col-sm-6">
+                    <div class="control-label">关盘段落：</div>
+                    <div class="">
+                        <textarea name="closeSection" style="width: 100%;" rows="5" class="form-control">[[*{closeSection}]]</textarea>
+                    </div>
+                </div>
+                <div class="form-group row col-sm-6">
+                    <div class="control-label">关于我们：</div>
+                    <div class="">
+                        <textarea name="aboutUs" style="width: 100%;" rows="5" class="form-control">[[*{aboutUs}]]</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row col-sm-12">
+                <button type="button" class="btn btn-primary btn-sm" onclick="submitHandler()">确定修改设置</button>
+            </div>
+            <div class="modal inmodal fade" id="myModal_chatSayHello" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header" style="margin:0 auto;">
+                            <h4 class="modal-title">用户私聊第一句</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" class="form-control" name="chatSayHello" th:field="*{chatSayHello}">
+                            <div class="summernote" id="chatSayHello"></div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal inmodal fade" id="myModal_introduceCommission" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header" style="margin:0 auto;">
+                            <h4 class="modal-title">介绍红</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" class="form-control" name="introduceCommission" th:field="*{introduceCommission}">
+                            <div class="summernote" id="introduceCommission"></div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
+    </div>
+
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: laydate-js" />
+    <th:block th:include="include :: bootstrap-fileinput-js"/>
+    <th:block th:include="include :: summernote-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "business/TenantConfig";
+        $("#form-TenantConfig-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.saveModal(prefix + "/edit", $('#form-TenantConfig-edit').serialize());
+            }
+        }
+
+
+        layui.use('laydate', function(){
+          var laydate = layui.laydate;
+
+          // 开始时间选择器
+          laydate.render({
+            elem: '#limitAddStarttime',
+            type: 'time', // 选择时分秒
+            done: function(value, date) {
+              // 当开始时间选择后，限制结束时间不能小于开始时间
+              var endDate = new Date($('#limitAddEndtime').val().replace(/-/g,"/")); // 将字符串转为日期对象
+              if (endDate < date) {
+                $('#limitAddEndtime').val(laydate.format(new Date(date), 'HH:mm:ss')); // 设置结束时间为开始时间
+              }
+            }
+          });
+
+          // 结束时间选择器
+          laydate.render({
+            elem: '#limitAddEndtime',
+            type: 'time', // 选择时分秒
+            done: function(value, date) {
+              // 当结束时间选择后，限制开始时间不能大于结束时间（理论上不应该发生，因为用户不能直接选择小于开始时间的结束时间）
+              var startDate = new Date($('#limitAddStarttime').val().replace(/-/g,"/")); // 将字符串转为日期对象
+              if (startDate > date) {
+                $('#limitAddStarttime').val(laydate.format(new Date(date), 'HH:mm:ss')); // 设置开始时间为结束时间（理论上不会发生）
+              } else if (startDate < date) { // 但如果用户手动更改了开始时间，需要确保它不大于结束时间
+                $('#limitAddStarttime').val(laydate.format(new Date(date), 'HH:mm:ss')); // 设置开始时间为结束时间的前一分钟（例如）以符合逻辑（实际应用中可能需要更复杂的逻辑）
+              }
+            }
+          });
+
+          // 开始时间选择器
+          laydate.render({
+            elem: '#limitMinusStarttime',
+            type: 'time', // 选择时分秒
+            done: function(value, date) {
+              // 当开始时间选择后，限制结束时间不能小于开始时间
+              var endDate = new Date($('#limitMinusEndtime').val().replace(/-/g,"/")); // 将字符串转为日期对象
+              if (endDate < date) {
+                $('#limitMinusEndtime').val(laydate.format(new Date(date), 'HH:mm:ss')); // 设置结束时间为开始时间
+              }
+            }
+          });
+
+          // 结束时间选择器
+          laydate.render({
+            elem: '#limitMinusEndtime',
+            type: 'time', // 选择时分秒
+            done: function(value, date) {
+              // 当结束时间选择后，限制开始时间不能大于结束时间（理论上不应该发生，因为用户不能直接选择小于开始时间的结束时间）
+              var startDate = new Date($('#limitMinusStarttime').val().replace(/-/g,"/")); // 将字符串转为日期对象
+              if (startDate > date) {
+                $('#limitMinusStarttime').val(laydate.format(new Date(date), 'HH:mm:ss')); // 设置开始时间为结束时间（理论上不会发生）
+              } else if (startDate < date) { // 但如果用户手动更改了开始时间，需要确保它不大于结束时间
+                $('#limitMinusStarttime').val(laydate.format(new Date(date), 'HH:mm:ss')); // 设置开始时间为结束时间的前一分钟（例如）以符合逻辑（实际应用中可能需要更复杂的逻辑）
+              }
+            }
+          });
+        });
+
+        $(".file-upload").each(function (i) {
+            var val = $("input[name='" + this.id + "']").val()
+            $(this).fileinput({
+                'uploadUrl': ctx + 'common/upload',
+                initialPreviewAsData: true,
+                initialPreview: [val],
+                maxFileCount: 1,
+                autoReplace: true
+            }).on('fileuploaded', function (event, data, previewId, index) {
+                $("input[name='" + event.currentTarget.id + "']").val(data.response)
+            }).on('fileremoved', function (event, id, index) {
+                $("input[name='" + event.currentTarget.id + "']").val('')
+            })
+            $(this).fileinput('_initFileActions');
+        });
+
+        $(function() {
+            $('.summernote').each(function(i) {
+                $('#' + this.id).summernote({
+                    lang: 'zh-CN',
+                    dialogsInBody: true,
+                    height: 500,
+                    callbacks: {
+                        onChange: function(contents, $edittable) {
+                            $("input[name='" + this.id + "']").val(contents);
+                        },
+                        onImageUpload: function(files) {
+                            var obj = this;
+                            var data = new FormData();
+                            data.append("file", files[0]);
+                            $.ajax({
+                                type: "post",
+                                url: ctx + "common/upload",
+                                data: data,
+                                cache: false,
+                                contentType: false,
+                                processData: false,
+                                dataType: 'json',
+                                success: function(result) {
+                                    if (result.code == web_status.SUCCESS) {
+                                        $('#' + obj.id).summernote('insertImage', result.url);
+                                    } else {
+                                        $.modal.alertError(result.msg);
+                                    }
+                                },
+                                error: function(error) {
+                                    $.modal.alertWarning("图片上传失败。");
+                                }
+                            });
+                        }
+                    }
+                });
+                var content = $("input[name='" + this.id + "']").val();
+                $('#' + this.id).summernote('code', content);
+            })
+        });
+
+        var layerIndex ;
+        function avatar(op) {
+            var id = $(op).attr("data");
+            if(!id){
+                id = 0;
+            }
+	        var url = ctx + 'business/images/avatar/'+id;
+	        layerIndex = top.layer.open({
+        		type: 2,
+        		area: [$(window).width()-100 + 'px', $(window).height()-50 + 'px'],
+        		fix: false,
+        		//不固定
+        		maxmin: true,
+        		shade: 0.3,
+        		title: "修改头像",
+        		content: url,
+        		btn: ['确定', '关闭'],
+        	    // 弹层外区域关闭
+        		shadeClose: true,
+        		yes: function(index, layero) {
+                    var iframeWin = layero.find('iframe')[0];
+                    var result = iframeWin.contentWindow.submitHandler(avatarCallBack);
+                },
+        	    cancel: function(index) {
+        	        return true;
+        	    }
+        	});
+	    }
+	    function avatarCallBack(result) {
+	        if(result>0){
+                top.layer.close(layerIndex);
+                $("#headImage").attr("src",ctx + 'business/images/'+result);
+                $("#rebotImageId").val(result);
+            }
+	    }
+    </script>
+</body>
+</html>

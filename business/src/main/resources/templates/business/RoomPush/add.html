@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增房间推送信息')" />
+    <th:block th:include="include :: summernote-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-RoomPush-add">
+            <div class="form-group row">    
+                <div class="control-label">房间配置表：</div>
+                <div class="">
+                    <input name="roomConfigId" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">前几秒推送：</div>
+                <div class="">
+                    <input name="second" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">推送内容：</div>
+                <div class="">
+                    <input type="hidden" class="form-control" name="content">
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal_content">编辑</button>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="control-label">备注：</div>
+                <div class="">
+                    <textarea name="remark" class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">房间名称：</div>
+                <div class="">
+                    <input name="roomName" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="modal inmodal fade" id="myModal_content" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" style="margin:0 auto;">
+                    <h4 class="modal-title">推送内容</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="summernote" id="content"></div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: summernote-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "business/RoomPush"
+        $("#form-RoomPush-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-RoomPush-add').serialize());
+            }
+        }
+
+        $(function() {
+            $('.summernote').summernote({
+                lang: 'zh-CN',
+                dialogsInBody: true,
+                height: 500,
+                callbacks: {
+                    onChange: function(contents, $edittable) {
+                        $("input[name='" + this.id + "']").val(contents);
+                    },
+                    onImageUpload: function(files) {
+                        var obj = this;
+                    	var data = new FormData();
+                    	data.append("file", files[0]);
+                    	$.ajax({
+                            type: "post",
+                            url: ctx + "common/upload",
+                    		data: data,
+                    		cache: false,
+                    		contentType: false,
+                    		processData: false,
+                    		dataType: 'json',
+                    		success: function(result) {
+                    		    if (result.code == web_status.SUCCESS) {
+                    		        $('#' + obj.id).summernote('insertImage', result.url);
+                    		    } else {
+                    		        $.modal.alertError(result.msg);
+                    		    }
+                    		},
+                    		error: function(error) {
+                    		    $.modal.alertWarning("图片上传失败。");
+                    		}
+                    	});
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

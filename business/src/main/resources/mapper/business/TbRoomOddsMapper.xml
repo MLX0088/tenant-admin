@@ -1,0 +1,694 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tenant.business.mapper.TbRoomOddsMapper">
+    
+    <resultMap type="TbRoomOdds" id="TbRoomOddsResult">
+        <result property="id"    column="id"    />
+        <result property="roomConfigId"    column="room_config_id"    />
+        <result property="rate0"    column="rate0"    />
+        <result property="maxScore0"    column="max_score0"    />
+        <result property="rate1"    column="rate1"    />
+        <result property="maxScore1"    column="max_score1"    />
+        <result property="rate2"    column="rate2"    />
+        <result property="maxScore2"    column="max_score2"    />
+        <result property="rate3"    column="rate3"    />
+        <result property="maxScore3"    column="max_score3"    />
+        <result property="rate4"    column="rate4"    />
+        <result property="maxScore4"    column="max_score4"    />
+        <result property="rate5"    column="rate5"    />
+        <result property="maxScore5"    column="max_score5"    />
+        <result property="rate6"    column="rate6"    />
+        <result property="maxScore6"    column="max_score6"    />
+        <result property="rate7"    column="rate7"    />
+        <result property="maxScore7"    column="max_score7"    />
+        <result property="rate8"    column="rate8"    />
+        <result property="maxScore8"    column="max_score8"    />
+        <result property="rate9"    column="rate9"    />
+        <result property="maxScore9"    column="max_score9"    />
+        <result property="rate10"    column="rate10"    />
+        <result property="maxScore10"    column="max_score10"    />
+        <result property="rate11"    column="rate11"    />
+        <result property="maxScore11"    column="max_score11"    />
+        <result property="rate12"    column="rate12"    />
+        <result property="maxScore12"    column="max_score12"    />
+        <result property="rate13"    column="rate13"    />
+        <result property="maxScore13"    column="max_score13"    />
+        <result property="rate14"    column="rate14"    />
+        <result property="maxScore14"    column="max_score14"    />
+        <result property="rate15"    column="rate15"    />
+        <result property="maxScore15"    column="max_score15"    />
+        <result property="rate16"    column="rate16"    />
+        <result property="maxScore16"    column="max_score16"    />
+        <result property="rate17"    column="rate17"    />
+        <result property="maxScore17"    column="max_score17"    />
+        <result property="rate18"    column="rate18"    />
+        <result property="maxScore18"    column="max_score18"    />
+        <result property="rate19"    column="rate19"    />
+        <result property="maxScore19"    column="max_score19"    />
+        <result property="rate20"    column="rate20"    />
+        <result property="maxScore20"    column="max_score20"    />
+        <result property="rate21"    column="rate21"    />
+        <result property="maxScore21"    column="max_score21"    />
+        <result property="rate22"    column="rate22"    />
+        <result property="maxScore22"    column="max_score22"    />
+        <result property="rate23"    column="rate23"    />
+        <result property="maxScore23"    column="max_score23"    />
+        <result property="rate24"    column="rate24"    />
+        <result property="maxScore24"    column="max_score24"    />
+        <result property="rate25"    column="rate25"    />
+        <result property="maxScore25"    column="max_score25"    />
+        <result property="rate26"    column="rate26"    />
+        <result property="maxScore26"    column="max_score26"    />
+        <result property="rate27"    column="rate27"    />
+        <result property="maxScore27"    column="max_score27"    />
+        <result property="rateBig"    column="rate_big"    />
+        <result property="maxScoreBig"    column="max_score_big"    />
+        <result property="rateSmall"    column="rate_small"    />
+        <result property="maxScoreSmall"    column="max_score_small"    />
+        <result property="rateSingle"    column="rate_single"    />
+        <result property="maxScoreSingle"    column="max_score_single"    />
+        <result property="rateDoubleSingle"    column="rate_double_single"    />
+        <result property="maxScoreDoubleSingle"    column="max_score_double_single"    />
+        <result property="rateBigSingle"    column="rate_big_single"    />
+        <result property="maxScoreBigSingle"    column="max_score_big_single"    />
+        <result property="rateBigDouble"    column="rate_big_double"    />
+        <result property="maxScoreBigDouble"    column="max_score_big_double"    />
+        <result property="rateSmallSingle"    column="rate_small_single"    />
+        <result property="maxScoreSmallSingle"    column="max_score_small_single"    />
+        <result property="rateSmallDouble"    column="rate_small_double"    />
+        <result property="maxScoreSmallDouble"    column="max_score_small_double"    />
+        <result property="ratePairs"    column="rate_pairs"    />
+        <result property="maxScorePairs"    column="max_score_pairs"    />
+        <result property="rateStraight"    column="rate_straight"    />
+        <result property="maxScoreStraight"    column="max_score_straight"    />
+        <result property="rateAllSame"    column="rate_all_same"    />
+        <result property="maxScoreAllSame"    column="max_score_all_same"    />
+        <result property="rateMax"    column="rate_max"    />
+        <result property="maxScoreMax"    column="max_score_max"    />
+        <result property="rateMin"    column="rate_min"    />
+        <result property="maxScoreMin"    column="max_score_min"    />
+        <result property="rateDragon"    column="rate_dragon"    />
+        <result property="maxScoreDragon"    column="max_score_dragon"    />
+        <result property="rateTiger"    column="rate_tiger"    />
+        <result property="maxScoreTiger"    column="max_score_tiger"    />
+        <result property="rateLeopard"    column="rate_leopard"    />
+        <result property="maxScoreLeopard"    column="max_score_leopard"    />
+        <result property="rateTailBig"    column="rate_tail_big"    />
+        <result property="maxScoreTailBig"    column="max_score_tail_big"    />
+        <result property="rateTailSmall"    column="rate_tail_small"    />
+        <result property="maxScoreTailSmall"    column="max_score_tail_small"    />
+        <result property="rateTailSingle"    column="rate_tail_single"    />
+        <result property="maxScoreTailSingle"    column="max_score_tail_single"    />
+        <result property="rateTailDouble"    column="rate_tail_double"    />
+        <result property="maxScoreTailDouble"    column="max_score_tail_double"    />
+        <result property="rateTailBigDouble"    column="rate_tail_big_double"    />
+        <result property="maxScoreTailBigDouble"    column="max_score_tail_big_double"    />
+        <result property="rateTailBigSingle"    column="rate_tail_big_single"    />
+        <result property="maxScoreTailBigSingle"    column="max_score_tail_big_single"    />
+        <result property="rateTailSmallDouble"    column="rate_tail_small_double"    />
+        <result property="maxScoreTailSmallDouble"    column="max_score_tail_small_double"    />
+        <result property="rateTailSmallSingle"    column="rate_tail_small_single"    />
+        <result property="maxScoreTailSmallSingle"    column="max_score_tail_small_single"    />
+        <result property="rateTail1"    column="rate_tail_1"    />
+        <result property="maxScoreTail1"    column="max_score_tail_1"    />
+        <result property="rateTail2"    column="rate_tail_2"    />
+        <result property="maxScoreTail2"    column="max_score_tail_2"    />
+        <result property="rateTail3"    column="rate_tail_3"    />
+        <result property="maxScoreTail3"    column="max_score_tail_3"    />
+        <result property="rateTail4"    column="rate_tail_4"    />
+        <result property="maxScoreTail4"    column="max_score_tail_4"    />
+        <result property="rateTail5"    column="rate_tail_5"    />
+        <result property="maxScoreTail5"    column="max_score_tail_5"    />
+        <result property="rateTail6"    column="rate_tail_6"    />
+        <result property="maxScoreTail6"    column="max_score_tail_6"    />
+        <result property="rateTail7"    column="rate_tail_7"    />
+        <result property="maxScoreTail7"    column="max_score_tail_7"    />
+        <result property="rateTail8"    column="rate_tail_8"    />
+        <result property="maxScoreTail8"    column="max_score_tail_8"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="roomName"    column="room_name"    />
+    </resultMap>
+
+    <sql id="selectTbRoomOddsVo">
+        select * from tb_room_odds
+    </sql>
+
+    <select id="selectTbRoomOddsList" parameterType="TbRoomOdds" resultMap="TbRoomOddsResult">
+        <include refid="selectTbRoomOddsVo"/>
+        <where>  
+            <if test="roomConfigId != null "> and room_config_id = #{roomConfigId}</if>
+            <if test="rate0 != null "> and rate0 = #{rate0}</if>
+            <if test="maxScore0 != null "> and max_score0 = #{maxScore0}</if>
+            <if test="rate1 != null "> and rate1 = #{rate1}</if>
+            <if test="maxScore1 != null "> and max_score1 = #{maxScore1}</if>
+            <if test="rate2 != null "> and rate2 = #{rate2}</if>
+            <if test="maxScore2 != null "> and max_score2 = #{maxScore2}</if>
+            <if test="rate3 != null "> and rate3 = #{rate3}</if>
+            <if test="maxScore3 != null "> and max_score3 = #{maxScore3}</if>
+            <if test="rate4 != null "> and rate4 = #{rate4}</if>
+            <if test="maxScore4 != null "> and max_score4 = #{maxScore4}</if>
+            <if test="rate5 != null "> and rate5 = #{rate5}</if>
+            <if test="maxScore5 != null "> and max_score5 = #{maxScore5}</if>
+            <if test="rate6 != null "> and rate6 = #{rate6}</if>
+            <if test="maxScore6 != null "> and max_score6 = #{maxScore6}</if>
+            <if test="rate7 != null "> and rate7 = #{rate7}</if>
+            <if test="maxScore7 != null "> and max_score7 = #{maxScore7}</if>
+            <if test="rate8 != null "> and rate8 = #{rate8}</if>
+            <if test="maxScore8 != null "> and max_score8 = #{maxScore8}</if>
+            <if test="rate9 != null "> and rate9 = #{rate9}</if>
+            <if test="maxScore9 != null "> and max_score9 = #{maxScore9}</if>
+            <if test="rate10 != null "> and rate10 = #{rate10}</if>
+            <if test="maxScore10 != null "> and max_score10 = #{maxScore10}</if>
+            <if test="rate11 != null "> and rate11 = #{rate11}</if>
+            <if test="maxScore11 != null "> and max_score11 = #{maxScore11}</if>
+            <if test="rate12 != null "> and rate12 = #{rate12}</if>
+            <if test="maxScore12 != null "> and max_score12 = #{maxScore12}</if>
+            <if test="rate13 != null "> and rate13 = #{rate13}</if>
+            <if test="maxScore13 != null "> and max_score13 = #{maxScore13}</if>
+            <if test="rate14 != null "> and rate14 = #{rate14}</if>
+            <if test="maxScore14 != null "> and max_score14 = #{maxScore14}</if>
+            <if test="rate15 != null "> and rate15 = #{rate15}</if>
+            <if test="maxScore15 != null "> and max_score15 = #{maxScore15}</if>
+            <if test="rate16 != null "> and rate16 = #{rate16}</if>
+            <if test="maxScore16 != null "> and max_score16 = #{maxScore16}</if>
+            <if test="rate17 != null "> and rate17 = #{rate17}</if>
+            <if test="maxScore17 != null "> and max_score17 = #{maxScore17}</if>
+            <if test="rate18 != null "> and rate18 = #{rate18}</if>
+            <if test="maxScore18 != null "> and max_score18 = #{maxScore18}</if>
+            <if test="rate19 != null "> and rate19 = #{rate19}</if>
+            <if test="maxScore19 != null "> and max_score19 = #{maxScore19}</if>
+            <if test="rate20 != null "> and rate20 = #{rate20}</if>
+            <if test="maxScore20 != null "> and max_score20 = #{maxScore20}</if>
+            <if test="rate21 != null "> and rate21 = #{rate21}</if>
+            <if test="maxScore21 != null "> and max_score21 = #{maxScore21}</if>
+            <if test="rate22 != null "> and rate22 = #{rate22}</if>
+            <if test="maxScore22 != null "> and max_score22 = #{maxScore22}</if>
+            <if test="rate23 != null "> and rate23 = #{rate23}</if>
+            <if test="maxScore23 != null "> and max_score23 = #{maxScore23}</if>
+            <if test="rate24 != null "> and rate24 = #{rate24}</if>
+            <if test="maxScore24 != null "> and max_score24 = #{maxScore24}</if>
+            <if test="rate25 != null "> and rate25 = #{rate25}</if>
+            <if test="maxScore25 != null "> and max_score25 = #{maxScore25}</if>
+            <if test="rate26 != null "> and rate26 = #{rate26}</if>
+            <if test="maxScore26 != null "> and max_score26 = #{maxScore26}</if>
+            <if test="rate27 != null "> and rate27 = #{rate27}</if>
+            <if test="maxScore27 != null "> and max_score27 = #{maxScore27}</if>
+            <if test="rateBig != null "> and rate_big = #{rateBig}</if>
+            <if test="maxScoreBig != null "> and max_score_big = #{maxScoreBig}</if>
+            <if test="rateSmall != null "> and rate_small = #{rateSmall}</if>
+            <if test="maxScoreSmall != null "> and max_score_small = #{maxScoreSmall}</if>
+            <if test="rateSingle != null "> and rate_single = #{rateSingle}</if>
+            <if test="maxScoreSingle != null "> and max_score_single = #{maxScoreSingle}</if>
+            <if test="rateDoubleSingle != null "> and rate_double_single = #{rateDoubleSingle}</if>
+            <if test="maxScoreDoubleSingle != null "> and max_score_double_single = #{maxScoreDoubleSingle}</if>
+            <if test="rateBigSingle != null "> and rate_big_single = #{rateBigSingle}</if>
+            <if test="maxScoreBigSingle != null "> and max_score_big_single = #{maxScoreBigSingle}</if>
+            <if test="rateBigDouble != null "> and rate_big_double = #{rateBigDouble}</if>
+            <if test="maxScoreBigDouble != null "> and max_score_big_double = #{maxScoreBigDouble}</if>
+            <if test="rateSmallSingle != null "> and rate_small_single = #{rateSmallSingle}</if>
+            <if test="maxScoreSmallSingle != null "> and max_score_small_single = #{maxScoreSmallSingle}</if>
+            <if test="rateSmallDouble != null "> and rate_small_double = #{rateSmallDouble}</if>
+            <if test="maxScoreSmallDouble != null "> and max_score_small_double = #{maxScoreSmallDouble}</if>
+            <if test="ratePairs != null "> and rate_pairs = #{ratePairs}</if>
+            <if test="maxScorePairs != null "> and max_score_pairs = #{maxScorePairs}</if>
+            <if test="rateStraight != null "> and rate_straight = #{rateStraight}</if>
+            <if test="maxScoreStraight != null "> and max_score_straight = #{maxScoreStraight}</if>
+            <if test="rateAllSame != null "> and rate_all_same = #{rateAllSame}</if>
+            <if test="maxScoreAllSame != null "> and max_score_all_same = #{maxScoreAllSame}</if>
+            <if test="rateMax != null "> and rate_max = #{rateMax}</if>
+            <if test="maxScoreMax != null "> and max_score_max = #{maxScoreMax}</if>
+            <if test="rateMin != null "> and rate_min = #{rateMin}</if>
+            <if test="maxScoreMin != null "> and max_score_min = #{maxScoreMin}</if>
+            <if test="rateDragon != null "> and rate_dragon = #{rateDragon}</if>
+            <if test="maxScoreDragon != null "> and max_score_dragon = #{maxScoreDragon}</if>
+            <if test="rateTiger != null "> and rate_tiger = #{rateTiger}</if>
+            <if test="maxScoreTiger != null "> and max_score_tiger = #{maxScoreTiger}</if>
+            <if test="rateLeopard != null "> and rate_leopard = #{rateLeopard}</if>
+            <if test="maxScoreLeopard != null "> and max_score_leopard = #{maxScoreLeopard}</if>
+            <if test="rateTailBig != null "> and rate_tail_big = #{rateTailBig}</if>
+            <if test="maxScoreTailBig != null "> and max_score_tail_big = #{maxScoreTailBig}</if>
+            <if test="rateTailSmall != null "> and rate_tail_small = #{rateTailSmall}</if>
+            <if test="maxScoreTailSmall != null "> and max_score_tail_small = #{maxScoreTailSmall}</if>
+            <if test="rateTailSingle != null "> and rate_tail_single = #{rateTailSingle}</if>
+            <if test="maxScoreTailSingle != null "> and max_score_tail_single = #{maxScoreTailSingle}</if>
+            <if test="rateTailDouble != null "> and rate_tail_double = #{rateTailDouble}</if>
+            <if test="maxScoreTailDouble != null "> and max_score_tail_double = #{maxScoreTailDouble}</if>
+            <if test="rateTailBigDouble != null "> and rate_tail_big_double = #{rateTailBigDouble}</if>
+            <if test="maxScoreTailBigDouble != null "> and max_score_tail_big_double = #{maxScoreTailBigDouble}</if>
+            <if test="rateTailBigSingle != null "> and rate_tail_big_single = #{rateTailBigSingle}</if>
+            <if test="maxScoreTailBigSingle != null "> and max_score_tail_big_single = #{maxScoreTailBigSingle}</if>
+            <if test="rateTailSmallDouble != null "> and rate_tail_small_double = #{rateTailSmallDouble}</if>
+            <if test="maxScoreTailSmallDouble != null "> and max_score_tail_small_double = #{maxScoreTailSmallDouble}</if>
+            <if test="rateTailSmallSingle != null "> and rate_tail_small_single = #{rateTailSmallSingle}</if>
+            <if test="maxScoreTailSmallSingle != null "> and max_score_tail_small_single = #{maxScoreTailSmallSingle}</if>
+            <if test="rateTail1 != null "> and rate_tail_1 = #{rateTail1}</if>
+            <if test="maxScoreTail1 != null "> and max_score_tail_1 = #{maxScoreTail1}</if>
+            <if test="rateTail2 != null "> and rate_tail_2 = #{rateTail2}</if>
+            <if test="maxScoreTail2 != null "> and max_score_tail_2 = #{maxScoreTail2}</if>
+            <if test="rateTail3 != null "> and rate_tail_3 = #{rateTail3}</if>
+            <if test="maxScoreTail3 != null "> and max_score_tail_3 = #{maxScoreTail3}</if>
+            <if test="rateTail4 != null "> and rate_tail_4 = #{rateTail4}</if>
+            <if test="maxScoreTail4 != null "> and max_score_tail_4 = #{maxScoreTail4}</if>
+            <if test="rateTail5 != null "> and rate_tail_5 = #{rateTail5}</if>
+            <if test="maxScoreTail5 != null "> and max_score_tail_5 = #{maxScoreTail5}</if>
+            <if test="rateTail6 != null "> and rate_tail_6 = #{rateTail6}</if>
+            <if test="maxScoreTail6 != null "> and max_score_tail_6 = #{maxScoreTail6}</if>
+            <if test="rateTail7 != null "> and rate_tail_7 = #{rateTail7}</if>
+            <if test="maxScoreTail7 != null "> and max_score_tail_7 = #{maxScoreTail7}</if>
+            <if test="rateTail8 != null "> and rate_tail_8 = #{rateTail8}</if>
+            <if test="maxScoreTail8 != null "> and max_score_tail_8 = #{maxScoreTail8}</if>
+            <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+            <if test="roomName != null  and roomName != ''"> and room_name = #{roomName}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbRoomOddsById" parameterType="Long" resultMap="TbRoomOddsResult">
+        <include refid="selectTbRoomOddsVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTbRoomOdds" parameterType="TbRoomOdds" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_room_odds
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roomConfigId != null">room_config_id,</if>
+            <if test="rate0 != null">rate0,</if>
+            <if test="maxScore0 != null">max_score0,</if>
+            <if test="rate1 != null">rate1,</if>
+            <if test="maxScore1 != null">max_score1,</if>
+            <if test="rate2 != null">rate2,</if>
+            <if test="maxScore2 != null">max_score2,</if>
+            <if test="rate3 != null">rate3,</if>
+            <if test="maxScore3 != null">max_score3,</if>
+            <if test="rate4 != null">rate4,</if>
+            <if test="maxScore4 != null">max_score4,</if>
+            <if test="rate5 != null">rate5,</if>
+            <if test="maxScore5 != null">max_score5,</if>
+            <if test="rate6 != null">rate6,</if>
+            <if test="maxScore6 != null">max_score6,</if>
+            <if test="rate7 != null">rate7,</if>
+            <if test="maxScore7 != null">max_score7,</if>
+            <if test="rate8 != null">rate8,</if>
+            <if test="maxScore8 != null">max_score8,</if>
+            <if test="rate9 != null">rate9,</if>
+            <if test="maxScore9 != null">max_score9,</if>
+            <if test="rate10 != null">rate10,</if>
+            <if test="maxScore10 != null">max_score10,</if>
+            <if test="rate11 != null">rate11,</if>
+            <if test="maxScore11 != null">max_score11,</if>
+            <if test="rate12 != null">rate12,</if>
+            <if test="maxScore12 != null">max_score12,</if>
+            <if test="rate13 != null">rate13,</if>
+            <if test="maxScore13 != null">max_score13,</if>
+            <if test="rate14 != null">rate14,</if>
+            <if test="maxScore14 != null">max_score14,</if>
+            <if test="rate15 != null">rate15,</if>
+            <if test="maxScore15 != null">max_score15,</if>
+            <if test="rate16 != null">rate16,</if>
+            <if test="maxScore16 != null">max_score16,</if>
+            <if test="rate17 != null">rate17,</if>
+            <if test="maxScore17 != null">max_score17,</if>
+            <if test="rate18 != null">rate18,</if>
+            <if test="maxScore18 != null">max_score18,</if>
+            <if test="rate19 != null">rate19,</if>
+            <if test="maxScore19 != null">max_score19,</if>
+            <if test="rate20 != null">rate20,</if>
+            <if test="maxScore20 != null">max_score20,</if>
+            <if test="rate21 != null">rate21,</if>
+            <if test="maxScore21 != null">max_score21,</if>
+            <if test="rate22 != null">rate22,</if>
+            <if test="maxScore22 != null">max_score22,</if>
+            <if test="rate23 != null">rate23,</if>
+            <if test="maxScore23 != null">max_score23,</if>
+            <if test="rate24 != null">rate24,</if>
+            <if test="maxScore24 != null">max_score24,</if>
+            <if test="rate25 != null">rate25,</if>
+            <if test="maxScore25 != null">max_score25,</if>
+            <if test="rate26 != null">rate26,</if>
+            <if test="maxScore26 != null">max_score26,</if>
+            <if test="rate27 != null">rate27,</if>
+            <if test="maxScore27 != null">max_score27,</if>
+            <if test="rateBig != null">rate_big,</if>
+            <if test="maxScoreBig != null">max_score_big,</if>
+            <if test="rateSmall != null">rate_small,</if>
+            <if test="maxScoreSmall != null">max_score_small,</if>
+            <if test="rateSingle != null">rate_single,</if>
+            <if test="maxScoreSingle != null">max_score_single,</if>
+            <if test="rateDoubleSingle != null">rate_double_single,</if>
+            <if test="maxScoreDoubleSingle != null">max_score_double_single,</if>
+            <if test="rateBigSingle != null">rate_big_single,</if>
+            <if test="maxScoreBigSingle != null">max_score_big_single,</if>
+            <if test="rateBigDouble != null">rate_big_double,</if>
+            <if test="maxScoreBigDouble != null">max_score_big_double,</if>
+            <if test="rateSmallSingle != null">rate_small_single,</if>
+            <if test="maxScoreSmallSingle != null">max_score_small_single,</if>
+            <if test="rateSmallDouble != null">rate_small_double,</if>
+            <if test="maxScoreSmallDouble != null">max_score_small_double,</if>
+            <if test="ratePairs != null">rate_pairs,</if>
+            <if test="maxScorePairs != null">max_score_pairs,</if>
+            <if test="rateStraight != null">rate_straight,</if>
+            <if test="maxScoreStraight != null">max_score_straight,</if>
+            <if test="rateAllSame != null">rate_all_same,</if>
+            <if test="maxScoreAllSame != null">max_score_all_same,</if>
+            <if test="rateMax != null">rate_max,</if>
+            <if test="maxScoreMax != null">max_score_max,</if>
+            <if test="rateMin != null">rate_min,</if>
+            <if test="maxScoreMin != null">max_score_min,</if>
+            <if test="rateDragon != null">rate_dragon,</if>
+            <if test="maxScoreDragon != null">max_score_dragon,</if>
+            <if test="rateTiger != null">rate_tiger,</if>
+            <if test="maxScoreTiger != null">max_score_tiger,</if>
+            <if test="rateLeopard != null">rate_leopard,</if>
+            <if test="maxScoreLeopard != null">max_score_leopard,</if>
+            <if test="rateTailBig != null">rate_tail_big,</if>
+            <if test="maxScoreTailBig != null">max_score_tail_big,</if>
+            <if test="rateTailSmall != null">rate_tail_small,</if>
+            <if test="maxScoreTailSmall != null">max_score_tail_small,</if>
+            <if test="rateTailSingle != null">rate_tail_single,</if>
+            <if test="maxScoreTailSingle != null">max_score_tail_single,</if>
+            <if test="rateTailDouble != null">rate_tail_double,</if>
+            <if test="maxScoreTailDouble != null">max_score_tail_double,</if>
+            <if test="rateTailBigDouble != null">rate_tail_big_double,</if>
+            <if test="maxScoreTailBigDouble != null">max_score_tail_big_double,</if>
+            <if test="rateTailBigSingle != null">rate_tail_big_single,</if>
+            <if test="maxScoreTailBigSingle != null">max_score_tail_big_single,</if>
+            <if test="rateTailSmallDouble != null">rate_tail_small_double,</if>
+            <if test="maxScoreTailSmallDouble != null">max_score_tail_small_double,</if>
+            <if test="rateTailSmallSingle != null">rate_tail_small_single,</if>
+            <if test="maxScoreTailSmallSingle != null">max_score_tail_small_single,</if>
+            <if test="rateTail1 != null">rate_tail_1,</if>
+            <if test="maxScoreTail1 != null">max_score_tail_1,</if>
+            <if test="rateTail2 != null">rate_tail_2,</if>
+            <if test="maxScoreTail2 != null">max_score_tail_2,</if>
+            <if test="rateTail3 != null">rate_tail_3,</if>
+            <if test="maxScoreTail3 != null">max_score_tail_3,</if>
+            <if test="rateTail4 != null">rate_tail_4,</if>
+            <if test="maxScoreTail4 != null">max_score_tail_4,</if>
+            <if test="rateTail5 != null">rate_tail_5,</if>
+            <if test="maxScoreTail5 != null">max_score_tail_5,</if>
+            <if test="rateTail6 != null">rate_tail_6,</if>
+            <if test="maxScoreTail6 != null">max_score_tail_6,</if>
+            <if test="rateTail7 != null">rate_tail_7,</if>
+            <if test="maxScoreTail7 != null">max_score_tail_7,</if>
+            <if test="rateTail8 != null">rate_tail_8,</if>
+            <if test="maxScoreTail8 != null">max_score_tail_8,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="tenantId != null">tenant_id,</if>
+            <if test="roomName != null">room_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roomConfigId != null">#{roomConfigId},</if>
+            <if test="rate0 != null">#{rate0},</if>
+            <if test="maxScore0 != null">#{maxScore0},</if>
+            <if test="rate1 != null">#{rate1},</if>
+            <if test="maxScore1 != null">#{maxScore1},</if>
+            <if test="rate2 != null">#{rate2},</if>
+            <if test="maxScore2 != null">#{maxScore2},</if>
+            <if test="rate3 != null">#{rate3},</if>
+            <if test="maxScore3 != null">#{maxScore3},</if>
+            <if test="rate4 != null">#{rate4},</if>
+            <if test="maxScore4 != null">#{maxScore4},</if>
+            <if test="rate5 != null">#{rate5},</if>
+            <if test="maxScore5 != null">#{maxScore5},</if>
+            <if test="rate6 != null">#{rate6},</if>
+            <if test="maxScore6 != null">#{maxScore6},</if>
+            <if test="rate7 != null">#{rate7},</if>
+            <if test="maxScore7 != null">#{maxScore7},</if>
+            <if test="rate8 != null">#{rate8},</if>
+            <if test="maxScore8 != null">#{maxScore8},</if>
+            <if test="rate9 != null">#{rate9},</if>
+            <if test="maxScore9 != null">#{maxScore9},</if>
+            <if test="rate10 != null">#{rate10},</if>
+            <if test="maxScore10 != null">#{maxScore10},</if>
+            <if test="rate11 != null">#{rate11},</if>
+            <if test="maxScore11 != null">#{maxScore11},</if>
+            <if test="rate12 != null">#{rate12},</if>
+            <if test="maxScore12 != null">#{maxScore12},</if>
+            <if test="rate13 != null">#{rate13},</if>
+            <if test="maxScore13 != null">#{maxScore13},</if>
+            <if test="rate14 != null">#{rate14},</if>
+            <if test="maxScore14 != null">#{maxScore14},</if>
+            <if test="rate15 != null">#{rate15},</if>
+            <if test="maxScore15 != null">#{maxScore15},</if>
+            <if test="rate16 != null">#{rate16},</if>
+            <if test="maxScore16 != null">#{maxScore16},</if>
+            <if test="rate17 != null">#{rate17},</if>
+            <if test="maxScore17 != null">#{maxScore17},</if>
+            <if test="rate18 != null">#{rate18},</if>
+            <if test="maxScore18 != null">#{maxScore18},</if>
+            <if test="rate19 != null">#{rate19},</if>
+            <if test="maxScore19 != null">#{maxScore19},</if>
+            <if test="rate20 != null">#{rate20},</if>
+            <if test="maxScore20 != null">#{maxScore20},</if>
+            <if test="rate21 != null">#{rate21},</if>
+            <if test="maxScore21 != null">#{maxScore21},</if>
+            <if test="rate22 != null">#{rate22},</if>
+            <if test="maxScore22 != null">#{maxScore22},</if>
+            <if test="rate23 != null">#{rate23},</if>
+            <if test="maxScore23 != null">#{maxScore23},</if>
+            <if test="rate24 != null">#{rate24},</if>
+            <if test="maxScore24 != null">#{maxScore24},</if>
+            <if test="rate25 != null">#{rate25},</if>
+            <if test="maxScore25 != null">#{maxScore25},</if>
+            <if test="rate26 != null">#{rate26},</if>
+            <if test="maxScore26 != null">#{maxScore26},</if>
+            <if test="rate27 != null">#{rate27},</if>
+            <if test="maxScore27 != null">#{maxScore27},</if>
+            <if test="rateBig != null">#{rateBig},</if>
+            <if test="maxScoreBig != null">#{maxScoreBig},</if>
+            <if test="rateSmall != null">#{rateSmall},</if>
+            <if test="maxScoreSmall != null">#{maxScoreSmall},</if>
+            <if test="rateSingle != null">#{rateSingle},</if>
+            <if test="maxScoreSingle != null">#{maxScoreSingle},</if>
+            <if test="rateDoubleSingle != null">#{rateDoubleSingle},</if>
+            <if test="maxScoreDoubleSingle != null">#{maxScoreDoubleSingle},</if>
+            <if test="rateBigSingle != null">#{rateBigSingle},</if>
+            <if test="maxScoreBigSingle != null">#{maxScoreBigSingle},</if>
+            <if test="rateBigDouble != null">#{rateBigDouble},</if>
+            <if test="maxScoreBigDouble != null">#{maxScoreBigDouble},</if>
+            <if test="rateSmallSingle != null">#{rateSmallSingle},</if>
+            <if test="maxScoreSmallSingle != null">#{maxScoreSmallSingle},</if>
+            <if test="rateSmallDouble != null">#{rateSmallDouble},</if>
+            <if test="maxScoreSmallDouble != null">#{maxScoreSmallDouble},</if>
+            <if test="ratePairs != null">#{ratePairs},</if>
+            <if test="maxScorePairs != null">#{maxScorePairs},</if>
+            <if test="rateStraight != null">#{rateStraight},</if>
+            <if test="maxScoreStraight != null">#{maxScoreStraight},</if>
+            <if test="rateAllSame != null">#{rateAllSame},</if>
+            <if test="maxScoreAllSame != null">#{maxScoreAllSame},</if>
+            <if test="rateMax != null">#{rateMax},</if>
+            <if test="maxScoreMax != null">#{maxScoreMax},</if>
+            <if test="rateMin != null">#{rateMin},</if>
+            <if test="maxScoreMin != null">#{maxScoreMin},</if>
+            <if test="rateDragon != null">#{rateDragon},</if>
+            <if test="maxScoreDragon != null">#{maxScoreDragon},</if>
+            <if test="rateTiger != null">#{rateTiger},</if>
+            <if test="maxScoreTiger != null">#{maxScoreTiger},</if>
+            <if test="rateLeopard != null">#{rateLeopard},</if>
+            <if test="maxScoreLeopard != null">#{maxScoreLeopard},</if>
+            <if test="rateTailBig != null">#{rateTailBig},</if>
+            <if test="maxScoreTailBig != null">#{maxScoreTailBig},</if>
+            <if test="rateTailSmall != null">#{rateTailSmall},</if>
+            <if test="maxScoreTailSmall != null">#{maxScoreTailSmall},</if>
+            <if test="rateTailSingle != null">#{rateTailSingle},</if>
+            <if test="maxScoreTailSingle != null">#{maxScoreTailSingle},</if>
+            <if test="rateTailDouble != null">#{rateTailDouble},</if>
+            <if test="maxScoreTailDouble != null">#{maxScoreTailDouble},</if>
+            <if test="rateTailBigDouble != null">#{rateTailBigDouble},</if>
+            <if test="maxScoreTailBigDouble != null">#{maxScoreTailBigDouble},</if>
+            <if test="rateTailBigSingle != null">#{rateTailBigSingle},</if>
+            <if test="maxScoreTailBigSingle != null">#{maxScoreTailBigSingle},</if>
+            <if test="rateTailSmallDouble != null">#{rateTailSmallDouble},</if>
+            <if test="maxScoreTailSmallDouble != null">#{maxScoreTailSmallDouble},</if>
+            <if test="rateTailSmallSingle != null">#{rateTailSmallSingle},</if>
+            <if test="maxScoreTailSmallSingle != null">#{maxScoreTailSmallSingle},</if>
+            <if test="rateTail1 != null">#{rateTail1},</if>
+            <if test="maxScoreTail1 != null">#{maxScoreTail1},</if>
+            <if test="rateTail2 != null">#{rateTail2},</if>
+            <if test="maxScoreTail2 != null">#{maxScoreTail2},</if>
+            <if test="rateTail3 != null">#{rateTail3},</if>
+            <if test="maxScoreTail3 != null">#{maxScoreTail3},</if>
+            <if test="rateTail4 != null">#{rateTail4},</if>
+            <if test="maxScoreTail4 != null">#{maxScoreTail4},</if>
+            <if test="rateTail5 != null">#{rateTail5},</if>
+            <if test="maxScoreTail5 != null">#{maxScoreTail5},</if>
+            <if test="rateTail6 != null">#{rateTail6},</if>
+            <if test="maxScoreTail6 != null">#{maxScoreTail6},</if>
+            <if test="rateTail7 != null">#{rateTail7},</if>
+            <if test="maxScoreTail7 != null">#{maxScoreTail7},</if>
+            <if test="rateTail8 != null">#{rateTail8},</if>
+            <if test="maxScoreTail8 != null">#{maxScoreTail8},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+            <if test="roomName != null">#{roomName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbRoomOdds" parameterType="TbRoomOdds">
+        update tb_room_odds
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roomConfigId != null">room_config_id = #{roomConfigId},</if>
+            <if test="rate0 != null">rate0 = #{rate0},</if>
+            <if test="maxScore0 != null">max_score0 = #{maxScore0},</if>
+            <if test="rate1 != null">rate1 = #{rate1},</if>
+            <if test="maxScore1 != null">max_score1 = #{maxScore1},</if>
+            <if test="rate2 != null">rate2 = #{rate2},</if>
+            <if test="maxScore2 != null">max_score2 = #{maxScore2},</if>
+            <if test="rate3 != null">rate3 = #{rate3},</if>
+            <if test="maxScore3 != null">max_score3 = #{maxScore3},</if>
+            <if test="rate4 != null">rate4 = #{rate4},</if>
+            <if test="maxScore4 != null">max_score4 = #{maxScore4},</if>
+            <if test="rate5 != null">rate5 = #{rate5},</if>
+            <if test="maxScore5 != null">max_score5 = #{maxScore5},</if>
+            <if test="rate6 != null">rate6 = #{rate6},</if>
+            <if test="maxScore6 != null">max_score6 = #{maxScore6},</if>
+            <if test="rate7 != null">rate7 = #{rate7},</if>
+            <if test="maxScore7 != null">max_score7 = #{maxScore7},</if>
+            <if test="rate8 != null">rate8 = #{rate8},</if>
+            <if test="maxScore8 != null">max_score8 = #{maxScore8},</if>
+            <if test="rate9 != null">rate9 = #{rate9},</if>
+            <if test="maxScore9 != null">max_score9 = #{maxScore9},</if>
+            <if test="rate10 != null">rate10 = #{rate10},</if>
+            <if test="maxScore10 != null">max_score10 = #{maxScore10},</if>
+            <if test="rate11 != null">rate11 = #{rate11},</if>
+            <if test="maxScore11 != null">max_score11 = #{maxScore11},</if>
+            <if test="rate12 != null">rate12 = #{rate12},</if>
+            <if test="maxScore12 != null">max_score12 = #{maxScore12},</if>
+            <if test="rate13 != null">rate13 = #{rate13},</if>
+            <if test="maxScore13 != null">max_score13 = #{maxScore13},</if>
+            <if test="rate14 != null">rate14 = #{rate14},</if>
+            <if test="maxScore14 != null">max_score14 = #{maxScore14},</if>
+            <if test="rate15 != null">rate15 = #{rate15},</if>
+            <if test="maxScore15 != null">max_score15 = #{maxScore15},</if>
+            <if test="rate16 != null">rate16 = #{rate16},</if>
+            <if test="maxScore16 != null">max_score16 = #{maxScore16},</if>
+            <if test="rate17 != null">rate17 = #{rate17},</if>
+            <if test="maxScore17 != null">max_score17 = #{maxScore17},</if>
+            <if test="rate18 != null">rate18 = #{rate18},</if>
+            <if test="maxScore18 != null">max_score18 = #{maxScore18},</if>
+            <if test="rate19 != null">rate19 = #{rate19},</if>
+            <if test="maxScore19 != null">max_score19 = #{maxScore19},</if>
+            <if test="rate20 != null">rate20 = #{rate20},</if>
+            <if test="maxScore20 != null">max_score20 = #{maxScore20},</if>
+            <if test="rate21 != null">rate21 = #{rate21},</if>
+            <if test="maxScore21 != null">max_score21 = #{maxScore21},</if>
+            <if test="rate22 != null">rate22 = #{rate22},</if>
+            <if test="maxScore22 != null">max_score22 = #{maxScore22},</if>
+            <if test="rate23 != null">rate23 = #{rate23},</if>
+            <if test="maxScore23 != null">max_score23 = #{maxScore23},</if>
+            <if test="rate24 != null">rate24 = #{rate24},</if>
+            <if test="maxScore24 != null">max_score24 = #{maxScore24},</if>
+            <if test="rate25 != null">rate25 = #{rate25},</if>
+            <if test="maxScore25 != null">max_score25 = #{maxScore25},</if>
+            <if test="rate26 != null">rate26 = #{rate26},</if>
+            <if test="maxScore26 != null">max_score26 = #{maxScore26},</if>
+            <if test="rate27 != null">rate27 = #{rate27},</if>
+            <if test="maxScore27 != null">max_score27 = #{maxScore27},</if>
+            <if test="rateBig != null">rate_big = #{rateBig},</if>
+            <if test="maxScoreBig != null">max_score_big = #{maxScoreBig},</if>
+            <if test="rateSmall != null">rate_small = #{rateSmall},</if>
+            <if test="maxScoreSmall != null">max_score_small = #{maxScoreSmall},</if>
+            <if test="rateSingle != null">rate_single = #{rateSingle},</if>
+            <if test="maxScoreSingle != null">max_score_single = #{maxScoreSingle},</if>
+            <if test="rateDoubleSingle != null">rate_double_single = #{rateDoubleSingle},</if>
+            <if test="maxScoreDoubleSingle != null">max_score_double_single = #{maxScoreDoubleSingle},</if>
+            <if test="rateBigSingle != null">rate_big_single = #{rateBigSingle},</if>
+            <if test="maxScoreBigSingle != null">max_score_big_single = #{maxScoreBigSingle},</if>
+            <if test="rateBigDouble != null">rate_big_double = #{rateBigDouble},</if>
+            <if test="maxScoreBigDouble != null">max_score_big_double = #{maxScoreBigDouble},</if>
+            <if test="rateSmallSingle != null">rate_small_single = #{rateSmallSingle},</if>
+            <if test="maxScoreSmallSingle != null">max_score_small_single = #{maxScoreSmallSingle},</if>
+            <if test="rateSmallDouble != null">rate_small_double = #{rateSmallDouble},</if>
+            <if test="maxScoreSmallDouble != null">max_score_small_double = #{maxScoreSmallDouble},</if>
+            <if test="ratePairs != null">rate_pairs = #{ratePairs},</if>
+            <if test="maxScorePairs != null">max_score_pairs = #{maxScorePairs},</if>
+            <if test="rateStraight != null">rate_straight = #{rateStraight},</if>
+            <if test="maxScoreStraight != null">max_score_straight = #{maxScoreStraight},</if>
+            <if test="rateAllSame != null">rate_all_same = #{rateAllSame},</if>
+            <if test="maxScoreAllSame != null">max_score_all_same = #{maxScoreAllSame},</if>
+            <if test="rateMax != null">rate_max = #{rateMax},</if>
+            <if test="maxScoreMax != null">max_score_max = #{maxScoreMax},</if>
+            <if test="rateMin != null">rate_min = #{rateMin},</if>
+            <if test="maxScoreMin != null">max_score_min = #{maxScoreMin},</if>
+            <if test="rateDragon != null">rate_dragon = #{rateDragon},</if>
+            <if test="maxScoreDragon != null">max_score_dragon = #{maxScoreDragon},</if>
+            <if test="rateTiger != null">rate_tiger = #{rateTiger},</if>
+            <if test="maxScoreTiger != null">max_score_tiger = #{maxScoreTiger},</if>
+            <if test="rateLeopard != null">rate_leopard = #{rateLeopard},</if>
+            <if test="maxScoreLeopard != null">max_score_leopard = #{maxScoreLeopard},</if>
+            <if test="rateTailBig != null">rate_tail_big = #{rateTailBig},</if>
+            <if test="maxScoreTailBig != null">max_score_tail_big = #{maxScoreTailBig},</if>
+            <if test="rateTailSmall != null">rate_tail_small = #{rateTailSmall},</if>
+            <if test="maxScoreTailSmall != null">max_score_tail_small = #{maxScoreTailSmall},</if>
+            <if test="rateTailSingle != null">rate_tail_single = #{rateTailSingle},</if>
+            <if test="maxScoreTailSingle != null">max_score_tail_single = #{maxScoreTailSingle},</if>
+            <if test="rateTailDouble != null">rate_tail_double = #{rateTailDouble},</if>
+            <if test="maxScoreTailDouble != null">max_score_tail_double = #{maxScoreTailDouble},</if>
+            <if test="rateTailBigDouble != null">rate_tail_big_double = #{rateTailBigDouble},</if>
+            <if test="maxScoreTailBigDouble != null">max_score_tail_big_double = #{maxScoreTailBigDouble},</if>
+            <if test="rateTailBigSingle != null">rate_tail_big_single = #{rateTailBigSingle},</if>
+            <if test="maxScoreTailBigSingle != null">max_score_tail_big_single = #{maxScoreTailBigSingle},</if>
+            <if test="rateTailSmallDouble != null">rate_tail_small_double = #{rateTailSmallDouble},</if>
+            <if test="maxScoreTailSmallDouble != null">max_score_tail_small_double = #{maxScoreTailSmallDouble},</if>
+            <if test="rateTailSmallSingle != null">rate_tail_small_single = #{rateTailSmallSingle},</if>
+            <if test="maxScoreTailSmallSingle != null">max_score_tail_small_single = #{maxScoreTailSmallSingle},</if>
+            <if test="rateTail1 != null">rate_tail_1 = #{rateTail1},</if>
+            <if test="maxScoreTail1 != null">max_score_tail_1 = #{maxScoreTail1},</if>
+            <if test="rateTail2 != null">rate_tail_2 = #{rateTail2},</if>
+            <if test="maxScoreTail2 != null">max_score_tail_2 = #{maxScoreTail2},</if>
+            <if test="rateTail3 != null">rate_tail_3 = #{rateTail3},</if>
+            <if test="maxScoreTail3 != null">max_score_tail_3 = #{maxScoreTail3},</if>
+            <if test="rateTail4 != null">rate_tail_4 = #{rateTail4},</if>
+            <if test="maxScoreTail4 != null">max_score_tail_4 = #{maxScoreTail4},</if>
+            <if test="rateTail5 != null">rate_tail_5 = #{rateTail5},</if>
+            <if test="maxScoreTail5 != null">max_score_tail_5 = #{maxScoreTail5},</if>
+            <if test="rateTail6 != null">rate_tail_6 = #{rateTail6},</if>
+            <if test="maxScoreTail6 != null">max_score_tail_6 = #{maxScoreTail6},</if>
+            <if test="rateTail7 != null">rate_tail_7 = #{rateTail7},</if>
+            <if test="maxScoreTail7 != null">max_score_tail_7 = #{maxScoreTail7},</if>
+            <if test="rateTail8 != null">rate_tail_8 = #{rateTail8},</if>
+            <if test="maxScoreTail8 != null">max_score_tail_8 = #{maxScoreTail8},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+            <if test="roomName != null">room_name = #{roomName},</if>
+        </trim>
+        where id = #{id}
+        <if test="createBy != null  and createBy != ''"> and create_by = #{createBy}</if>
+    </update>
+
+    <delete id="deleteTbRoomOddsById" parameterType="Long">
+        delete from tb_room_odds where id = #{id}
+    </delete>
+
+    <delete id="deleteTbRoomOddsByIds" parameterType="String">
+        delete from tb_room_odds where
+        <if test="createBy != null and createBy != ''">  create_by = #{createBy} and</if>
+id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

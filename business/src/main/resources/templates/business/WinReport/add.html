@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增盈亏信息')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-WinReport-add">
+            <div class="form-group row">    
+                <div class="control-label">数据表日期：</div>
+                <div class="">
+                    <div class="input-group date">
+                        <input name="genDate" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">新增人数：</div>
+                <div class="">
+                    <input name="addPeople" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">在线分：</div>
+                <div class="">
+                    <input name="totalScore" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">玩家人数：</div>
+                <div class="">
+                    <input name="userCount" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">上分量：</div>
+                <div class="">
+                    <input name="addScore" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">下分量：</div>
+                <div class="">
+                    <input name="minusScore" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">送分量：</div>
+                <div class="">
+                    <input name="otherScore" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">实际盈亏分：</div>
+                <div class="">
+                    <input name="actualWinScore" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">盈亏分：</div>
+                <div class="">
+                    <input name="winScore" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="control-label">备注：</div>
+                <div class="">
+                    <textarea name="remark" class="form-control"></textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "business/WinReport"
+        $("#form-WinReport-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-WinReport-add').serialize());
+            }
+        }
+
+        $("input[name='genDate']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+    </script>
+</body>
+</html>

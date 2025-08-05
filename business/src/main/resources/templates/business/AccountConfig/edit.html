@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改上/下分账号设置')" />
+    <th:block th:include="include :: bootstrap-fileinput-css"/>
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-AccountConfig-edit" th:object="${tbAccountConfig}">
+            <input name="id" th:field="*{id}" type="hidden">
+            <input name="tenantId" th:field="*{tenantId}" type="hidden">
+            <div class="form-group row col-sm-12">
+                <div class="form-group row col-sm-6">
+                    <div class="control-label">支付类型：</div>
+                    <div class="">
+                        <input name="payType" th:field="*{payType}" class="form-control" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row col-sm-12">
+                <div class="form-group row col-sm-6">
+                    <div class="control-label">户名：</div>
+                    <div class="">
+                        <input name="name" th:field="*{name}" class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="form-group row col-sm-6">
+                    <div class="control-label">账户：</div>
+                    <div class="">
+                        <input name="account" th:field="*{account}" class="form-control" type="text">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row col-sm-12">
+                <div class="form-group row col-sm-6">
+                    <div class="control-label">户行：</div>
+                    <div class="">
+                        <input name="bankName" th:field="*{bankName}" class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="form-group row col-sm-6">
+                    <div class="control-label">额度分配：</div>
+                    <div class="">
+                        <input name="quota" th:field="*{quota}" class="form-control" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row col-sm-12">
+                <div class="form-group row col-sm-6">
+                    <div class="control-label">上分/下分：</div>
+                    <div class="">
+                        <select name="isAddMinus" class="form-control m-b" th:with="type=${@dict.getType('account_type')}">
+                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{isAddMinus}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row col-sm-6">
+                    <div class="control-label">状态：</div>
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-sm btn-secondary" th:each="dict : ${@dict.getType('enable_status')}">
+                            <input type="radio" th:id="${'status_' + dict.dictCode}" name="status" th:value="${dict.dictValue}" th:checked="${tbAccountConfig.status.contains(dict.dictValue)?true:false}"> <span th:text="${dict.dictLabel}"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row col-sm-12">
+
+                <div class="form-group row col-sm-6">
+                    <div class="control-label">二维码：</div>
+                    <div class="">
+                        <input type="hidden" name="imageId">
+                        <div class="file-loading">
+                            <input class="form-control file-upload" id="imageId" name="file" type="file">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row col-sm-6">
+                    <div class="control-label">备注：</div>
+                    <div class="">
+                        <textarea name="remark" class="form-control"> [[*{quota}]]</textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row col-sm-12">
+                <div class="alert alert-info alert-dismissable">
+                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                    如有二维码，请选择后先点击上传再确认添加
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: bootstrap-fileinput-js"/>
+    <script th:inline="javascript">
+        var prefix = ctx + "business/AccountConfig";
+        $("#form-AccountConfig-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-AccountConfig-edit').serialize());
+            }
+        }
+
+        $(".file-upload").each(function (i) {
+            var val = $("input[name='" + this.id + "']").val()
+            $(this).fileinput({
+                uploadUrl: ctx + 'business/images/imageUpload',
+                initialPreviewAsData: true,
+                initialPreview: [val],
+                maxFileCount: 1,
+                autoReplace: true
+            }).on('fileuploaded', function (event, data, previewId, index) {
+                $("input[name='" + event.currentTarget.id + "']").val(data.response)
+            }).on('fileremoved', function (event, id, index) {
+                $("input[name='" + event.currentTarget.id + "']").val('')
+            })
+            $(this).fileinput('_initFileActions');
+        });
+    </script>
+</body>
+</html>

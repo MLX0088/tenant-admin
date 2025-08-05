@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增联系方式')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-Question-add">
+            <input type="hidden" name="tenantId" th:value="${tenantId}"/>
+            <input name="type" class="form-control" type="hidden" value="1">
+            <div class="form-group row col-sm-12">
+                <div class="control-label">标题：</div>
+                <div class="col">
+                    <input name="question" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row col-sm-12">
+                <div class="control-label">联系方式：</div>
+                <div class="col">
+                    <textarea name="anwser" class="form-control"></textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "business/Question"
+        $("#form-Question-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-Question-add').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

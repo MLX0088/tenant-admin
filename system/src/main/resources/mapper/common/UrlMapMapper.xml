@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tenant.system.mapper.UrlMapMapper">
+    
+    <resultMap type="UrlMap" id="UrlMapResult">
+        <result property="id"    column="id"    />
+        <result property="surl"    column="surl"    />
+        <result property="lurl"    column="lurl"    />
+        <result property="views"    column="views"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="userId"    column="user_Id"    />
+    </resultMap>
+
+    <sql id="selectUrlMapVo">
+        select * from url_map
+    </sql>
+
+    <select id="selectUrlMapList" parameterType="UrlMap" resultMap="UrlMapResult">
+        <include refid="selectUrlMapVo"/>
+        <where>  
+            <if test="surl != null  and surl != ''"> and surl = #{surl}</if>
+            <if test="lurl != null  and lurl != ''"> and lurl = #{lurl}</if>
+            <if test="views != null "> and views = #{views}</if>
+            <if test="userId != null "> and user_Id = #{userId}</if>
+        </where>
+    </select>
+    
+    <select id="selectUrlMapById" parameterType="Long" resultMap="UrlMapResult">
+        <include refid="selectUrlMapVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertUrlMap" parameterType="UrlMap" useGeneratedKeys="true" keyProperty="id">
+        insert into url_map
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="surl != null and surl != ''">surl,</if>
+            <if test="lurl != null and lurl != ''">lurl,</if>
+            <if test="views != null">views,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="userId != null">user_Id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="surl != null and surl != ''">#{surl},</if>
+            <if test="lurl != null and lurl != ''">#{lurl},</if>
+            <if test="views != null">#{views},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="userId != null">#{userId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateUrlMap" parameterType="UrlMap">
+        update url_map
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="surl != null and surl != ''">surl = #{surl},</if>
+            <if test="lurl != null and lurl != ''">lurl = #{lurl},</if>
+            <if test="views != null">views = #{views},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="userId != null">user_Id = #{userId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUrlMapById" parameterType="Long">
+        delete from url_map where id = #{id}
+    </delete>
+
+    <delete id="deleteUrlMapByIds" parameterType="String">
+        delete from url_map where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

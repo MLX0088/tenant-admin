@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('盈亏信息列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <input type="hidden" name="tenantId" th:value="${selectDeptId}"/>
+                </form>
+                <div>
+                    <p style="color:rgb(103, 194, 58);">1. 注意每一条财务信息对应好财务标签、 否则计算实际盈亏分有偏差</p>
+                    <p style="color:rgb(103, 194, 58);">2. 实际盈亏分即当日的 <span style="color:red;">上分(审核上分、手动上分)</span> <span style="color:blue;">减去</span> <span style="color:red;">下分(审核提现、手动提现)</span> <span style="color:blue;">=</span> <span style="color:red;">实际盈亏分</span></p>
+                    <p style="color:rgb(103, 194, 58);">3. 其余返红奖励、猜中奖励、幸运红包、首次奖励等等标签均归为送分数据</p>
+                    <p style="color:red;">4.每天凌晨00:05分左右生成当天的数据报表</p>
+                    <p style="color:red;">5.所有数据舍弃小数点，数字稍有至多0.99的偏差</p>
+                </div>
+            </div>
+
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('business:WinReport:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('business:WinReport:remove')}]];
+        var prefix = ctx + "business/WinReport";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "盈亏信息",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'id',
+                    title: 'id',
+                    visible: false
+                },
+                {
+                    field: 'createTime',
+                    title: '生成日期',
+                },
+                {
+                    field: 'genDate',
+                    title: '数据表日期',
+                },
+                {
+                    field: 'addPeople',
+                    title: '新增人数',
+                },
+                {
+                    field: 'totalScore',
+                    title: '在线分',
+                },
+                {
+                    field: 'userCount',
+                    title: '玩家人数',
+                },
+                {
+                    field: 'addScore',
+                    title: '上分量',
+                },
+                {
+                    field: 'minusScore',
+                    title: '下分量',
+                },
+                {
+                    field: 'otherScore',
+                    title: '送分量',
+                },
+                {
+                    field: 'actualWinScore',
+                    title: '实际盈亏分',
+                },
+                {
+                    field: 'winScore',
+                    title: '盈亏分-送分量',
+                    formatter: function(value, row, index) {
+                        return value+"-"+row.otherScore;
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

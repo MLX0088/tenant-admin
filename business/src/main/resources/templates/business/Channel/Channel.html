@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('渠道来源列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <input type="hidden" name="tenantId" th:value="${selectDeptId}"/>
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>用户ID：</label>
+                                <input type="text" placeholder="用户ID" name="userId"/>
+                            </li>
+                            <li>
+                                <label>渠道名称：</label>
+                                <input type="text" placeholder="渠道名称" name="name"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="business:Channel:add">
+                    <i class="fa fa-plus"></i> 添加渠道来源
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('business:Channel:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('business:Channel:remove')}]];
+        var prefix = ctx + "business/Channel";
+        function copyChannelUrl(id){
+            copyText('http://'+window.location.hostname+':9999?channelId='+id)
+        }
+        // 综合兼容方案
+        async function copyText(text, el) {
+          // 添加视觉反馈（可选）
+          if (el) {
+            const origText = el.innerText;
+            el.innerText = "复制中...";
+            setTimeout(() => el.innerText = origText, 1500);
+          }
+
+          try {
+            await navigator.clipboard.writeText(text);
+            $.modal.alertSuccess('复制成功！文本：'+text);
+            return true;
+          } catch {
+            // 降级方案
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.cssText = 'position:absolute;left:-9999px;top:-9999px';
+            document.body.appendChild(textArea);
+            textArea.select();
+
+            try {
+              document.execCommand('copy');
+                $.modal.alertSuccess('复制成功！文本：'+text);
+              return true;
+            } catch {
+              return false;
+            } finally {
+              document.body.removeChild(textArea);
+            }
+          }
+        }
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "渠道来源",
+                columns: [{
+                    field: 'id',
+                    title: '自增ID',
+                    visible: false
+                },
+                {
+                    field: 'name',
+                    title: '代理人 (ID - 用户名)',
+                    formatter: function(value, row, index) {
+                        if(row.userId){
+                            return row.userId+"-"+row.userName;
+                        }else{
+                            return "未关联";
+                        }
+                    }
+                },
+                {
+                    field: 'name',
+                    title: '渠道名称'
+                },
+                {
+                    field: 'addPeople',
+                    title: '当日注册量'
+                },
+                {
+                    field: 'totalAddPeople',
+                    title: '总注册量'
+                },
+                {
+                    field: 'remark',
+                    title: '备注'
+                },
+                {
+                    field: 'createTime',
+                    title: '创建时间'
+                },
+                {
+                    title: '复制客户端链接/查看数据链接',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-info btn-sm ' + editFlag + '" href="javascript:void(0)" onclick="copyChannelUrl(\'' + row.id + '\')"><i class="fa fa-edit"></i>客户端链接</a> ');
+                        actions.push('<a class="btn btn-warning btn-sm ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>数据链接</a>');
+                        return actions.join('');
+                    }
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-sm ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-sm ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

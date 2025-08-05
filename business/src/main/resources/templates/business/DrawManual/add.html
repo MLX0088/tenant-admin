@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增手动开奖记录')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-DrawManual-add">
+            <input type="hidden" name="tenantId" th:value="${tenantId}"/>
+            <div class="form-group">
+                <div class="alert alert-warning alert-dismissable">
+                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                    警告⚠️：手动操作请慎重核对每一个输入框，操作成功不可撤回，只能超级管理员操作
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-sm btn-secondary" >
+                        <input type="radio" name="roomName" value="加拿大28" checked/> 加拿大28
+                    </label>
+                    <label class="btn btn-sm btn-secondary" >
+                        <input type="radio" name="roomName" value="台湾28" /> 台湾28
+                    </label>
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">期号：</div>
+                <div class="">
+                    <input name="periodNumber" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">第一码：</div>
+                <div class="">
+                    <input name="first" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">第二码：</div>
+                <div class="">
+                    <input name="second" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">第三码：</div>
+                <div class="">
+                    <input name="third" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="control-label">备注：</div>
+                <div class="">
+                    <textarea name="remark" class="form-control"></textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "business/DrawManual"
+        $("#form-DrawManual-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-DrawManual-add').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

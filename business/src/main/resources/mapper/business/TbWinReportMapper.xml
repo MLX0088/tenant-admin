@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tenant.business.mapper.TbWinReportMapper">
+    
+    <resultMap type="TbWinReport" id="TbWinReportResult">
+        <result property="id"    column="id"    />
+        <result property="genDate"    column="gen_date"    />
+        <result property="addPeople"    column="add_people"    />
+        <result property="totalScore"    column="total_score"    />
+        <result property="userCount"    column="user_count"    />
+        <result property="addScore"    column="add_score"    />
+        <result property="minusScore"    column="minus_score"    />
+        <result property="otherScore"    column="other_score"    />
+        <result property="actualWinScore"    column="actual_win_score"    />
+        <result property="winScore"    column="win_score"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="tenantId"    column="tenant_id"    />
+    </resultMap>
+
+    <sql id="selectTbWinReportVo">
+        select * from tb_win_report
+    </sql>
+
+    <select id="selectTbWinReportList" parameterType="TbWinReport" resultMap="TbWinReportResult">
+        <include refid="selectTbWinReportVo"/>
+        <where>  
+            <if test="genDate != null  and genDate != ''"> and gen_date = #{genDate}</if>
+            <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+        </where>
+        order by id desc
+    </select>
+    
+    <select id="selectTbWinReportById" parameterType="Long" resultMap="TbWinReportResult">
+        <include refid="selectTbWinReportVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTbWinReport" parameterType="TbWinReport" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_win_report
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="genDate != null">gen_date,</if>
+            <if test="addPeople != null">add_people,</if>
+            <if test="totalScore != null">total_score,</if>
+            <if test="userCount != null">user_count,</if>
+            <if test="addScore != null">add_score,</if>
+            <if test="minusScore != null">minus_score,</if>
+            <if test="otherScore != null">other_score,</if>
+            <if test="actualWinScore != null">actual_win_score,</if>
+            <if test="winScore != null">win_score,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="tenantId != null">tenant_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="genDate != null">#{genDate},</if>
+            <if test="addPeople != null">#{addPeople},</if>
+            <if test="totalScore != null">#{totalScore},</if>
+            <if test="userCount != null">#{userCount},</if>
+            <if test="addScore != null">#{addScore},</if>
+            <if test="minusScore != null">#{minusScore},</if>
+            <if test="otherScore != null">#{otherScore},</if>
+            <if test="actualWinScore != null">#{actualWinScore},</if>
+            <if test="winScore != null">#{winScore},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+         </trim>
+    </insert>
+
+    <update id="genWinDataDaily">
+        insert into tb_win_report(create_time,gen_date,add_people,total_score,user_count,add_score,minus_score,other_score,actual_win_score,win_score,tenant_id)
+        select now() create_time,#{date} gen_date,ifnull(u.add_people,0),ifnull(u.total_score,0),ifnull(score.user_count,0),ifnull(o.add_score,0),ifnull(o.minus_score,0),ifnull(o.other_score,0),ifnull(o.actual_win_score,0),ifnull(score.win_score,0),dept.dept_id tenant_id
+        from sys_dept dept
+        left join (select dept_id,ifnull( count(case when create_time BETWEEN #{date} and DATE_ADD(#{date}, INTERVAL 1 DAY) then score end) ,0) add_people,ifnull(sum(score),0) total_score from sys_user where `status`='0' and user_type='01' group by dept_id) u on(u.dept_id =dept.dept_id )
+        left join (select tenant_id,ifnull(count(DISTINCT user_id),0) user_count,ifnull(sum(case when `status` = 2 then score end),0) - ifnull(sum(case when `status` = 1 then score end),0) win_score from tb_score_record where `status` in(1,2) and create_time BETWEEN #{date} and DATE_ADD(#{date}, INTERVAL 1 DAY) group by tenant_id) score on(score.tenant_id =dept.dept_id )
+        left join (select tenant_id,ifnull(sum(case when type in(1,3) then score end),0) add_score,ifnull(sum(case when type in(2,4) then score end),0) minus_score,ifnull(sum(case when type not in(1,2,3,4) then score end),0) other_score,
+        ifnull(sum(case when type in(1,3) then score end),0) - ifnull(sum(case when type in(2,4) then score end),0) actual_win_score from tb_order_record where `status` = 1 and create_time BETWEEN #{date} and DATE_ADD(#{date}, INTERVAL 1 DAY) group by tenant_id) o on(o.tenant_id =dept.dept_id )
+    </update>
+
+    <select id="getDataCount" resultType="int">
+        select count(1) FROM tb_win_report where create_time BETWEEN  #{date} and DATE_ADD(#{date}, INTERVAL 1 DAY)
+    </select>
+
+    <update id="updateTbWinReport" parameterType="TbWinReport">
+        update tb_win_report
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="genDate != null">gen_date = #{genDate},</if>
+            <if test="addPeople != null">add_people = #{addPeople},</if>
+            <if test="totalScore != null">total_score = #{totalScore},</if>
+            <if test="userCount != null">user_count = #{userCount},</if>
+            <if test="addScore != null">add_score = #{addScore},</if>
+            <if test="minusScore != null">minus_score = #{minusScore},</if>
+            <if test="otherScore != null">other_score = #{otherScore},</if>
+            <if test="actualWinScore != null">actual_win_score = #{actualWinScore},</if>
+            <if test="winScore != null">win_score = #{winScore},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+        </trim>
+        where id = #{id}
+        <if test="createBy != null  and createBy != ''"> and create_by = #{createBy}</if>
+    </update>
+
+    <delete id="deleteTbWinReportById" parameterType="Long">
+        delete from tb_win_report where id = #{id}
+    </delete>
+
+    <delete id="deleteByRange">
+        delete from tb_win_report where tenant_id = #{tenantId} and create_time between #{startTime} and #{endTime}
+    </delete>
+
+    <delete id="deleteTbWinReportByIds" parameterType="String">
+        delete from tb_win_report where
+        <if test="createBy != null and createBy != ''">  create_by = #{createBy} and</if>
+id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

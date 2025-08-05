@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tenant.business.mapper.TbTenantConfigMapper">
+    
+    <resultMap type="TbTenantConfig" id="TbTenantConfigResult">
+        <result property="id"    column="id"    />
+        <result property="needLoginCode"    column="need_login_code"    />
+        <result property="canInvite"    column="can_invite"    />
+        <result property="inviteCode"    column="invite_code"    />
+        <result property="needSmsCode"    column="need_sms_code"    />
+        <result property="rebotImageId"    column="rebot_image_id"    />
+        <result property="appName"    column="app_name"    />
+        <result property="rebotName"    column="rebot_name"    />
+        <result property="csName"    column="cs_name"    />
+        <result property="popAction"    column="pop_action"    />
+        <result property="arrangement"    column="arrangement"    />
+        <result property="version"    column="version"    />
+        <result property="minAddScore"    column="min_add_score"    />
+        <result property="minMinusScore"    column="min_minus_score"    />
+        <result property="fullMinusScore"    column="full_minus_score"    />
+        <result property="maxMinusCount"    column="max_minus_count"    />
+        <result property="isLimitAdd"    column="is_limit_add"    />
+        <result property="limitAddStarttime"    column="limit_add_starttime"    />
+        <result property="limitAddEndtime"    column="limit_add_endtime"    />
+        <result property="limitAddRemark"    column="limit_add_remark"    />
+        <result property="isLimitMinus"    column="is_limit_minus"    />
+        <result property="limitMinusStarttime"    column="limit_minus_starttime"    />
+        <result property="limitMinusEndtime"    column="limit_minus_endtime"    />
+        <result property="limitMinusRemark"    column="limit_minus_remark"    />
+        <result property="allowChangeWithdraw"    column="allow_change_withdraw"    />
+        <result property="associationWithdraw"    column="association_withdraw"    />
+        <result property="minScore"    column="min_score"    />
+        <result property="openTurntable"    column="open_turntable"    />
+        <result property="turntableScore"    column="turntable_score"    />
+        <result property="showScratchCard"    column="show_scratch_card"    />
+        <result property="offSiteCs"    column="off_site_cs"    />
+        <result property="chatSayHello"    column="chat_say_hello"    />
+        <result property="introduceCommission"    column="introduce_commission"    />
+        <result property="clientUrl"    column="client_url"    />
+        <result property="navUrl"    column="nav_url"    />
+        <result property="closeSection"    column="close_section"    />
+        <result property="aboutUs"    column="about_us"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="turntableRule"    column="turntable_rule"    />
+        <result property="vipGradeDesc"    column="vip_grade_desc"    />
+        <result property="androidUrl"    column="android_url"    />
+        <result property="iosUrl"    column="ios_url"    />
+    </resultMap>
+
+    <sql id="selectTbTenantConfigVo">
+        select * from tb_tenant_config
+    </sql>
+
+    <select id="selectTbTenantConfigList" parameterType="TbTenantConfig" resultMap="TbTenantConfigResult">
+        <include refid="selectTbTenantConfigVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+            <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+        </where>
+    </select>
+
+    <select id="selectTbTenantConfigById" parameterType="Long" resultMap="TbTenantConfigResult">
+        <include refid="selectTbTenantConfigVo"/>
+        where id = #{id}
+    </select>
+    <select id="checkInviteCode" resultMap="TbTenantConfigResult">
+        <include refid="selectTbTenantConfigVo"/>
+        where invite_code = #{inviteCode}
+        limit 1
+    </select>
+    <select id="selectTbTenantConfigByTenantId" parameterType="Long" resultMap="TbTenantConfigResult">
+        <include refid="selectTbTenantConfigVo"/>
+        where tenant_id = #{id}
+    </select>
+        
+    <insert id="insertTbTenantConfig" parameterType="TbTenantConfig" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_tenant_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="needLoginCode != null">need_login_code,</if>
+            <if test="canInvite != null">can_invite,</if>
+            <if test="inviteCode != null">invite_code,</if>
+            <if test="needSmsCode != null">need_sms_code,</if>
+            <if test="rebotImageId != null">rebot_image_id,</if>
+            <if test="appName != null">app_name,</if>
+            <if test="rebotName != null">rebot_name,</if>
+            <if test="csName != null">cs_name,</if>
+            <if test="popAction != null">pop_action,</if>
+            <if test="arrangement != null">arrangement,</if>
+            <if test="version != null">version,</if>
+            <if test="minAddScore != null">min_add_score,</if>
+            <if test="minMinusScore != null">min_minus_score,</if>
+            <if test="fullMinusScore != null">full_minus_score,</if>
+            <if test="maxMinusCount != null">max_minus_count,</if>
+            <if test="isLimitAdd != null">is_limit_add,</if>
+            <if test="limitAddStarttime != null">limit_add_starttime,</if>
+            <if test="limitAddEndtime != null">limit_add_endtime,</if>
+            <if test="limitAddRemark != null">limit_add_remark,</if>
+            <if test="isLimitMinus != null">is_limit_minus,</if>
+            <if test="limitMinusStarttime != null">limit_minus_starttime,</if>
+            <if test="limitMinusEndtime != null">limit_minus_endtime,</if>
+            <if test="limitMinusRemark != null">limit_minus_remark,</if>
+            <if test="allowChangeWithdraw != null">allow_change_withdraw,</if>
+            <if test="associationWithdraw != null">association_withdraw,</if>
+            <if test="minScore != null">min_score,</if>
+            <if test="openTurntable != null">open_turntable,</if>
+            <if test="turntableScore != null">turntable_score,</if>
+            <if test="showScratchCard != null">show_scratch_card,</if>
+            <if test="offSiteCs != null">off_site_cs,</if>
+            <if test="chatSayHello != null">chat_say_hello,</if>
+            <if test="introduceCommission != null">introduce_commission,</if>
+            <if test="clientUrl != null">client_url,</if>
+            <if test="navUrl != null">nav_url,</if>
+            <if test="closeSection != null">close_section,</if>
+            <if test="aboutUs != null">about_us,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="tenantId != null">tenant_id,</if>
+            <if test="turntableRule != null">turntable_rule,</if>
+            <if test="vipGradeDesc != null">vip_grade_desc,</if>
+            <if test="androidUrl != null">android_url,</if>
+            <if test="iosUrl != null">ios_url,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="needLoginCode != null">#{needLoginCode},</if>
+            <if test="canInvite != null">#{canInvite},</if>
+            <if test="inviteCode != null">#{inviteCode},</if>
+            <if test="needSmsCode != null">#{needSmsCode},</if>
+            <if test="rebotImageId != null">#{rebotImageId},</if>
+            <if test="appName != null">#{appName},</if>
+            <if test="rebotName != null">#{rebotName},</if>
+            <if test="csName != null">#{csName},</if>
+            <if test="popAction != null">#{popAction},</if>
+            <if test="arrangement != null">#{arrangement},</if>
+            <if test="version != null">#{version},</if>
+            <if test="minAddScore != null">#{minAddScore},</if>
+            <if test="minMinusScore != null">#{minMinusScore},</if>
+            <if test="fullMinusScore != null">#{fullMinusScore},</if>
+            <if test="maxMinusCount != null">#{maxMinusCount},</if>
+            <if test="isLimitAdd != null">#{isLimitAdd},</if>
+            <if test="limitAddStarttime != null">#{limitAddStarttime},</if>
+            <if test="limitAddEndtime != null">#{limitAddEndtime},</if>
+            <if test="limitAddRemark != null">#{limitAddRemark},</if>
+            <if test="isLimitMinus != null">#{isLimitMinus},</if>
+            <if test="limitMinusStarttime != null">#{limitMinusStarttime},</if>
+            <if test="limitMinusEndtime != null">#{limitMinusEndtime},</if>
+            <if test="limitMinusRemark != null">#{limitMinusRemark},</if>
+            <if test="allowChangeWithdraw != null">#{allowChangeWithdraw},</if>
+            <if test="associationWithdraw != null">#{associationWithdraw},</if>
+            <if test="minScore != null">#{minScore},</if>
+            <if test="openTurntable != null">#{openTurntable},</if>
+            <if test="turntableScore != null">#{turntableScore},</if>
+            <if test="showScratchCard != null">#{showScratchCard},</if>
+            <if test="offSiteCs != null">#{offSiteCs},</if>
+            <if test="chatSayHello != null">#{chatSayHello},</if>
+            <if test="introduceCommission != null">#{introduceCommission},</if>
+            <if test="clientUrl != null">#{clientUrl},</if>
+            <if test="navUrl != null">#{navUrl},</if>
+            <if test="closeSection != null">#{closeSection},</if>
+            <if test="aboutUs != null">#{aboutUs},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+            <if test="turntableRule != null">#{turntableRule},</if>
+            <if test="vipGradeDesc != null">#{vipGradeDesc},</if>
+            <if test="androidUrl != null">#{androidUrl},</if>
+            <if test="iosUrl != null">#{iosUrl},</if>
+         </trim>
+    </insert>
+
+    <insert id="generateTenantConfigs" statementType="CALLABLE">
+        {call generateTenantConfigs(#{tenantId})}
+    </insert>
+
+    <update id="updateTbTenantConfig" parameterType="TbTenantConfig">
+        update tb_tenant_config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="needLoginCode != null">need_login_code = #{needLoginCode},</if>
+            <if test="canInvite != null">can_invite = #{canInvite},</if>
+            <if test="inviteCode != null">invite_code = #{inviteCode},</if>
+            <if test="needSmsCode != null">need_sms_code = #{needSmsCode},</if>
+            <if test="rebotImageId != null">rebot_image_id = #{rebotImageId},</if>
+            <if test="appName != null">app_name = #{appName},</if>
+            <if test="rebotName != null">rebot_name = #{rebotName},</if>
+            <if test="csName != null">cs_name = #{csName},</if>
+            <if test="popAction != null">pop_action = #{popAction},</if>
+            <if test="arrangement != null">arrangement = #{arrangement},</if>
+            <if test="version != null">version = #{version},</if>
+            <if test="minAddScore != null">min_add_score = #{minAddScore},</if>
+            <if test="minMinusScore != null">min_minus_score = #{minMinusScore},</if>
+            <if test="fullMinusScore != null">full_minus_score = #{fullMinusScore},</if>
+            <if test="maxMinusCount != null">max_minus_count = #{maxMinusCount},</if>
+            <if test="isLimitAdd != null">is_limit_add = #{isLimitAdd},</if>
+            <if test="limitAddStarttime != null">limit_add_starttime = #{limitAddStarttime},</if>
+            <if test="limitAddEndtime != null">limit_add_endtime = #{limitAddEndtime},</if>
+            <if test="limitAddRemark != null">limit_add_remark = #{limitAddRemark},</if>
+            <if test="isLimitMinus != null">is_limit_minus = #{isLimitMinus},</if>
+            <if test="limitMinusStarttime != null">limit_minus_starttime = #{limitMinusStarttime},</if>
+            <if test="limitMinusEndtime != null">limit_minus_endtime = #{limitMinusEndtime},</if>
+            <if test="limitMinusRemark != null">limit_minus_remark = #{limitMinusRemark},</if>
+            <if test="allowChangeWithdraw != null">allow_change_withdraw = #{allowChangeWithdraw},</if>
+            <if test="associationWithdraw != null">association_withdraw = #{associationWithdraw},</if>
+            <if test="minScore != null">min_score = #{minScore},</if>
+            <if test="openTurntable != null">open_turntable = #{openTurntable},</if>
+            <if test="turntableScore != null">turntable_score = #{turntableScore},</if>
+            <if test="showScratchCard != null">show_scratch_card = #{showScratchCard},</if>
+            <if test="offSiteCs != null">off_site_cs = #{offSiteCs},</if>
+            <if test="chatSayHello != null">chat_say_hello = #{chatSayHello},</if>
+            <if test="introduceCommission != null">introduce_commission = #{introduceCommission},</if>
+            <if test="clientUrl != null">client_url = #{clientUrl},</if>
+            <if test="navUrl != null">nav_url = #{navUrl},</if>
+            <if test="closeSection != null">close_section = #{closeSection},</if>
+            <if test="aboutUs != null">about_us = #{aboutUs},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+            <if test="turntableRule != null">turntable_rule = #{turntableRule},</if>
+            <if test="vipGradeDesc != null">vip_grade_desc = #{vipGradeDesc},</if>
+            <if test="androidUrl != null">android_url = #{androidUrl},</if>
+            <if test="iosUrl != null">ios_url = #{iosUrl},</if>
+        </trim>
+        where id = #{id}
+        <if test="createBy != null  and createBy != ''"> and create_by = #{createBy}</if>
+    </update>
+
+    <delete id="deleteTbTenantConfigById" parameterType="Long">
+        delete from tb_tenant_config where id = #{id}
+    </delete>
+
+    <delete id="deleteTbTenantConfigByIds" parameterType="String">
+        delete from tb_tenant_config where
+        <if test="createBy != null and createBy != ''">  create_by = #{createBy} and</if>
+id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

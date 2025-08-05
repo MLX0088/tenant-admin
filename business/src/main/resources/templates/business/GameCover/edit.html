@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改游戏类型封面')" />
+    <th:block th:include="include :: bootstrap-fileinput-css"/>
+    <th:block th:include="include :: summernote-css" />
+</head>
+<body class="white-bg">
+    <div class="row col-sm-12">
+        <div class="col-sm-12 alert alert-info alert-dismissable ml-3">
+            <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+            游戏类型封面图宽高比为980:330
+        </div>
+        <div class="form-group col-sm-6" th:if="${tbGameCoverJnd!=null}">
+            <form class="form-horizontal m col-sm-11" id="form-GameCover-edit-Jnd" th:object="${tbGameCoverJnd}">
+                <input name="id" th:field="*{id}" type="hidden">
+                <input name="id" th:field="*{tenantId}" type="hidden">
+                <div class="form-group col-sm-12">
+                    <h1 class="h4 font-weight-bold text-dark">[[*{type}]]</h1>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">类型封面图：</div>
+                    <div class="col">
+                        <img id="coverImagesId_Jnd_img" th:src="(${tbGameCoverJnd.coverImagesId!=null && tbGameCoverJnd.coverImagesId>0}) ? @{'/business/images/'+${tbGameCoverJnd.coverImagesId}} : @{'/img/blank.jpg'}" style="height:150px;" >
+
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">游戏提示一：</div>
+                    <div class="col">
+                        <input name="tips1" th:field="*{tips1}" class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">游戏提示二：</div>
+                    <div class="col">
+                        <input name="tips2" th:field="*{tips2}" class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">游戏介绍：</div>
+                    <div class="col">
+                        <input type="hidden" class="form-control" id="introduce_Jnd_text" name="introduce" th:field="*{introduce}">
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal_introduce_Jnd">点击编辑</button>
+                        <div class="modal inmodal fade" id="myModal_introduce_Jnd" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="margin:0 auto;">
+                                        <h4 class="modal-title">游戏介绍</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="summernote" id="introduce_Jnd" ></div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">更换封面图：</div>
+                    <div class="col">
+                        <input type="hidden" id="coverImagesId_Jnd_text_old" th:value="*{coverImagesId}">
+                        <input type="hidden" id="coverImagesId_Jnd_text" name="coverImagesId" th:field="*{coverImagesId}">
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal_cover_Jnd">更换</button>
+                        <button type="button" class="btn btn-primary btn-sm" onclick="restoreImg('coverImagesId_Jnd_text','coverImagesId_Jnd_img')">还原</button>
+
+                        <div class="modal inmodal fade" id="myModal_cover_Jnd" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="margin:0 auto;">
+                                        <h4 class="modal-title">更换封面</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="file-loading">
+                                            <input class="form-control file-upload" id="coverImagesId_Jnd" name="file" type="file">
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">排序：</div>
+                    <div class="col">
+                        <input name="sort" th:field="*{sort}" class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <button type="button" class="btn btn-primary btn-sm" onclick="submitHandler('form-GameCover-edit-Jnd')">确定编辑</button>
+                </div>
+            </form>
+        </div>
+        <div class="form-group col-sm-6" th:if="${tbGameCoverTw!=null}">
+            <form class="form-horizontal m col-sm-11" id="form-GameCover-edit-Am" th:object="${tbGameCoverTw}">
+                <input name="id" th:field="*{id}" type="hidden">
+                <input name="tenantId" th:field="*{tenantId}" type="hidden">
+                <div class="form-group col-sm-12">
+                    <h1 class="h4 font-weight-bold text-dark">[[*{type}]]</h1>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">类型封面图：</div>
+                    <div class="col">
+                        <img id="coverImagesId_Am_img" th:src="(${tbGameCoverTw.coverImagesId!=null && tbGameCoverTw.coverImagesId>0}) ? @{'/business/images/'+${tbGameCoverTw.coverImagesId}} : @{'/img/blank.jpg'}" style="height:150px;" >
+
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">游戏提示一：</div>
+                    <div class="col">
+                        <input name="tips1" th:field="*{tips1}" class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">游戏提示二：</div>
+                    <div class="col">
+                        <input name="tips2" th:field="*{tips2}" class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">游戏介绍：</div>
+                    <div class="col">
+                        <input type="hidden" class="form-control" id="introduce_Am_text" name="introduce" th:field="*{introduce}">
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal_introduce_Am">点击编辑</button>
+                        <div class="modal inmodal fade" id="myModal_introduce_Am" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="margin:0 auto;">
+                                        <h4 class="modal-title">游戏介绍</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="summernote" id="introduce_Am"></div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">更换封面图：</div>
+                    <div class="col">
+                        <input type="hidden" id="coverImagesId_Am_text_old" th:value="*{coverImagesId}">
+                        <input type="hidden" id="coverImagesId_Am_text" name="coverImagesId" th:field="*{coverImagesId}">
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal_cover_Am">更换</button>
+                        <button type="button" class="btn btn-primary btn-sm" onclick="restoreImg('coverImagesId_Am_text','coverImagesId_Am_img')">还原</button>
+
+                        <div class="modal inmodal fade" id="myModal_cover_Am" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="margin:0 auto;">
+                                        <h4 class="modal-title">更换封面</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="file-loading">
+                                            <input class="form-control file-upload" id="coverImagesId_Am" name="file" type="file">
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <div class="control-label">排序：</div>
+                    <div class="col">
+                        <input name="sort" th:field="*{sort}" class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="form-group row col-sm-12">
+                    <button type="button" class="btn btn-primary btn-sm" onclick="submitHandler('form-GameCover-edit-Am')">确定编辑</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: bootstrap-fileinput-js"/>
+    <th:block th:include="include :: summernote-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "business/GameCover";
+        $("#form-GameCover-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler(id) {
+            if ($.validate.form()) {
+                $.operate.saveModal(prefix + "/edit", $('#'+id).serialize());
+            }
+        }
+
+
+        function restoreImg(name,img){
+            $("#"+name).val($("#"+name+"_old").val());
+            $("input[name='" + name + "']").val($("input[name='" + name + "_old" + "']").val());
+            $("#"+img).attr("src","/business/images/"+$("#"+name+"_old").val());
+        }
+
+        $(".file-upload").each(function (i) {
+            $(this).fileinput({
+                uploadUrl: ctx + 'business/images/imageUpload',
+                initialPreviewAsData: true,
+                maxFileCount: 1,
+                autoReplace: true
+            }).on('fileuploaded', function (event, data, previewId, index) {
+                $("#"+event.currentTarget.id + "_text").val(data.response)
+                $("#"+event.currentTarget.id + "_img").attr("src","/business/images/"+data.response);
+            }).on('fileremoved', function (event, id, index) {
+                $("input[name='" + event.currentTarget.id + "_text" + "']").val('')
+            })
+            $(this).fileinput('_initFileActions');
+        });
+
+        $(function() {
+            $('.summernote').each(function(i) {
+                $('#' + this.id).summernote({
+                    lang: 'zh-CN',
+                    dialogsInBody: true,
+                    callbacks: {
+                        onChange: function(contents, $edittable) {
+                            $("#"+this.id+"_text").val(contents);
+                        },
+                        onImageUpload: function(files) {
+                            var obj = this;
+                            var data = new FormData();
+                            data.append("file", files[0]);
+                            $.ajax({
+                                type: "post",
+                                url: ctx + "common/upload",
+                                data: data,
+                                cache: false,
+                                contentType: false,
+                                processData: false,
+                                dataType: 'json',
+                                success: function(result) {
+                                    if (result.code == web_status.SUCCESS) {
+                                        $('#' + obj.id).summernote('insertImage', result.url);
+                                    } else {
+                                        $.modal.alertError(result.msg);
+                                    }
+                                },
+                                error: function(error) {
+                                    $.modal.alertWarning("图片上传失败。");
+                                }
+                            });
+                        }
+                    }
+                });
+                var content = $("#"+this.id+"_text").val();
+                $('#' + this.id).summernote('code', content);
+            })
+        });
+    </script>
+</body>
+</html>

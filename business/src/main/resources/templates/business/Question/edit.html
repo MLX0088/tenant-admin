@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改问题')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-Question-edit" th:object="${tbQuestion}">
+            <input name="id" th:field="*{id}" type="hidden">
+            <input name="type" th:field="*{type}" type="hidden">
+            <div class="form-group row col-sm-12">
+                <div class="control-label">问题：</div>
+                <div class="col">
+                    <input name="question" th:field="*{question}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row col-sm-12">
+                <div class="control-label">答案：</div>
+                <div class="col">
+                    <textarea name="anwser" class="form-control">[[*{anwser}]]</textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "business/Question";
+        $("#form-Question-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-Question-edit').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

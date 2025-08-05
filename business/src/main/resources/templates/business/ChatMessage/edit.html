@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改消息')" />
+    <th:block th:include="include :: summernote-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-ChatMessage-edit" th:object="${tbChatMessage}">
+            <input name="id" th:field="*{id}" type="hidden">
+        </form>
+    </div>
+
+    <div class="modal inmodal fade" id="myModal_content" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" style="margin:0 auto;">
+                    <h4 class="modal-title">文本内容或图片URL</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="summernote" id="content"></div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: summernote-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "business/ChatMessage";
+        $("#form-ChatMessage-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-ChatMessage-edit').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

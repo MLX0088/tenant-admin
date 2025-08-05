@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改头像管理')" />
+</head>
+<body class="white-bg">
+    <form class="" id="form-Avatar-add">
+        <input type="hidden" name="tenantId" th:value="${tenantId}"/>
+        <input type="hidden" id="headImagesId" name="headImagesId">
+    </form>
+    <div class="col-sm-12" style="margin:20px auto;"><button onclick="avatar();" class="btn btn-primary btn-sm">新增头像</button></div></div>
+    <div class="col-sm-12 row" style="font-size:1.2rem;text-align:center;margin:20px auto;">
+        <div class="ml-5" th:id="'item_'+${avatar.id}" th:each="avatar,loopStatus : ${avatarList}">
+            <div class="mt-2">
+                <img style="max-width:80px;" th:src="${avatar.headImagesId!=null && avatar.headImagesId>0} ? '/business/images/'+${avatar.headImagesId} : '/img/blank.jpg'" class="img-circle" alt="User Image">
+            </div>
+            <div class="mt-2">关联用户人数:<span style="color:blue;font-weight:bold;">[[${avatar.refCount}]]</span></div>
+            <div class="mt-2"><button th:onclick="deleteItem(this);" th:data="${avatar.id}" class="btn btn-danger btn-sm">删除</button></div>
+        </div>
+    </div>
+
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "business/Avatar";
+        $("#form-Avatar-edit").validate({
+            focusCleanup: true
+        });
+
+        function deleteItem(op){
+            var id = $(op).attr('data');
+            var data = {'ids':id};
+            $.operate.saveModal(prefix + "/remove", data, function(result){
+                if (result.code == 0) {
+                    $("#item_"+id).remove();
+                }
+            });
+        }
+
+
+        var layerIndex ;
+        function avatar() {
+	        var url = ctx + 'business/images/avatar/'+0;
+	        layerIndex = top.layer.open({
+        		type: 2,
+        		area: [$(window).width()-100 + 'px', $(window).height()-50 + 'px'],
+        		fix: false,
+        		//不固定
+        		maxmin: true,
+        		shade: 0.3,
+        		title: "修改头像",
+        		content: url,
+        		btn: ['确定', '关闭'],
+        	    // 弹层外区域关闭
+        		shadeClose: true,
+        		yes: function(index, layero) {
+                    var iframeWin = layero.find('iframe')[0];
+                    var result = iframeWin.contentWindow.submitHandler(avatarCallBack);
+                },
+        	    cancel: function(index) {
+        	        return true;
+        	    }
+        	});
+	    }
+	    function avatarCallBack(result) {
+	        if(result>0){
+                top.layer.close(layerIndex);
+                $("#headImagesId").val(result);
+                $.operate.saveModal(prefix + "/add", $('#form-Avatar-add').serialize(), function(result){
+                    if (result.code == 0) {
+                        refreshItem();
+                    }
+
+                });
+            }
+	    }
+
+    </script>
+</body>
+</html>

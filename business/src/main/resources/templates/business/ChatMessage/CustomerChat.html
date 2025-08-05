@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('消息列表')" />
+    <th:block th:include="include :: summernote-css" />
+</head>
+<body class="gray-bg" style="padding:10px 15px;background:#fff">
+     <div id="contentBody" style="display:flex; font-size:17px;font-weight:300;height: 100%;">
+        <div class="member-list" style="width:400px;height:95%;">
+            <div class="search-button row" style="display:flex;width:100%;margin: 0 auto;">
+                <div style="flex:1;">
+                    <input v-model="searchId" name="senderId" placeholder="输入用户ID搜索" class="form-control" type="text" @input="filterContacts">
+                </div>
+                <div>
+                    <a class="btn btn-warning">
+                        搜索
+                    </a>
+                </div>
+            </div>
+            <!-- 联系人列表容器 -->
+            <div class="scrollbar-container">
+                <!-- 加载状态 -->
+                <div v-if="loading" class="loading">加载联系人中...</div>
+
+                <!-- 空状态 -->
+                <div v-else-if="filteredContacts.length === 0" class="loading">
+                    未找到匹配的联系人
+                </div>
+
+                <!-- 联系人列表 -->
+                <div
+                        v-else
+                        v-for="contact in filteredContacts"
+                        :key="contact.senderId"
+                        :class="(selectedContact.senderId==contact.senderId)?'left-msg row col-sm-12 active':'left-msg row col-sm-12'"
+                        @click="fetchMessages(contact)"
+                >
+                    <div class="col-sm-2">
+                    <span style="width: 50px; display: inline-block;">
+                        <img
+                                :src="'/business/images/'+contact.senderHeadImageId"
+                                style="object-fit: cover; width: 50px; height: 50px; border-radius: 50%;"
+                        >
+                    </span>
+                    </div>
+                    <div class="col-sm-10">
+                        <div class="row-content">
+                            <div>
+                                <span >{{ contact.senderUserName }}</span>
+                                <span style="margin-left: 10px;">ID: {{ contact.senderId }}</span>
+                            </div>
+                        </div>
+                        <div class="row-content">
+                            <span class="last-message" v-html="contact.content"></span>
+                            <span v-if="contact.readStatus > 0 && contact.senderId!=0" class="badge badge-danger" style=" display: inline-block; right: 20px; position: absolute;border-radius: 20px;">{{ contact.readStatus }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <div class="content-right ml-4" style="flex:1;display:flex;height:100%;flex-direction: column;">
+            <div class="header mb-3" style="display:flex;width:100%;font-size:20px">
+                <div style="width: 50px;">
+                    <img :src="'/business/images/'+selectedContact.senderHeadImageId" style="object-fit: cover; width: 50px;height: auto;max-height: 50px;">
+                </div>
+                <div style="flex:1">
+                    <div class="row ml-5 mr-5">
+                        <div class="col-sm-6 text_link" @click="openUserInfo(0)">{{selectedContact.senderUserName}}</div>
+                        <div class="col-sm-6 text_link" style="text-align:right;" @click="openUserInfo(2)">投注历史</div>
+                    </div>
+                    <div class="row ml-5 mr-5">
+                        <div class="col-sm-6">ID: {{selectedContact.senderId}}</div>
+                        <div class="col-sm-6 text_link" style="text-align:right;" @click="openUserInfo(3)">订单历史</div>
+                    </div>
+                </div>
+            </div>
+            <div class="main mb-3 pl-2 pr-2 pt-2 pb-2" style="flex:1;display:flex;width:100%;flex-direction: column;background-color:rgb(247, 249, 252);">
+                <div class="el-scrollbar__view" style="">
+                    <div v-for="message in selectedContact.messages" >
+                        <span class="time">{{message.createdTime}}</span>
+                        <div></div>
+                        <div :class="{'message-right':(message.senderId==0),'message-left':(message.senderId!=0)}">
+
+                            <div class="avatar">
+                                <span class="el-avatar el-avatar--circle" style="--el-avatar-size: 45px;">
+                                    <img class="img-circle" :src="'/business/images/'+message.senderHeadImageId" style="object-fit: cover;width:45px;">
+                                </span>
+                            </div>
+                            <div class="message-content el-tooltip__trigger el-tooltip__trigger">
+                                <template v-if="message.type==0">
+                                    <div class="content" v-html="message.content"></div>
+                                </template>
+                                <template v-if="message.type==1">
+                                    <img class='' @click="imageReview('/business/images/'+message.imageId)" style='max-height:500px;' data-target='self' :src='"/business/images/"+message.imageId'/>
+                                </template>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="input-area" style="width:100%">
+                <input type="hidden" v-model="summernoteInput" id="summernote-input" />
+                <div class="summernote" th:id="summernote" style="width:100%"></div>
+                <button type="button" @click="sendMessage" class="btn btn-primary btn-sm" >发送</button>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+     <th:block th:include="include :: summernote-js" />
+     <script th:src="@{/js/sockjs.min.js}"></script>
+     <script th:src="@{/js/stomp.umd.min.js}"></script>
+     <script src="https://unpkg.com/webstomp-client@1.2.6/dist/webstomp.min.js"></script>
+     <script th:src="@{/js/vue.min.js}"></script>
+     <script th:inline="javascript">
+        var prefix = ctx + "business/ChatMessage";
+
+        new Vue({
+            el: '#contentBody',
+            data() {
+                return {
+                    summernoteInput:'',
+                    searchId: '',          // 搜索关键词
+                    contacts: [],          // 原始联系人数据
+                    filteredContacts: [],  // 筛选后的联系人
+                    loading: true,          // 加载状态
+                    selectedContact: {},          //
+                    websocket: null,
+                    connected: false,
+                    messages: [],
+                    stompClient: null,
+                    socket: null
+                };
+            },
+            mounted() {
+                // 组件挂载后获取联系人数据
+                this.fetchContacts();
+            },
+            created() {
+                console.log('created');
+                this.initWebSocket();
+                window.addEventListener('beforeunload', this.disconnect); // 监听页面关闭
+            },
+            beforeDestroy() {
+                this.disconnect();
+                window.removeEventListener('beforeunload', this.disconnect);
+                document.getElementById('contentBody').removeEventListener('visibilitychange', this.handleVisibilityChange);
+
+            },
+            methods: {
+                openUserInfo(index){
+                    var paramStr = index ? '?index='+index : '';
+                    $.modal.openTab("个人中心",ctx + "system/user/edit/"+this.selectedContact.senderId+paramStr)
+                },
+                scrollToBottom(){
+                    this.$nextTick(() => {
+                        $('.main').scrollTop($('.main')[0].scrollHeight);
+                    })
+
+                },
+                imageReview(src){
+                    top.layer.open({
+                        title: false,
+                        type: 1,
+                        closeBtn: true,
+                        shadeClose: true,
+                        area: ['auto', 'auto'],
+                        content: "<img src='" + src + "' style='max-width:70%;'/>"
+                    });
+                },
+                // 初始化连接
+                initWebSocket() {
+                    const protocol = window.location.protocol === 'https:' ? 'https:' : 'http:';
+                    const hostname = window.location.hostname;
+                    const port = window.location.port ? `:${window.location.port}` : '';
+                    const wsUrl = "ws://"+hostname+port+"/ws-chat";
+
+                    const socket = new WebSocket(wsUrl);
+                    this.client = webstomp.over(socket); // 包装为 STOMP 客户端[1,2](@ref)
+
+                    this.client.connect(
+                        {},
+                        () => this.onConnected(),     // 连接成功
+                        (error) => this.onError(error) // 连接失败
+                    );
+                },
+                // 连接成功处理
+                onConnected() {
+                    console.log("STOMP 连接成功");
+                    var vm = this;
+                    // 订阅消息通道
+                    this.client.subscribe('/user/0/queue/private', (message) => {
+                        try {
+                            message = $.parseJSON(message.body);
+                            vm.messages.push(message);
+                            var id = message.senderId==0?message.receiverId:message.senderId;
+                            if(vm.contacts && this.contacts.length>0){
+                                var contains = false;
+                                var contact = null;
+                                var index = 0;
+                                for(var i=0;i<this.contacts.length;i++){
+                                    if(vm.contacts[i].senderId == id){
+                                        if(vm.contacts[i].messages){
+                                            vm.contacts[i].messages.push(message);
+                                        }
+                                        vm.contacts[i].content = message.content;
+                                        vm.contacts[i].createdTime = message.createdTime;
+                                        contains=true;
+                                        contact = this.contacts[i];
+                                        index = i;
+                                    }
+                                }
+
+                                if(!contains){
+                                    message.readStatus = 1;
+                                    vm.contacts.unshift(message);
+                                    return
+                                }
+                                if(index>0){
+                                    vm.contacts.splice(index, 1);
+                                    vm.contacts.unshift(contact);
+                                }
+
+                                if(vm.selectedContact && vm.selectedContact.senderId == id){
+                                    vm.updateReadStatusWithId(contact)
+                                }else{
+                                    contact.readStatus = contact.readStatus+1;
+                                }
+
+                                vm.scrollToBottom();
+                                if(message.senderId>0){
+                                    window.parent.playMsgSound();
+                                }
+                            }else{
+                                vm.contacts = [];
+                                vm.contacts.push(message);
+                                vm.filteredContacts = vm.contacts;
+                            }
+                        } catch (e) {
+                        console.error('消息解析错误:', e);
+                        }
+                    });
+                },
+
+                // 错误处理（自动重连）
+                onError(error) {
+                  console.error("连接失败:", error);
+                  setTimeout(() => this.initWebSocket(), 5000); // 5秒后重连[7](@ref)
+                },
+
+                // 发送消息
+                sendMessage() {
+                   var vm = this;
+                   if(!$('#summernote-input').val()){
+                        $.modal.alertWarning("发送内容不能为空！");
+                        return;
+                   }
+                  if (this.client && this.client.connected) {
+                    var body  = JSON.stringify({
+                        senderId: 0,
+                        receiverId: this.selectedContact.senderId,
+                        content: $('#summernote-input').val(),
+                        type: '0'
+                    })
+                    this.client.send('/business/ChatMessage/chat/private', body);
+                    $('#summernote-input').val('');
+                    $('#summernote').summernote('code', '');
+                  }
+                },
+                updateReadStatus(contact) {
+                    const vm = this; // 保存Vue实例引用
+                    let param = {pageSize:50,pageNum:0,receiverId:'0',senderId:contact.senderId,id:null}
+                    $.operate.postWithoutAlert(prefix+"/updateReadStatus",param,function(result){
+                        if (result.code == 0){
+                            contact.readStatus = 0;
+                        }
+                    });
+                },
+                updateReadStatusWithId(contact) {
+                    const vm = this; // 保存Vue实例引用
+                    let param = {id:contact.id}
+                    $.operate.postWithoutAlert(prefix+"/updateReadStatus",param,function(result){
+                        if (result.code == 0){
+                            contact.readStatus = 0;
+                        }
+                    });
+                },
+                // 获取联系人数据
+                fetchContacts() {
+                    const vm = this; // 保存Vue实例引用
+                    $.operate.get(prefix+"/contactList",function(result){
+                        if (result.code == 0){
+                            vm.contacts = result.data;
+                            vm.filteredContacts = vm.contacts;
+
+                            var message = localStorage.getItem("chatUser");
+                            if(message){
+                                localStorage.removeItem("chatUser");
+                                message = JSON.parse(message);
+                                var contains = false;
+                                var contact = null;
+                                var index = 0;
+                                for(var i=0;i<vm.contacts.length;i++){
+                                    if(vm.contacts[i].senderId == message.senderId){
+                                        contains=true;
+                                        contact = vm.contacts[i];
+                                        index = i;
+                                    }
+                                }
+
+                                if(!contains){
+                                    vm.contacts.unshift(message);
+                                    vm.filteredContacts = vm.contacts;
+                                    vm.selectedContact = message;
+                                    vm.loading = false;
+                                    return;
+                                }
+                                if(index>0){
+                                    vm.contacts.splice(index, 1);
+                                    vm.contacts.unshift(contact);
+                                }
+                                vm.fetchMessages(contact);
+                            }
+                            vm.loading = false;
+                        }
+                    });
+                },
+                 // 获取联系人数据
+                fetchMessages(contact) {
+                    const vm = this; // 保存Vue实例引用
+                    vm.selectedContact = contact;
+                    if(vm.selectedContact.messages){
+                        vm.scrollToBottom();
+                        vm.updateReadStatus(contact);
+                        return;
+                    }
+                    if(contact.messages){
+                        vm.selectedContact.messages = contact.messages;
+                        vm.updateReadStatus(contact);
+                        vm.scrollToBottom();
+                    }else{
+                        let param = {pageSize:50,pageNum:0,receiverId:contact.senderId,senderId:'0',id:null}
+                        $.operate.postWithoutAlert(prefix+"/listForPrivate",param,function(result){
+                            if (result.code == 0){
+                                vm.$set(vm.selectedContact, 'messages', result.rows);
+                                contact.messages = result.rows;
+                                contact.messages.reverse();
+                                vm.updateReadStatus(contact);
+                                vm.scrollToBottom();
+
+                            }
+                        });
+                    }
+
+                },
+
+                // 筛选联系人
+                filterContacts() {
+
+                    const vm = this; // 保存Vue实例引用
+                    clearTimeout(this.debounceTimer);
+                    this.debounceTimer = setTimeout(() => {
+                      // 实际筛选逻辑
+                        if (!vm.searchId) {
+                            vm.filteredContacts = vm.contacts;
+                            return;
+                        }
+
+                        const keyword = vm.searchId.toLowerCase();
+                        vm.filteredContacts = vm.contacts.filter(contact =>
+                            contact.senderUserName.toLowerCase().includes(keyword) ||
+                            contact.senderId.toString().includes(keyword)
+                        );
+                    }, 300); // 300ms延迟
+
+                }
+            }
+        });
+
+
+
+        $(function() {
+            $('.summernote').each(function(i) {
+                $('#' + this.id).summernote({
+                    lang: 'zh-CN',
+                    dialogsInBody: true,
+                    height: 200,
+                    callbacks: {
+                        onChange: function(contents, $edittable) {
+                            $("#"+this.id+"-input").val(contents);
+                        },
+                        onImageUpload: function(files) {
+                            var obj = this;
+                            var data = new FormData();
+                            data.append("file", files[0]);
+                            $.ajax({
+                                type: "post",
+                                url: ctx + "common/upload",
+                                data: data,
+                                cache: false,
+                                contentType: false,
+                                processData: false,
+                                dataType: 'json',
+                                success: function(result) {
+                                    if (result.code == web_status.SUCCESS) {
+                                        $('#' + obj.id).summernote('insertImage', result.url);
+                                    } else {
+                                        $.modal.alertError(result.msg);
+                                    }
+                                },
+                                error: function(error) {
+                                    $.modal.alertWarning("图片上传失败。");
+                                }
+                            });
+                        }
+                    }
+                });
+                var content = $("#"+this.id+"-input").val();
+                $('#' + this.id).summernote('code', content);
+            })
+
+        });
+    </script>
+</body>
+<style>
+.main{
+    flex: 1;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scrollbar-width: auto;
+    scrollbar-color: #888 #fff;
+}
+.left-msg hover{
+    background-color:#dfdede;
+}
+p{
+    margin-bottom:0 !important;
+}
+::-webkit-scrollbar-track {
+    background: #fff; /* 轨道颜色 */
+}
+.member-list{
+    padding: .625rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%
+}
+
+.search-button{
+    padding: .625rem;
+    background-color: #f5f5f5;
+    font-weight: 600
+}
+
+.scrollbar-container{
+    padding: .625rem;
+    flex:1;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scrollbar-width: auto;
+    scrollbar-color: #888 #fff; /* 滑块颜色和轨道颜色 */
+}
+
+.member-list input{
+    width: 100%;
+    padding: .3125rem;
+    margin-bottom: .625rem
+}
+
+.input-container input{
+    flex: 1;
+    padding: .3125rem;
+    margin-right: .625rem
+}
+
+.input-container button{
+    padding: .3125rem .625rem;
+    background-color: #409eff;
+    color: #fff;
+    border: none;
+    cursor: pointer
+}
+
+.search-button{
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1.875rem
+}
+
+.left-msg{
+    max-height: 100%;
+    border-bottom: .0625rem solid #dcdfe6;
+    padding: .75rem 0;
+    cursor: pointer;
+    color: black;
+}
+
+.left-msg.active{
+    background-image: linear-gradient(#accbee,#ace0f9);
+    cursor: pointer;
+}
+
+.row-content{
+    display: flex;
+    justify-content: space-between;
+    line-height:25px;
+}
+
+.last-message{
+    max-width: 80%;
+    white-space: nowrap;
+    overflow: hidden；
+
+}
+
+.custom-badge{
+    display: inline-block;
+    width: .75rem;
+    height: .75rem;
+    background-color: #f56c6c;
+    border-radius: 50%;
+    margin-right: 1.25rem
+}
+
+.header_topic{
+    border-top: .0625rem solid var(--el-border-color);
+    display: flex;
+    justify-content: space-between;
+    padding: .3125rem;
+    border-bottom: .0625rem solid var(--el-border-color)
+}
+
+.text_link{
+    font-size: 18px;
+    font-weight: bolder;
+    color:#409eff;
+    cursor: pointer
+}
+
+.message-left,.message-right{
+    display: flex;
+    align-items: flex-start;
+    margin: .9375rem 0
+}
+
+.time{
+    font-size: .8125rem;
+    color: #888;
+    margin-bottom: .1875rem;
+    text-align: center;
+    display: block
+}
+
+.message-content{
+    max-width: 35%;
+    border-radius: .5rem;
+    padding: .625rem;
+    color: #000;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    display: flex;
+    flex-direction: column
+}
+
+.message-contentp {
+    margin: 0!important;
+    padding: 0!important
+}
+
+.message-left{
+    justify-content: flex-start;
+    margin-left: .625rem
+}
+
+.message-left .message-content{
+    background-color: #fff;
+    margin-left: .625rem
+}
+
+.message-right{
+    justify-content: flex-end
+}
+
+.message-right .avatar{
+    order: 2;
+    margin-right: .625rem
+}
+
+.message-right .message-content{
+    background-color: #fff;
+    margin-right: .625rem
+}
+
+.dialog_content{
+    display: flex;
+    flex-direction: column;
+    gap: .625rem;
+    padding: .9375rem 1.25rem;
+    font-weight: 600
+}
+</style>
+</html>

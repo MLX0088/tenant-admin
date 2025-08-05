@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('开奖记录列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div row">
+        <div class="row col-sm-6">
+            <div class="col-sm-12 search-collapse">
+                <form id="jnd-formId">
+                    <input type="hidden" name="tenantId" th:value="${selectDeptId}"/>
+                    <input type="hidden" name="gameType" value="0"/>
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>期号：</label>
+                                <input type="text" name="periodNumber"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                                <button class="btn btn-primary btn-sm" onclick="$.modal.open('手动开奖设置','/business/DrawManual/add',500,600)">手动开奖</button>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="jnd-toolbar" role="group">
+                <h2>加拿大</h2>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="jnd-bootstrap-table"></table>
+            </div>
+        </div>
+
+         <div style="margin-left: 10px;" class="row col-sm-6">
+             <div class="col-sm-12 search-collapse">
+                 <form id="am-formId">
+                     <input type="hidden" name="tenantId" th:value="${tenantId}"/>
+                     <input type="hidden" name="gameType" value="2"/>
+                     <div class="select-list">
+                         <ul>
+                             <li>
+                                 <label>期号：</label>
+                                 <input type="text" name="periodNumber"/>
+                             </li>
+                             <li>
+                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                 <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                             </li>
+                         </ul>
+                     </div>
+                 </form>
+             </div>
+
+             <div class="btn-group-sm" id="am-toolbar" role="group">
+                 <h2>台湾</h2>
+             </div>
+             <div class="col-sm-12 select-table table-striped">
+                 <table id="am-bootstrap-table"></table>
+             </div>
+         </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('business:DrawRecord:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('business:DrawRecord:remove')}]];
+        var statusDatas = [[${@dict.getType('lottery_status')}]];
+        var prefix = ctx + "business/DrawRecord";
+
+        $(function() {
+            var jnd_options = {
+            	id: "jnd-bootstrap-table",
+            	toolbar: "jnd-toolbar",
+            	formId: "jnd-formId",
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "开奖记录",
+                columns: [{
+                    field: 'id',
+                    title: '自增ID',
+                    visible: false
+                },
+                {
+                    field: 'periodNumber',
+                    title: '期号',
+                },
+                {
+                    field: 'result',
+                    title: '结果',
+                },
+                {
+                    field: 'expectOpenTime',
+                    title: '理论开盘时间',
+                },
+                {
+                    field: 'actualOpenTime',
+                    title: '实际开盘时间',
+                },
+                {
+                    field: 'diffSecond',
+                    title: '差秒',
+                },
+                {
+                    title: '注项情况',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-sm" href="javascript:void(0)" onclick="$.modal.openTab(\'注项记录\',\'/business/ScoreRecord?periodNumber=\' + row.periodNumber ,false)"><i class="fa fa-edit"></i>查看</a> ');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(jnd_options);
+        });
+
+        $(function() {
+            var am_options = {
+            	id: "am-bootstrap-table",
+            	toolbar: "am-toolbar",
+            	formId: "am-formId",
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "开奖记录",
+                columns: [{
+                    field: 'id',
+                    title: '自增ID',
+                    visible: false
+                },
+                {
+                    field: 'periodNumber',
+                    title: '期号',
+                },
+                {
+                    field: 'result',
+                    title: '结果',
+                },
+                {
+                    field: 'expectOpenTime',
+                    title: '理论开盘时间',
+                },
+                {
+                    field: 'actualOpenTime',
+                    title: '实际开盘时间',
+                },
+                {
+                    field: 'diffSecond',
+                    title: '差秒',
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-sm" href="javascript:void(0)" onclick="$.modal.openTab(\'注项记录\',\'/business/ScoreRecord?periodNumber='+row.periodNumber+'\' ,true)"><i class="fa fa-edit"></i>查看</a> ');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(am_options);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增机器人投注记录')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-RebotScoreRecord-add">
+            <div class="form-group row">    
+                <div class="control-label">机器人ID：</div>
+                <div class="">
+                    <input name="robotId" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">开奖记录id：</div>
+                <div class="">
+                    <input name="drawId" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">房间：</div>
+                <div class="">
+                    <input name="roomName" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">期号：</div>
+                <div class="">
+                    <input name="periodNumber" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">开奖结果：</div>
+                <div class="">
+                    <input name="result" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">投码：</div>
+                <div class="">
+                    <input name="betting" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">总投分：</div>
+                <div class="">
+                    <input name="score" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">盈亏分：</div>
+                <div class="">
+                    <input name="winScore" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">当前余分：</div>
+                <div class="">
+                    <input name="leftScore" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="control-label">备注：</div>
+                <div class="">
+                    <textarea name="remark" class="form-control"></textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "business/RebotScoreRecord"
+        $("#form-RebotScoreRecord-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-RebotScoreRecord-add').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

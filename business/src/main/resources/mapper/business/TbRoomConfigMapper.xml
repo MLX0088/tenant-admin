@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tenant.business.mapper.TbRoomConfigMapper">
+    
+    <resultMap type="TbRoomConfig" id="TbRoomConfigResult">
+        <result property="id"    column="id"    />
+        <result property="roomName"    column="room_name"    />
+        <result property="maxScore"    column="max_score"    />
+        <result property="closeSecond"    column="close_second"    />
+        <result property="isOpen"    column="is_open"    />
+        <result property="hideRoom"    column="hide_room"    />
+        <result property="isBackPressure"    column="is_back_pressure"    />
+        <result property="isTailCode"    column="is_tail_code"    />
+        <result property="isRobot"    column="is_robot"    />
+        <result property="isBanned"    column="is_banned"    />
+        <result property="rateRule"    column="rate_rule"    />
+        <result property="superIgnoreRule"    column="super_ignore_rule"    />
+        <result property="handleNumber"    column="handle_number"    />
+        <result property="handleNumberRule"    column="handle_number_rule"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <association property="odds"     column="room_name" javaType="TbRoomOdds" resultMap="TbRoomOddsResult" />
+        <collection  property="pushList"   javaType="java.util.List"        resultMap="TbRoomPushResult" />
+    </resultMap>
+    <resultMap type="TbRoomPush" id="TbRoomPushResult">
+        <result property="id"    column="id"    />
+        <result property="roomConfigId"    column="room_config_id"    />
+        <result property="second"    column="second"    />
+        <result property="content"    column="content"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="roomName"    column="room_name"    />
+    </resultMap>
+    <resultMap type="TbRoomOdds" id="TbRoomOddsResult" >
+        <result property="id"    column="id"    />
+        <result property="roomConfigId"    column="room_config_id"    />
+        <result property="rate0"    column="rate0"    />
+        <result property="maxScore0"    column="max_score0"    />
+        <result property="rate1"    column="rate1"    />
+        <result property="maxScore1"    column="max_score1"    />
+        <result property="rate2"    column="rate2"    />
+        <result property="maxScore2"    column="max_score2"    />
+        <result property="rate3"    column="rate3"    />
+        <result property="maxScore3"    column="max_score3"    />
+        <result property="rate4"    column="rate4"    />
+        <result property="maxScore4"    column="max_score4"    />
+        <result property="rate5"    column="rate5"    />
+        <result property="maxScore5"    column="max_score5"    />
+        <result property="rate6"    column="rate6"    />
+        <result property="maxScore6"    column="max_score6"    />
+        <result property="rate7"    column="rate7"    />
+        <result property="maxScore7"    column="max_score7"    />
+        <result property="rate8"    column="rate8"    />
+        <result property="maxScore8"    column="max_score8"    />
+        <result property="rate9"    column="rate9"    />
+        <result property="maxScore9"    column="max_score9"    />
+        <result property="rate10"    column="rate10"    />
+        <result property="maxScore10"    column="max_score10"    />
+        <result property="rate11"    column="rate11"    />
+        <result property="maxScore11"    column="max_score11"    />
+        <result property="rate12"    column="rate12"    />
+        <result property="maxScore12"    column="max_score12"    />
+        <result property="rate13"    column="rate13"    />
+        <result property="maxScore13"    column="max_score13"    />
+        <result property="rate14"    column="rate14"    />
+        <result property="maxScore14"    column="max_score14"    />
+        <result property="rate15"    column="rate15"    />
+        <result property="maxScore15"    column="max_score15"    />
+        <result property="rate16"    column="rate16"    />
+        <result property="maxScore16"    column="max_score16"    />
+        <result property="rate17"    column="rate17"    />
+        <result property="maxScore17"    column="max_score17"    />
+        <result property="rate18"    column="rate18"    />
+        <result property="maxScore18"    column="max_score18"    />
+        <result property="rate19"    column="rate19"    />
+        <result property="maxScore19"    column="max_score19"    />
+        <result property="rate20"    column="rate20"    />
+        <result property="maxScore20"    column="max_score20"    />
+        <result property="rate21"    column="rate21"    />
+        <result property="maxScore21"    column="max_score21"    />
+        <result property="rate22"    column="rate22"    />
+        <result property="maxScore22"    column="max_score22"    />
+        <result property="rate23"    column="rate23"    />
+        <result property="maxScore23"    column="max_score23"    />
+        <result property="rate24"    column="rate24"    />
+        <result property="maxScore24"    column="max_score24"    />
+        <result property="rate25"    column="rate25"    />
+        <result property="maxScore25"    column="max_score25"    />
+        <result property="rate26"    column="rate26"    />
+        <result property="maxScore26"    column="max_score26"    />
+        <result property="rate27"    column="rate27"    />
+        <result property="maxScore27"    column="max_score27"    />
+        <result property="rateBig"    column="rate_big"    />
+        <result property="maxScoreBig"    column="max_score_big"    />
+        <result property="rateSmall"    column="rate_small"    />
+        <result property="maxScoreSmall"    column="max_score_small"    />
+        <result property="rateSingle"    column="rate_single"    />
+        <result property="maxScoreSingle"    column="max_score_single"    />
+        <result property="rateDoubleSingle"    column="rate_double_single"    />
+        <result property="maxScoreDoubleSingle"    column="max_score_double_single"    />
+        <result property="rateBigSingle"    column="rate_big_single"    />
+        <result property="maxScoreBigSingle"    column="max_score_big_single"    />
+        <result property="rateBigDouble"    column="rate_big_double"    />
+        <result property="maxScoreBigDouble"    column="max_score_big_double"    />
+        <result property="rateSmallSingle"    column="rate_small_single"    />
+        <result property="maxScoreSmallSingle"    column="max_score_small_single"    />
+        <result property="rateSmallDouble"    column="rate_small_double"    />
+        <result property="maxScoreSmallDouble"    column="max_score_small_double"    />
+        <result property="ratePairs"    column="rate_pairs"    />
+        <result property="maxScorePairs"    column="max_score_pairs"    />
+        <result property="rateStraight"    column="rate_straight"    />
+        <result property="maxScoreStraight"    column="max_score_straight"    />
+        <result property="rateAllSame"    column="rate_all_same"    />
+        <result property="maxScoreAllSame"    column="max_score_all_same"    />
+        <result property="rateMax"    column="rate_max"    />
+        <result property="maxScoreMax"    column="max_score_max"    />
+        <result property="rateMin"    column="rate_min"    />
+        <result property="maxScoreMin"    column="max_score_min"    />
+        <result property="rateDragon"    column="rate_dragon"    />
+        <result property="maxScoreDragon"    column="max_score_dragon"    />
+        <result property="rateTiger"    column="rate_tiger"    />
+        <result property="maxScoreTiger"    column="max_score_tiger"    />
+        <result property="rateLeopard"    column="rate_leopard"    />
+        <result property="maxScoreLeopard"    column="max_score_leopard"    />
+        <result property="rateTailBig"    column="rate_tail_big"    />
+        <result property="maxScoreTailBig"    column="max_score_tail_big"    />
+        <result property="rateTailSmall"    column="rate_tail_small"    />
+        <result property="maxScoreTailSmall"    column="max_score_tail_small"    />
+        <result property="rateTailSingle"    column="rate_tail_single"    />
+        <result property="maxScoreTailSingle"    column="max_score_tail_single"    />
+        <result property="rateTailDouble"    column="rate_tail_double"    />
+        <result property="maxScoreTailDouble"    column="max_score_tail_double"    />
+        <result property="rateTailBigDouble"    column="rate_tail_big_double"    />
+        <result property="maxScoreTailBigDouble"    column="max_score_tail_big_double"    />
+        <result property="rateTailBigSingle"    column="rate_tail_big_single"    />
+        <result property="maxScoreTailBigSingle"    column="max_score_tail_big_single"    />
+        <result property="rateTailSmallDouble"    column="rate_tail_small_double"    />
+        <result property="maxScoreTailSmallDouble"    column="max_score_tail_small_double"    />
+        <result property="rateTailSmallSingle"    column="rate_tail_small_single"    />
+        <result property="maxScoreTailSmallSingle"    column="max_score_tail_small_single"    />
+        <result property="rateTail1"    column="rate_tail_1"    />
+        <result property="maxScoreTail1"    column="max_score_tail_1"    />
+        <result property="rateTail2"    column="rate_tail_2"    />
+        <result property="maxScoreTail2"    column="max_score_tail_2"    />
+        <result property="rateTail3"    column="rate_tail_3"    />
+        <result property="maxScoreTail3"    column="max_score_tail_3"    />
+        <result property="rateTail4"    column="rate_tail_4"    />
+        <result property="maxScoreTail4"    column="max_score_tail_4"    />
+        <result property="rateTail5"    column="rate_tail_5"    />
+        <result property="maxScoreTail5"    column="max_score_tail_5"    />
+        <result property="rateTail6"    column="rate_tail_6"    />
+        <result property="maxScoreTail6"    column="max_score_tail_6"    />
+        <result property="rateTail7"    column="rate_tail_7"    />
+        <result property="maxScoreTail7"    column="max_score_tail_7"    />
+        <result property="rateTail8"    column="rate_tail_8"    />
+        <result property="maxScoreTail8"    column="max_score_tail_8"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="roomName"    column="room_name"    />
+    </resultMap>
+
+    <sql id="selectUserVo">
+        select  u.user_id,u.head_image_id ,u.score ,u.qq_number ,u.grade ,u.total_amount ,u.permission ,u.channal_id ,u.regist_channal_id, u.dept_id, u.login_name, u.user_name, u.user_type, u.email, u.avatar, u.phonenumber, u.sex, u.password, u.salt, u.status, u.del_flag, u.login_ip, u.login_date, u.pwd_update_date, u.create_time, u.remark,
+        d.dept_id, d.parent_id, d.ancestors, d.dept_name, d.order_num, d.leader, d.status as dept_status,
+        r.role_id, r.role_name, r.role_key, r.role_sort, r.data_scope, r.status as role_status
+        from sys_user u
+        left join sys_dept d on u.dept_id = d.dept_id
+        left join sys_user_role ur on u.user_id = ur.user_id
+        left join sys_role r on r.role_id = ur.role_id
+    </sql>
+
+    <sql id="selectTbRoomConfigVo">
+        select config.*,odds.*,push.* from tb_room_config config
+        left join tb_room_odds odds on config.tenant_id=odds.tenant_id and config.room_name=odds.room_name
+        left join tb_room_push push on config.tenant_id=push.tenant_id and config.room_name=push.room_name
+    </sql>
+
+    <select id="selectTbRoomConfigList" parameterType="TbRoomConfig" resultMap="TbRoomConfigResult">
+        <include refid="selectTbRoomConfigVo"/>
+        <where>  
+            <if test="id != null "> and config.id = #{id}</if>
+            <if test="roomName != null  and roomName != ''"> and config.room_name = #{roomName}</if>
+            <if test="tenantId != null "> and config.tenant_id = #{tenantId}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbRoomConfigById" parameterType="Long" resultMap="TbRoomConfigResult">
+        <include refid="selectTbRoomConfigVo"/>
+        where config.id = #{id}
+    </select>
+        
+    <insert id="insertTbRoomConfig" parameterType="TbRoomConfig" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_room_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roomName != null">room_name,</if>
+            <if test="maxScore != null">max_score,</if>
+            <if test="closeSecond != null">close_second,</if>
+            <if test="isOpen != null">is_open,</if>
+            <if test="hideRoom != null">hide_room,</if>
+            <if test="isBackPressure != null">is_back_pressure,</if>
+            <if test="isTailCode != null">is_tail_code,</if>
+            <if test="isRobot != null">is_robot,</if>
+            <if test="isBanned != null">is_banned,</if>
+            <if test="rateRule != null">rate_rule,</if>
+            <if test="superIgnoreRule != null">super_ignore_rule,</if>
+            <if test="handleNumber != null">handle_number,</if>
+            <if test="handleNumberRule != null">handle_number_rule,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="tenantId != null">tenant_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roomName != null">#{roomName},</if>
+            <if test="maxScore != null">#{maxScore},</if>
+            <if test="closeSecond != null">#{closeSecond},</if>
+            <if test="isOpen != null">#{isOpen},</if>
+            <if test="hideRoom != null">#{hideRoom},</if>
+            <if test="isBackPressure != null">#{isBackPressure},</if>
+            <if test="isTailCode != null">#{isTailCode},</if>
+            <if test="isRobot != null">#{isRobot},</if>
+            <if test="isBanned != null">#{isBanned},</if>
+            <if test="rateRule != null">#{rateRule},</if>
+            <if test="superIgnoreRule != null">#{superIgnoreRule},</if>
+            <if test="handleNumber != null">#{handleNumber},</if>
+            <if test="handleNumberRule != null">#{handleNumberRule},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbRoomConfig" parameterType="TbRoomConfig">
+        update tb_room_config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roomName != null">room_name = #{roomName},</if>
+            <if test="maxScore != null">max_score = #{maxScore},</if>
+            <if test="closeSecond != null">close_second = #{closeSecond},</if>
+            <if test="isOpen != null">is_open = #{isOpen},</if>
+            <if test="hideRoom != null">hide_room = #{hideRoom},</if>
+            <if test="isBackPressure != null">is_back_pressure = #{isBackPressure},</if>
+            <if test="isTailCode != null">is_tail_code = #{isTailCode},</if>
+            <if test="isRobot != null">is_robot = #{isRobot},</if>
+            <if test="isBanned != null">is_banned = #{isBanned},</if>
+            <if test="rateRule != null">rate_rule = #{rateRule},</if>
+            <if test="superIgnoreRule != null">super_ignore_rule = #{superIgnoreRule},</if>
+            <if test="handleNumber != null">handle_number = #{handleNumber},</if>
+            <if test="handleNumberRule != null">handle_number_rule = #{handleNumberRule},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+        </trim>
+        where id = #{id}
+        <if test="createBy != null  and createBy != ''"> and create_by = #{createBy}</if>
+    </update>
+
+    <delete id="deleteTbRoomConfigById" parameterType="Long">
+        delete from tb_room_config where id = #{id}
+    </delete>
+
+    <delete id="deleteTbRoomConfigByIds" parameterType="String">
+        delete from tb_room_config where
+        <if test="createBy != null and createBy != ''">  create_by = #{createBy} and</if>
+id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

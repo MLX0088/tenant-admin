@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: header('个人中心')" />
+	<th:block th:include="include :: select2-css" />
+</head>
+<body>
+<div class="main-content">
+
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" th:class="${index==null?'nav-link active':'nav-link'}" id="edit-tab" data-toggle="tab" data-target="#edit" type="button" role="tab" aria-controls="home" th:aria-selected="${index==null?'true':'false'}">编辑用户</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="account-tab" data-toggle="tab" data-target="#account" type="button" role="tab" aria-controls="profile" aria-selected="false">收款账号</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" th:class="${index==2?'nav-link active':'nav-link'}" id="score-tab" data-toggle="tab" data-target="#score" type="button" role="tab" aria-controls="contact" th:aria-selected="${index==2?'true':'false'}">投注历史</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" th:class="${index==3?'nav-link active':'nav-link'}" id="order-tab" data-toggle="tab" data-target="#order" type="button" role="tab" aria-controls="contact" th:aria-selected="${index==3?'true':'false'}">订单历史</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="win-tab" data-toggle="tab" data-target="#win" type="button" role="tab" aria-controls="contact" aria-selected="false">盈亏情况</button>
+        </li>
+
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div th:class="${index==null?'tab-pane fade show active':'tab-pane fade'}" id="edit" role="tabpanel" aria-labelledby="edit-tab">
+
+                <form class="form-horizontal mt-5" id="form-user-edit" th:object="${user}">
+                    <input name="userId"  type="hidden"  th:field="*{userId}" />
+                    <input name="deptId"  type="hidden"  th:field="*{deptId}" id="treeId"/>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">用户id：</label>
+                                <div class="col-sm-8">
+                                    <label class="font-weight-bold">[[${userId}]]</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group row offset-sm-2">
+                                <div><button class="btn btn-info">操作记录</button></div>
+                                <div class="ml-2"><button class="btn btn-info" th:onclick="openChat([[${user.userId}]],[[${user.userType}]],[[${user.userName}]],[[${user.headImageId}]])">私聊</button></div>
+                            </div>   
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">余分：</label>
+                                <div class="col-sm-8">
+                                    <label class="font-weight-bold">[[*{score}]]</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group row offset-sm-2">
+                                <div class="">
+                                    <select name="type" class="form-control m-b" th:with="type=${@dict.getType('finance_type')}">
+                                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                    </select>
+                                </div>
+                                <div class="ml-2">
+                                    <input name="userName" placeholder="分" class="form-control" type="number" >
+                                </div>
+                                <div class="ml-2">
+                                    <input name="userName" placeholder="请输入备注" class="form-control" type="text" maxlength="30" >
+                                </div>
+                                <div class="ml-2">
+                                    <button class="btn btn-primary">确定</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label is-required">用户名称：</label>
+                                <div class="col-sm-8">
+                                    <input name="userName" placeholder="请输入用户名称" class="form-control" type="text" maxlength="30" th:field="*{userName}" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label is-required">手机号码：</label>
+                                <div class="col-sm-8">
+                                    <div class="input-group">
+                                        <input name="phonenumber" placeholder="请输入手机号码" class="form-control" type="text" maxlength="11" th:field="*{phonenumber}">
+                                        <span class="input-group-addon"><i class="fa fa-mobile"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">QQ：</label>
+                                <div class="col-sm-8">
+                                    <div class="input-group">
+                                        <input name="qqNumber" class="form-control" type="text" maxlength="50" placeholder="请输入QQ" th:field="*{qqNumber}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label is-required">登录账号：</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" type="text" readonly="true" th:field="*{loginName}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">用户状态：</label>
+                                <div class="col-sm-8">
+                                    <label class="toggle-switch switch-solid">
+                                        <input type="checkbox" id="status" th:checked="${user.status == '0' ? true : false}">
+                                        <span></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">用户性别：</label>
+                                <div class="col-sm-8">
+                                    <select name="sex" class="form-control m-b" th:with="type=${@dict.getType('sys_user_sex')}">
+                                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{sex}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label is-required">会员等级：</label>
+                                <div class="col-sm-8">
+                                    <input name="userName" placeholder="请输入会员等级" class="form-control" type="text" maxlength="30" th:field="*{grade}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">总流水：</label>
+                                <div class="col-sm-8">
+                                    <label class="font-weight-bold">[[*{totalAmount}]]</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">权限：</label>
+                                <div class="col-sm-8">
+                                    <label class="font-weight-bold">[[*{permission}]]</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">备注：</label>
+                                <div class="col-sm-8">
+                                    <textarea name="remark" class="form-control" rows="3">[[*{remark}]]</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">代理渠道：</label>
+                                <div class="col-sm-8">
+                                    <select name="sex" class="form-control m-b" th:with="type=${@dict.getType('sys_user_sex')}">
+                                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{sex}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">来源渠道：</label>
+                                <div class="col-sm-8">
+                                    <label class="font-weight-bold">[[*{registChannalId}]]</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">最后登录IP：</label>
+                                <div class="col-sm-8">
+                                    <label class="font-weight-bold">[[*{loginIp}]]</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">最后登录时间：</label>
+                                <div class="col-sm-8">
+                                    <label class="font-weight-bold">[[*{loginDate}]]</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            <div class="row">
+                <div class="col-sm-offset-5 col-sm-10">
+                    <button type="button" class="btn btn-sm btn-primary" onclick="submitHandler()"><i class="fa fa-check"></i>保 存</button>&nbsp;
+                    <button type="button" class="btn btn-sm btn-danger" onclick="closeItem()"><i class="fa fa-reply-all"></i>关 闭 </button>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="account" role="tabpanel" aria-labelledby="account-tab">
+            <form id="account-formId">
+                <input type="hidden" name="userId" th:value="${userId}"/>
+            </form>
+            <div class="btn-group-sm" id="toolbar-account" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="business:VipPay:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="account-bootstrap-table"></table>
+            </div>
+        </div>
+        <div th:class="${index==2?'tab-pane fade show active':'tab-pane fade'}" id="score" role="tabpanel" aria-labelledby="score-tab">
+            <div class="row">
+                <div class="col-sm-12 search-collapse">
+                    <form id="score-formId">
+                        <div class="select-list">
+                            <ul>
+                                <li>
+                                    <input type="hidden" name="userId" th:value="${userId}"/>
+                                    <label>房间：</label>
+                                    <input type="text" name="roomName"/>
+                                </li>
+                                <li class="select-time">
+                                    <label>创建时间：</label>
+                                    <input type="text" class="time-input" placeholder="开始时间" name="params[beginCreateTime]"/>
+                                    <span>-</span>
+                                    <input type="text" class="time-input" placeholder="结束时间" name="params[endCreateTime]"/>
+                                </li>
+                                <li>
+                                    <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search();loadStatisticsPersonRecord();"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                    <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-sm-12 table-striped mt-3">
+                    <table style="width:100%;margin:0 auto;">
+                        <thead style="height:2rem;">
+                            <th style="width:11%;">单注</th>
+                            <th style="width:11%;">组合</th>
+                            <th style="width:11%;">数字</th>
+                            <th style="width:11%;">反组合</th>
+                            <th style="width:11%;">龙虎豹</th>
+                            <th style="width:11%;">超无视</th>
+                            <th style="width:11%;">超无视次数</th>
+                            <th style="width:11%;">把数</th>
+                            <th style="width:11%;">盈亏</th>
+                        </thead>
+                        <tbody>
+                            <tr style="height:3rem;">
+                                <td>
+                                    总数:<span id="singleScore"></span><br/>
+                                    占比:<span id="singleRate"></span>
+                                </td>
+                                <td>
+                                    总数:<span id="combinationScore"></span><br/>
+                                    占比:<span id="combinationRate"></span>
+                                </td>
+                                <td>
+                                    总数:<span id="numberScore"></span><br/>
+                                    占比:<span id="numberRate"></span>
+                                </td>
+                                <td>
+                                    总数:<span id="antiCombinScore"></span><br/>
+                                    占比:<span id="antiCombinRate"></span>
+                                </td>
+                                <td>
+                                    总数:<span id="boldThreeScore"></span><br/>
+                                    占比:<span id="boldThreeRate"></span>
+                                </td>
+                                <td>
+                                    总数:<span id="superScore"></span><br/>
+                                    占比:<span id="superRate"></span>
+                                </td>
+                                <td>
+                                    总数:<span id="superCount"></span>
+                                </td>
+                                <td>
+                                    总数:<span id="totalCount"></span>
+                                </td>
+                                <td>
+                                    总数:<span id="winScore"></span>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-sm-12 select-table table-striped">
+                    <table id="score-bootstrap-table"></table>
+                </div>
+            </div>
+        </div>
+        <div th:class="${index==3?'tab-pane fade show active':'tab-pane fade'}" id="order" role="tabpanel" aria-labelledby="order-tab">
+            <div class="row">
+                <div class="col-sm-12 search-collapse">
+                    <form id="order-formId">
+                        <input type="hidden" name="userId" th:value="${userId}"/>
+                        <div class="select-list">
+                            <ul>
+                                <li>
+                                    <label>财务类型：</label>
+                                    <select name="type" th:with="type=${@dict.getType('finance_type')}">
+                                        <option value="">所有</option>
+                                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                    </select>
+                                </li>
+                                <li class="select-time">
+                                    <label>创建时间：</label>
+                                    <input type="text" class="time-input" placeholder="开始时间" name="params[beginCreateTime]"/>
+                                    <span>-</span>
+                                    <input type="text" class="time-input" placeholder="结束时间" name="params[endCreateTime]"/>
+                                </li>
+                                <li>
+                                    <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                    <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-sm-12 select-table table-striped">
+                    <table id="order-bootstrap-table"></table>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="win" role="tabpanel" aria-labelledby="win-tab">
+            <div class="row">
+                <div class="col-sm-12 search-collapse">
+                    <form id="win-formId">
+                        <input type="hidden" name="userId" th:value="${userId}"/>
+                    </form>
+                </div>
+                <div class="col-sm-12 select-table table-striped">
+                    <table id="win-bootstrap-table"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+	<th:block th:include="include :: footer" />
+	<th:block th:include="include :: select2-js" />
+
+    <script th:inline="javascript">
+        var commonParam = "?userId="+$("#userId").val()+"&name="+$("#userName").val()+"&tenantId="+$("#treeId").val();
+
+
+        var VipPay_editFlag = [[${@permission.hasPermi('business:VipPay:edit')}]];
+        var VipPay_removeFlag = [[${@permission.hasPermi('business:VipPay:remove')}]];
+        var VipPay_prefix = ctx + "business/VipPay";
+
+        var Score_statusDatas = [[${@dict.getType('bet_status')}]];
+        var Score_prefix = ctx + "business/ScoreRecord";
+
+        function openChat(id,userType,userName,headImageId){
+            if(userType!='01'){
+                $.modal.alertWarning("只能私聊APP注册用户！");
+                return;
+            }
+            var data = {'senderId':id,'senderUserName':userName,'senderHeadImageId':headImageId,'content':''}
+            localStorage.setItem('chatUser', JSON.stringify(data));
+
+            $.modal.openTab("私聊客服",ctx + "business/ChatMessage/CustomerChat",true);
+        }
+
+        function loadStatisticsPersonRecord(){
+            $.operate.postWithoutAlert(Score_prefix+"/statisticsPersonRecord",$('#score-formId').serialize(),function(result){
+                if (result.code == 0){
+                    $('#singleScore').text(result.data.singleScore);
+                    $('#singleRate').text(result.data.singleRate);
+                    $('#combinationScore').text(result.data.combinationScore);
+                    $('#combinationRate').text(result.data.combinationRate);
+                    $('#numberScore').text(result.data.numberScore);
+                    $('#numberRate').text(result.data.numberRate);
+                    $('#antiCombinScore').text(result.data.antiCombinScore);
+                    $('#antiCombinRate').text(result.data.antiCombinRate);
+                    $('#boldThreeScore').text(result.data.boldThreeScore);
+                    $('#boldThreeRate').text(result.data.boldThreeRate);
+                    $('#superScore').text(result.data.superScore);
+                    $('#superRate').text(result.data.superRate);
+                    $('#superCount').text(result.data.superCount);
+                    $('#totalCount').text(result.data.totalCount);
+                    $('#winScore').text(result.data.winScore);
+                }
+            });
+        }
+
+        $(function() {
+            loadStatisticsPersonRecord();
+            var options = {
+            	id: "account-bootstrap-table",
+            	formId: "account-formId",
+            	toolbar: "toolbar-account",
+                url: VipPay_prefix + "/list",
+                createUrl: VipPay_prefix + "/add"+commonParam,
+                updateUrl: VipPay_prefix + "/edit/{id}",
+                removeUrl: VipPay_prefix + "/remove",
+                exportUrl: VipPay_prefix + "/export",
+                modalName: "会员支付信息",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'id',
+                    title: '自增ID',
+                    visible: false
+                },
+                {
+                    field: 'payType',
+                    title: '支付类型',
+                },
+                {
+                    field: 'name',
+                    title: '名字',
+                },
+                {
+                    field: 'account',
+                    title: '账户',
+                },
+                {
+                    field: 'imageId',
+                    title: '二维码',
+                    formatter: function(value, row, index) {
+                        if (typeof value === 'number') {
+                            return $.table.imageView(ctx + "business/images/"+value,320,320);
+                        }
+				    }
+                },
+                {
+                    field: 'bankName',
+                    title: '户行',
+                },
+                {
+                    field: 'isSame',
+                    title: '是否同名',
+                },
+                {
+                    field: 'createBy',
+                    title: '创建者',
+                },
+                {
+                    field: 'createTime',
+                    title: '创建时间',
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-sm ' + VipPay_editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-sm ' + VipPay_removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+
+        });
+        $(function() {
+            var options_score = {
+            	id: "score-bootstrap-table",
+            	formId: "score-formId",
+                url: Score_prefix + "/list",
+                modalName: "投注记录",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'userId',
+                    title: '用户ID',
+                },
+                {
+                    field: 'userName',
+                    title: '用户名',
+                },
+                {
+                    field: 'roomName',
+                    title: '房间',
+                },
+                {
+                    field: 'periodNumber',
+                    title: '期号',
+                },
+                {
+                    field: 'result',
+                    title: '开奖结果',
+                },
+                {
+                    field: 'betting',
+                    title: '投码',
+                },
+                {
+                    field: 'score',
+                    title: '总投分',
+                },
+                {
+                    field: 'winScore',
+                    title: '盈亏分',
+                },
+                {
+                    field: 'leftScore',
+                    title: '当前余分',
+                },
+                {
+                    field: 'createTime',
+                    title: '投注时间',
+                },
+                {
+                    field: 'diffSecond',
+                    title: '相差秒',
+                },
+                {
+                    field: 'status',
+                    title: '状态',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(Score_statusDatas, value);
+                    }
+                }]
+            };
+            $.table.init(options_score);
+        });
+
+        $(function() {
+            var options_score = {
+            	id: "win-bootstrap-table",
+            	formId: "win-formId",
+                url: Score_prefix + "/personWinRecordList",
+                modalName: "投注记录",
+                columns: [
+                {
+                    field: 'date',
+                    title: '日期',
+                },
+                {
+                    field: 'addScore',
+                    title: '上分',
+                },
+                {
+                    field: 'minusScore',
+                    title: '下分',
+                },
+                {
+                    field: 'otherScore',
+                    title: '送分',
+                },
+                {
+                    field: 'totalScore',
+                    title: '投码',
+                },
+                {
+                    field: 'totalWin',
+                    title: '盈亏',
+                }]
+            };
+            $.table.init(options_score);
+        });
+
+        var Order_typeDatas = [[${@dict.getType('finance_type')}]];
+        var Order_isSameDatas = [[${@dict.getType('same_name')}]];
+        var Order_statusDatas = [[${@dict.getType('audit_status')}]];
+        var Order_prefix = ctx + "business/OrderRecord";
+
+        $(function() {
+            var order_options = {
+            	id: "order-bootstrap-table",
+            	formId: "order-formId",
+                url: Order_prefix + "/list",
+                modalName: "订单记录",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'id',
+                    title: '自增ID',
+                    visible: false
+                },
+                {
+                    field: 'type',
+                    title: '财务类型',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(Order_typeDatas, value);
+                    }
+                },
+                {
+                    field: 'payType',
+                    title: '支付类型',
+                },
+                {
+                    field: 'name',
+                    title: '上次来款名/支付人名字',
+                },
+                {
+                    field: 'account',
+                    title: '账户',
+                },
+                {
+                    field: 'score',
+                    title: '分数',
+                },
+                {
+                    field: 'leftScore',
+                    title: '当前余分',
+                },
+                {
+                    field: 'auditUserName',
+                    title: '审核人',
+                },
+                {
+                    field: 'status',
+                    title: '状态',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(Order_statusDatas, value);
+                    }
+                },
+                {
+                    field: 'createTime',
+                    title: '创建时间',
+                }]
+            };
+            $.table.init(order_options);
+        });
+    </script>
+	<script type="text/javascript">
+        var prefix = ctx + "system/user";
+        
+        $("#form-user-edit").validate({
+        	onkeyup: false,
+        	rules:{
+        		email:{
+                    email:true,
+                    remote: {
+                        url: prefix + "/checkEmailUnique",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                        	"userId": function() {
+                                return $("#userId").val();
+                            },
+                			"email": function() {
+                                return $.common.trim($("#email").val());
+                            }
+                        }
+                    }
+        		},
+        		phonenumber:{
+        			isPhone:true,
+                    remote: {
+                        url: prefix + "/checkPhoneUnique",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                        	"userId": function() {
+                        		return $("#userId").val();
+                            },
+                			"phonenumber": function() {
+                                return $.common.trim($("#phonenumber").val());
+                            }
+                        }
+                    }
+        		},
+        	},
+        	messages: {
+        		"email": {
+                    remote: "Email已经存在"
+                },
+        		"phonenumber":{
+                	remote: "手机号码已经存在"
+        		}
+            },
+            focusCleanup: true
+        });
+        
+        function submitHandler() {
+	        if ($.validate.form()) {
+	        	var data = $("#form-user-edit").serializeArray();
+	        	var status = $("input[id='status']").is(':checked') == true ? 0 : 1;
+	        	var roleIds = $.form.selectCheckeds("role");
+	        	var postIds = $.form.selectSelects("post");
+	        	data.push({"name": "status", "value": status});
+	        	data.push({"name": "roleIds", "value": roleIds});
+	        	data.push({"name": "postIds", "value": postIds});
+	        	$.operate.saveTab(prefix + "/edit", data);
+	        }
+	    }
+
+        /* 用户管理-修改-选择部门树 */
+        function selectDeptTree() {
+        	var deptId = $.common.isEmpty($("#treeId").val()) ? "100" : $("#treeId").val();
+            var url = ctx + "system/user/selectDeptTree/" + deptId;
+		    var options = {
+				title: '选择部门',
+				width: "380",
+				url: url,
+				callBack: doSubmit
+			};
+			$.modal.openOptions(options);
+		}
+		
+		function doSubmit(index, layero){
+			var body = $.modal.getChildFrame(index);
+   			$("#treeId").val(body.find('#treeId').val());
+   			$("#treeName").val(body.find('#treeName').val());
+   			$.modal.close(index);
+		}
+
+		$(function() {
+            $('#post').select2({
+                placeholder: "请选择岗位",
+                allowClear: true
+            });
+        })
+    </script>
+</body>
+</html>

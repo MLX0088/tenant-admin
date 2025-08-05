@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增图片管理')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-images-add">
+            <div class="">
+                <input type="hidden" name="rebotImageId" id="rebotImageId">
+                <div class="user-info-head" onclick="avatar('rebotImageId')"><img id="rebotImageId_img" class="img-circle img-lg" th:src="@{/img/blank.jpg}" th:onerror="'this.src=\'' + @{'/img/blank.jpg'} + '\''" style="width:80px;height:80px;margin-right: 20px;"></div>
+            </div>
+            <div><a href="javascript:avatar('rebotImageId')">选择头像</a></div>
+        </form>
+    </div>
+
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "business/images"
+        $("#form-images-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-images-add').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

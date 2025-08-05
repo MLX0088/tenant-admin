@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tenant.business.mapper.TbVipInfoMapper">
+    
+    <resultMap type="TbVipInfo" id="TbVipInfoResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="headImageId"    column="head_image_id"    />
+        <result property="score"    column="score"    />
+        <result property="qqNumber"    column="qq_number"    />
+        <result property="grade"    column="grade"    />
+        <result property="totalAmount"    column="total_amount"    />
+        <result property="permission"    column="permission"    />
+        <result property="channalId"    column="channal_id"    />
+        <result property="registChannalId"    column="regist_channal_id"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="tenantId"    column="tenant_id"    />
+    </resultMap>
+
+    <sql id="selectTbVipInfoVo">
+        select * from tb_vip_info
+    </sql>
+
+    <select id="selectTbVipInfoList" parameterType="TbVipInfo" resultMap="TbVipInfoResult">
+        <include refid="selectTbVipInfoVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="channalId != null "> and channal_id = #{channalId}</if>
+            <if test="registChannalId != null "> and regist_channal_id = #{registChannalId}</if>
+            <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbVipInfoById" parameterType="Long" resultMap="TbVipInfoResult">
+        <include refid="selectTbVipInfoVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTbVipInfo" parameterType="TbVipInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_vip_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="headImageId != null">head_image_id,</if>
+            <if test="score != null">score,</if>
+            <if test="qqNumber != null">qq_number,</if>
+            <if test="grade != null">grade,</if>
+            <if test="totalAmount != null">total_amount,</if>
+            <if test="permission != null">permission,</if>
+            <if test="channalId != null">channal_id,</if>
+            <if test="registChannalId != null">regist_channal_id,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="tenantId != null">tenant_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="headImageId != null">#{headImageId},</if>
+            <if test="score != null">#{score},</if>
+            <if test="qqNumber != null">#{qqNumber},</if>
+            <if test="grade != null">#{grade},</if>
+            <if test="totalAmount != null">#{totalAmount},</if>
+            <if test="permission != null">#{permission},</if>
+            <if test="channalId != null">#{channalId},</if>
+            <if test="registChannalId != null">#{registChannalId},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbVipInfo" parameterType="TbVipInfo">
+        update tb_vip_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="headImageId != null">head_image_id = #{headImageId},</if>
+            <if test="score != null">score = #{score},</if>
+            <if test="qqNumber != null">qq_number = #{qqNumber},</if>
+            <if test="grade != null">grade = #{grade},</if>
+            <if test="totalAmount != null">total_amount = #{totalAmount},</if>
+            <if test="permission != null">permission = #{permission},</if>
+            <if test="channalId != null">channal_id = #{channalId},</if>
+            <if test="registChannalId != null">regist_channal_id = #{registChannalId},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+        </trim>
+        where id = #{id}
+        <if test="createBy != null  and createBy != ''"> and create_by = #{createBy}</if>
+    </update>
+
+    <delete id="deleteTbVipInfoById" parameterType="Long">
+        delete from tb_vip_info where id = #{id}
+    </delete>
+
+    <delete id="deleteTbVipInfoByIds" parameterType="String">
+        delete from tb_vip_info where
+        <if test="createBy != null and createBy != ''">  create_by = #{createBy} and</if>
+id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

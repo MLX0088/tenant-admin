@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('问题管理列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div white-bg">
+        <div class="row">
+            <form id="formId-question">
+                <input type="hidden" name="type" value="0"/>
+                <input type="hidden" name="tenantId" th:value="${selectDeptId}"/>
+            </form>
+
+
+            <form id="formId-contact">
+                <input type="hidden" name="type" value="1"/>
+                <input type="hidden" name="tenantId" th:value="${selectDeptId}"/>
+            </form>
+
+            <div class="btn-group-sm" id="toolbar-question" role="group">
+                <h1 class="h4 font-weight-bold text-dark">问答列表</h1>
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="business:Question:add">
+                    <i class="fa fa-plus"></i> 添加问答
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped" style="min-height:100px;">
+                <table id="bootstrap-table-question"></table>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar-contact" role="group">
+                <h1 class="h4 font-weight-bold text-dark">联系方式</h1>
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="business:Question:add">
+                    <i class="fa fa-plus"></i> 添加联系方式
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped" style="min-height:100px;">
+                <table id="bootstrap-table-contact"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('business:Question:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('business:Question:remove')}]];
+        var prefix = ctx + "business/Question";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+            	id: "bootstrap-table-question",
+            	toolbar: "toolbar-question",
+            	formId: "formId-question",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "问题管理",
+                columns: [{
+                    field: 'id',
+                    title: '自增ID',
+                    visible: false
+                },
+                {
+                    field: 'question',
+                    title: '问题',
+                },
+                {
+                    field: 'anwser',
+                    title: '答案',
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-sm ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-sm ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+            	id: "bootstrap-table-contact",
+            	toolbar: "toolbar-contact",
+            	formId: "formId-contact",
+                createUrl: prefix + "/addContact",
+                updateUrl: prefix + "/editContact/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "联系方式",
+                columns: [{
+                    field: 'id',
+                    title: '自增ID',
+                    visible: false
+                },
+                {
+                    field: 'question',
+                    title: '标题',
+                },
+                {
+                    field: 'anwser',
+                    title: '联系方式',
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-sm ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-sm ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

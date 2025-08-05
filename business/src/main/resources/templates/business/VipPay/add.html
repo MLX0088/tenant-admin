@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增会员支付信息')" />
+    <th:block th:include="include :: bootstrap-fileinput-css"/>
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-VipPay-add">
+            <input name="userId" class="form-control" type="hidden" th:value="${userId}">
+            <input name="tenantId" class="form-control" type="hidden" th:value="${tenantId}">
+            <div class="form-group row">    
+                <div class="control-label">名字：</div>
+                <div class="">
+                    <input name="name" class="form-control" type="text" th:value="${name}">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="control-label">支付类型：</div>
+                <div class="">
+                    <input name="payType" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">账户：</div>
+                <div class="">
+                    <input name="account" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="control-label">二维码：</div>
+                <div class="">
+                    <input type="hidden" name="imageId">
+                    <div class="file-loading">
+                        <input class="form-control file-upload" id="imageId" name="file" type="file">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">户行：</div>
+                <div class="">
+                    <input name="bankName" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="control-label">是否同名：</div>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-sm btn-secondary" >
+                        <input type="radio" id="isSame_0" name="isSame" value="0" checked/> 是
+                    </label>
+                    <label class="btn btn-sm btn-secondary" >
+                        <input type="radio" id="isSame_1" name="isSame" value="1" /> 不是
+                    </label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="control-label">备注：</div>
+                <div class="">
+                    <textarea name="remark" class="form-control"></textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: bootstrap-fileinput-js"/>
+    <script th:inline="javascript">
+        var prefix = ctx + "business/VipPay"
+        $("#form-VipPay-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-VipPay-add').serialize());
+            }
+        }
+
+        $(".file-upload").fileinput({
+            uploadUrl: ctx + 'business/images/imageUpload',
+            maxFileCount: 1,
+            autoReplace: true
+        }).on('fileuploaded', function (event, data, previewId, index) {
+            alert(data);
+            $("input[name='" + event.currentTarget.id + "']").val(data.response.url)
+        }).on('fileremoved', function (event, id, index) {
+            $("input[name='" + event.currentTarget.id + "']").val('')
+        })
+    </script>
+</body>
+</html>

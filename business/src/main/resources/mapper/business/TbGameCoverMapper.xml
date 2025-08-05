@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tenant.business.mapper.TbGameCoverMapper">
+    
+    <resultMap type="TbGameCover" id="TbGameCoverResult">
+        <result property="id"    column="id"    />
+        <result property="type"    column="type"    />
+        <result property="coverImagesId"    column="cover_images_id"    />
+        <result property="tips1"    column="tips1"    />
+        <result property="tips2"    column="tips2"    />
+        <result property="introduce"    column="introduce"    />
+        <result property="sort"    column="sort"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="tenantId"    column="tenant_id"    />
+    </resultMap>
+
+    <sql id="selectTbGameCoverVo">
+        select * from tb_game_cover
+    </sql>
+
+    <select id="selectTbGameCoverList" parameterType="TbGameCover" resultMap="TbGameCoverResult">
+        <include refid="selectTbGameCoverVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+        </where>
+        order by sort
+    </select>
+    
+    <select id="selectTbGameCoverById" parameterType="Long" resultMap="TbGameCoverResult">
+        <include refid="selectTbGameCoverVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTbGameCover" parameterType="TbGameCover" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_game_cover
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="type != null">type,</if>
+            <if test="coverImagesId != null">cover_images_id,</if>
+            <if test="tips1 != null">tips1,</if>
+            <if test="tips2 != null">tips2,</if>
+            <if test="introduce != null">introduce,</if>
+            <if test="sort != null">sort,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="tenantId != null">tenant_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="type != null">#{type},</if>
+            <if test="coverImagesId != null">#{coverImagesId},</if>
+            <if test="tips1 != null">#{tips1},</if>
+            <if test="tips2 != null">#{tips2},</if>
+            <if test="introduce != null">#{introduce},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbGameCover" parameterType="TbGameCover">
+        update tb_game_cover
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="type != null">type = #{type},</if>
+            <if test="coverImagesId != null">cover_images_id = #{coverImagesId},</if>
+            <if test="tips1 != null">tips1 = #{tips1},</if>
+            <if test="tips2 != null">tips2 = #{tips2},</if>
+            <if test="introduce != null">introduce = #{introduce},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+        </trim>
+        where id = #{id}
+        <if test="createBy != null  and createBy != ''"> and create_by = #{createBy}</if>
+    </update>
+
+    <delete id="deleteTbGameCoverById" parameterType="Long">
+        delete from tb_game_cover where id = #{id}
+    </delete>
+
+    <delete id="deleteTbGameCoverByIds" parameterType="String">
+        delete from tb_game_cover where
+        <if test="createBy != null and createBy != ''">  create_by = #{createBy} and</if>
+id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

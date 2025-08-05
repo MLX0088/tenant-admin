@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增机器人')" />
+    <th:block th:include="include :: laydate-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m col-sm-12 row" id="form-Robot-add">
+            <input type="hidden" name="tenantId" th:value="${tenantId}"/>
+            <div class="form-group row col-sm-12" style="font-size:1rem; color:red;font-weight:bold;">
+                1、一切分都不纳入财务数据<br/>
+                2、头像为系统随机分配
+            </div>
+            <div class="form-group row col-sm-12">
+                <div class="control-label">游戏房间：</div>
+                <div class="">
+                    <select name="roomName" class="form-control m-b" th:with="type=${@dict.getType('room_name')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row col-sm-6">
+                <div class="control-label">昵称：</div>
+                <div class="">
+                    <input id="name" name="name" class="form-control" type="text">
+                </div>
+                <div class="ml-3">
+                    <button type="button" class="btn btn-info btn-sm" onclick="generateRandomName();">随机生成</button>
+                </div>
+            </div>
+            <div class="form-group row col-sm-6">
+                <div class="control-label">余分：</div>
+                <div class="">
+                    <input id="leftScore" name="leftScore" class="form-control" type="text">
+                </div>
+                <div class="ml-3">
+                    <button type="button" class="btn btn-info btn-sm" onclick="getRandomNumber();">随机生成</button>
+                </div>
+            </div>
+
+            <div class="form-group row col-sm-6">
+                <div class="control-label">状态：</div>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-sm btn-secondary" th:each="dict : ${@dict.getType('enable_status')}">
+                        <input type="radio" th:id="${'status_' + dict.dictCode}" name="status" th:value="${dict.dictValue}" th:checked="${dict.default}"> <span th:text="${dict.dictLabel}"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group row col-sm-6">
+                <div class="control-label">等级：</div>
+                <div class="">
+                    <input name="grade" class="form-control" type="text" value="1">
+                </div>
+            </div>
+            <div class="form-group row col-sm-12">
+                <div class="control-label">执行时间：</div>
+                <div class="row col">
+                    <div class="input-group date mr-2" style="width:auto;">
+                        <input id="starttime" name="starttime" class="form-control" type="text" value="00:00:00">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                    <div>至</div>
+                    <div class="input-group date ml-2" style="width:auto;">
+                        <input id="endtime" name="endtime" class="form-control" type="text" value="23:59:00">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row col-sm-12">
+                <div class="control-label">上分：</div>
+                <div class="">小于等于：</div>
+                <div class="ml-3">
+                    <input name="addScoreRule" class="form-control" type="text" value="1000">
+                </div>
+                <div class="ml-3">上：</div>
+                <div class="ml-3">
+                    <input name="addScore" class="form-control" type="text" value="2000">
+                </div>
+            </div>
+            <div class="form-group row col-sm-12">
+                <div class="control-label">下分：</div>
+                <div class="">大于等于：</div>
+                <div class="ml-3">
+                    <input name="minusScoreRule" class="form-control" type="text" value="20000">
+                </div>
+                <div class="ml-3">下：</div>
+                <div class="ml-3">
+                    <input name="minusScore" class="form-control" type="text" value="10000">
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: laydate-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "business/Robot"
+        $("#form-Robot-add").validate({
+            focusCleanup: true
+        });
+
+        function getRandomNumber() {
+            $('#leftScore').val(Math.floor(Math.random() * (10000 - 1000)) + 1000);
+        }
+        $(function() {
+            getRandomNumber();
+            generateRandomName();
+        });
+
+        function generateRandomName() {
+            let firstName = ["李", "王", "张", "刘", "陈", "杨", "赵", "黄", "周", "吴", "徐", "孙", "胡", "朱", "高", "林", "何", "郭", "马", "罗", "梁", "宋", "郑", "谢", "韩", "唐", "冯", "于", "董", "萧", "程", "曹", "袁", "邓", "许", "傅", "沈", "曾", "彭", "吕", "苏", "卢", "蒋", "蔡", "贾", "丁", "魏", "薛", "叶", "阎", "余", "潘", "杜", "戴", "夏", "钟", "汪", "田", "任", "姜", "范", "方", "石", "姚", "谭", "廖", "邹", "熊", "金", "陆", "郝", "孔", "白", "崔", "康", "毛", "邱", "秦", "江", "史", "顾", "侯", "邵", "孟", "龙", "万", "段", "漕", "钱", "汤", "尹", "黎", "易", "常", "武", "乔", "贺", "赖", "龚", "文"]
+            let lastName = ["萱","涵","梓","宇","浩","欣","怡","子","雨","诗", "思","梦","嘉","文","雅","晨","若","婉","灵","韵", "瑜","彤","玥","琳","瑞","辰","彦","轩","逸","然", "哲","俊","杰","悦","宁","琪","瑶","雪","岚","羽", "熙","冉","奕","航","昊","皓","承","诺","清","沐", "云","芊","冉","桐","乐","阳","智","宜","安","希", "之","景","明","朗","润","达","宏","博","卓","远", "彬","泽","烨","霖","臻","骏","骁","翊","恺","硕", "恒","川","柯","南","瑾","璇","露","冰","夏","秋", "伊","朵","溪","蔓","橙","檬","棠","樱","檀","柳", "卉","竹","兰","菊","梅","荷","芷","薇","茜","茉", "芙","蓉","蓓","蕾","霓","裳","霄","霜","霁","霖", "晓","晗","昕","昭","曜","晖","曦","晟","昱","昶", "嵘","峻","岳","嵩","岩","川","河","江","海","洋", "洲","沛","淳","渊","澈","泓","淼","澜","汀","汐", "渊","潇","湛","沁","汶","津","汶","汶","沅","沂", "洛","淇","涓","漪","灏","瀚","澎","湃","潇","湘", "牧","隗","谷","宓","蓬","全","郗","班","仰","仲", "伊","宫","宁","栾","甘","厉","戎","祖","武","符", "景","詹","束","韶","郜","黎","溥","印","宿","怀"];
+            let fnLength = firstName.length;
+            let lnLength = lastName.length;
+            let fnIndex = Math.floor(Math.random() * fnLength);
+            var name = '';
+            for (var i = 0; i < 2; i++) {
+                let lnIndex = Math.floor(Math.random() * lnLength);
+                name += lastName[lnIndex];
+            }
+            $('#name').val( firstName[fnIndex]+name);
+        }
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-Robot-add').serialize());
+            }
+        }
+
+        layui.use('laydate', function(){
+          var laydate = layui.laydate;
+
+          // 开始时间选择器
+          laydate.render({
+            elem: '#starttime',
+            type: 'time', // 选择时分秒
+            done: function(value, date) {
+              // 当开始时间选择后，限制结束时间不能小于开始时间
+              var endDate = new Date($('#endtime').val().replace(/-/g,"/")); // 将字符串转为日期对象
+              if (endDate < date) {
+                $('#endtime').val(laydate.format(new Date(date), 'HH:mm:ss')); // 设置结束时间为开始时间
+              }
+            }
+          });
+
+          // 结束时间选择器
+          laydate.render({
+            elem: '#endtime',
+            type: 'time', // 选择时分秒
+            done: function(value, date) {
+              // 当结束时间选择后，限制开始时间不能大于结束时间（理论上不应该发生，因为用户不能直接选择小于开始时间的结束时间）
+              var startDate = new Date($('#starttime').val().replace(/-/g,"/")); // 将字符串转为日期对象
+              if (startDate > date) {
+                $('#starttime').val(laydate.format(new Date(date), 'HH:mm:ss')); // 设置开始时间为结束时间（理论上不会发生）
+              } else if (startDate < date) { // 但如果用户手动更改了开始时间，需要确保它不大于结束时间
+                $('#starttime').val(laydate.format(new Date(date), 'HH:mm:ss')); // 设置开始时间为结束时间的前一分钟（例如）以符合逻辑（实际应用中可能需要更复杂的逻辑）
+              }
+            }
+          });
+        });
+    </script>
+</body>
+</html>

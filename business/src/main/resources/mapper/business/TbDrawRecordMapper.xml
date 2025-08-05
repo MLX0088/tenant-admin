@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tenant.business.mapper.TbDrawRecordMapper">
+    
+    <resultMap type="TbDrawRecord" id="TbDrawRecordResult">
+        <result property="id"    column="id"    />
+        <result property="roomConfigId"    column="room_config_id"    />
+        <result property="roomName"    column="room_name"    />
+        <result property="periodNumber"    column="period_number"    />
+        <result property="result"    column="result"    />
+        <result property="expectOpenTime"    column="expect_open_time"    />
+        <result property="actualOpenTime"    column="actual_open_time"    />
+        <result property="diffSecond"    column="diff_second"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="gameType"    column="game_type"    />
+        <result property="simpleResult"    column="simple_result"    />
+        <result property="resultOne"    column="result_one"    />
+        <result property="resultTwo"    column="result_two"    />
+        <result property="resultThree"    column="result_three"    />
+        <result property="resultSum"    column="result_sum"    />
+        <result property="resultStatus"    column="result_status"    />
+    </resultMap>
+
+    <sql id="selectTbDrawRecordVo">
+        select * from tb_draw_record
+    </sql>
+
+    <select id="drawWinList" parameterType="TbDrawRecord" resultType="com.tenant.business.domain.statistics.DrawWinRecord">
+        select a.period_number periodNumber,a.expect_open_time expectOpenTime,a.result,(0-IFNULL(sum(win_score),0)) winScore from tb_draw_record a left join tb_score_record b on (a.id = b.draw_id <if test="tenantId != null "> and b.tenant_id = #{tenantId}</if>)
+        <where>
+            <if test="periodNumber != null  and periodNumber != ''"> and a.period_number = #{periodNumber}</if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and a.actual_open_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
+            <if test="gameType != null "> and a.game_type = #{gameType}</if>
+
+        </where>
+        group by a.period_number,a.expect_open_time,a.result order by a.period_number desc
+    </select>
+
+    <select id="selectListForDashboard" parameterType="TbDrawRecord" resultType="com.tenant.business.domain.vo.DrawDashboardVo">
+        select a.period_number periodNumber,a.expect_open_time expectOpenTime,a.actual_open_time actualOpenTime,a.result_status resultStatus,a.result_one resultOne,a.result_two resultTwo,a.result_three resultThree,a.result_sum resultSum,a.simple_result simpleResult,ifnull(count(DISTINCT b.user_id),0) userCount,ifnull(sum(b.score),0) totalScore,ifnull(sum(b.win_score),0) totalWinScore from tb_draw_record a left join tb_score_record b on(a.id=b.draw_id and b.tenant_id=#{tenantId})
+        where a.game_type=#{gameType}
+        group by a.id,a.period_number,a.expect_open_time,a.actual_open_time,a.result_one,a.result_two,a.result_three,a.result_sum,a.simple_result
+        order by a.id desc
+    </select>
+
+    <select id="selectTbDrawRecordList" parameterType="TbDrawRecord" resultMap="TbDrawRecordResult">
+        <include refid="selectTbDrawRecordVo"/>
+        <where>  
+            <if test="periodNumber != null  and periodNumber != ''"> and period_number = #{periodNumber}</if>
+            <if test="params.beginActualOpenTime != null and params.beginActualOpenTime != '' and params.endActualOpenTime != null and params.endActualOpenTime != ''"> and actual_open_time between #{params.beginActualOpenTime} and #{params.endActualOpenTime}</if>
+            <if test="diffSecond != null "> and diff_second = #{diffSecond}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="gameType != null "> and game_type = #{gameType}</if>
+            <if test="resultStatus != null "> and result_status = #{resultStatus}</if>
+        </where>
+        order by period_number desc
+    </select>
+    
+    <select id="selectTbDrawRecordById" parameterType="Long" resultMap="TbDrawRecordResult">
+        <include refid="selectTbDrawRecordVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectTbDrawRecordByNo" resultMap="TbDrawRecordResult">
+        <include refid="selectTbDrawRecordVo"/>
+        where period_number = #{no}
+    </select>
+
+    <select id="selectLastTbDrawRecordByGameType" parameterType="Integer" resultMap="TbDrawRecordResult">
+        <include refid="selectTbDrawRecordVo"/>
+        where game_type = #{gameType}
+        order by id desc
+        limit 1
+    </select>
+
+    <select id="currentDrawRecord" parameterType="Long" resultMap="TbDrawRecordResult">
+        <include refid="selectTbDrawRecordVo"/>
+        where room_config_id = #{roomConfigId}
+        order by id desc
+        limit 1
+    </select>
+        
+    <insert id="insertTbDrawRecord" parameterType="TbDrawRecord" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_draw_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roomConfigId != null">room_config_id,</if>
+            <if test="roomName != null">room_name,</if>
+            <if test="periodNumber != null">period_number,</if>
+            <if test="result != null">result,</if>
+            <if test="expectOpenTime != null">expect_open_time,</if>
+            <if test="actualOpenTime != null">actual_open_time,</if>
+            <if test="diffSecond != null">diff_second,</if>
+            <if test="status != null">status,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="tenantId != null">tenant_id,</if>
+            <if test="gameType != null">game_type,</if>
+            <if test="resultStatus != null">result_status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roomConfigId != null">#{roomConfigId},</if>
+            <if test="roomName != null">#{roomName},</if>
+            <if test="periodNumber != null">#{periodNumber},</if>
+            <if test="result != null">#{result},</if>
+            <if test="expectOpenTime != null">#{expectOpenTime},</if>
+            <if test="actualOpenTime != null">#{actualOpenTime},</if>
+            <if test="diffSecond != null">#{diffSecond},</if>
+            <if test="status != null">#{status},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+            <if test="gameType != null">#{gameType},</if>
+            <if test="resultStatus != null">#{resultStatus},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbDrawRecord" parameterType="TbDrawRecord">
+        update tb_draw_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roomConfigId != null">room_config_id = #{roomConfigId},</if>
+            <if test="roomName != null">room_name = #{roomName},</if>
+            <if test="periodNumber != null">period_number = #{periodNumber},</if>
+            <if test="result != null">result = #{result},</if>
+            <if test="expectOpenTime != null">expect_open_time = #{expectOpenTime},</if>
+            <if test="actualOpenTime != null">actual_open_time = #{actualOpenTime},</if>
+            <if test="diffSecond != null">diff_second = #{diffSecond},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+            <if test="gameType != null">game_type = #{gameType},</if>
+            <if test="simpleResult != null">simple_result = #{simpleResult},</if>
+            <if test="resultOne != null">result_one = #{resultOne},</if>
+            <if test="resultTwo != null">result_two = #{resultTwo},</if>
+            <if test="resultThree != null">result_three = #{resultThree},</if>
+            <if test="resultSum != null">result_sum = #{resultSum},</if>
+            <if test="resultStatus != null">result_status = #{resultStatus},</if>
+        </trim>
+        where id = #{id}
+        <if test="createBy != null  and createBy != ''"> and create_by = #{createBy}</if>
+    </update>
+
+    <delete id="deleteTbDrawRecordById" parameterType="Long">
+        delete from tb_draw_record where id = #{id}
+    </delete>
+
+    <delete id="deleteByRange">
+        delete from tb_draw_record where tenant_id = #{tenantId} and create_time between #{startTime} and #{endTime}
+    </delete>
+
+    <delete id="deleteTbDrawRecordByIds" parameterType="String">
+        delete from tb_draw_record where
+        <if test="createBy != null and createBy != ''">  create_by = #{createBy} and</if>
+id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

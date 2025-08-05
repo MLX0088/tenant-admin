@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('机器人管理列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <input type="hidden" name="tenantId" th:value="${selectDeptId}"/>
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>游戏房间：</label>
+                                <select name="roomName" th:with="type=${@dict.getType('room_name')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+
+                                <a class="btn btn-success btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </form>
+                </br>
+                <form id="formAdd">
+                    <input type="hidden" name="tenantId" th:value="${deptId}"/>
+                    <div class="select-list" style="clear:both;">
+                        <ul>
+                            <li>
+                                <label>游戏房间：</label>
+                                <select name="roomName" th:with="type=${@dict.getType('room_name')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li>
+                                <label style="width:150px;">每个房间增加机器人数：</label>
+                                <input type="text" name="num" />
+                            </li>
+                            <li>
+                                <a class="btn btn-success btn-rounded btn-sm" onclick="addRobotBatch()"><i class="fa fa-plus"></i>&nbsp;批量添加机器人</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </form>
+                </br>
+                <form id="formGap">
+                    <input type="hidden" name="tenantId" th:value="${deptId}"/>
+                    <div class="select-list" style="clear:both;">
+                        <ul>
+                            <li>
+                                <label style="width:150px;">机器人上分间隔小时数：</label>
+                                <input type="text" name="min" th:value="${gap}" />
+                            </li>
+                            <li>
+                                <a class="btn btn-success btn-rounded btn-sm" onclick="changeGap()"><i class="fa fa-plus"></i>&nbsp;提交</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </form>
+
+                <div style="font-size:1rem; color:red;clear:both;margin-top:60px;">本程序设定2秒-4秒下注一个拖，建议每个类型房间添加45个以上的拖为最佳状态。若需要设置房间自定义规定时间，则需要多设置房间假拖人数假拖每把人数下注不会固定，会随机分配。</div>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="business:Robot:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="business:Robot:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="business:Robot:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <div class="alert alert-info alert-dismissable col-sm-12" style="text-align:center;">
+                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                    假人自动上分：根据对应上下分规则
+                </div>
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+     <!-- 模态框 -->
+     <div class="modal fade" id="exampleModal" aria-labelledby="exampleModalLabel"  tabindex="-1" role="dialog" aria-hidden="true">
+         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-dialog-side" style="max-width: 50%;margin: 1.75rem auto;" role="dialog">
+             <div class="modal-content">
+                 <div class="modal-header">
+                     <h5 class="modal-title" id="exampleModalLabel">手动投注</h5>
+                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                 </div>
+                 <div class="modal-body">
+                     ...
+                 </div>
+                 <div class="modal-footer">
+                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                 </div>
+             </div>
+         </div>
+     </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('business:Robot:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('business:Robot:remove')}]];
+        var statusDatas = [[${@dict.getType('enable_status')}]];
+        var prefix = ctx + "business/Robot";
+
+        function addRobotBatch(){
+            $.operate.saveModal(prefix + "/addBatch", $('#formAdd').serialize(),function(result){
+                if(result.code == 0){
+
+                }
+            });
+        }
+        function changeGap(){
+            $.operate.saveModal(prefix + "/changeGap", $('#formGap').serialize(),function(result){
+                if(result.code == 0){
+
+                }
+            });
+        }
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "机器人管理",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'id',
+                    title: '自增ID',
+                    visible: false
+                },
+                {
+                    field: 'avatarId',
+                    title: '头像',
+                    formatter: function(value, row, index) {
+                        if(!(typeof value === 'number' && value>0 )){
+                            return "";
+                        }
+				    	return $.table.imageView(ctx + "business/images/"+value,320,320);
+				    }
+                },
+                {
+                    field: 'name',
+                    title: '昵称'
+                },
+                {
+                    field: 'roomName',
+                    title: '游戏房间'
+                },
+                {
+                    field: 'leftScore',
+                    title: '余分'
+                },
+                {
+                    field: 'starttime',
+                    title: '执行时间',
+                    formatter: function(value, row, index) {
+				    	return value+"-"+row.endtime;
+				    }
+                },
+                {
+                    field: 'status',
+                    title: '状态',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(statusDatas, value);
+                    }
+                },
+                {
+                    field: 'grade',
+                    title: '等级',
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-sm ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-sm ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        actions.push('<a class="btn btn-info btn-sm ml-1" href="javascript:void(0)">已投注'+row.refCount+'次</a>');
+                        actions.push('<button class="btn btn-info btn-sm ml-1" data-toggle="modal" data-target="#exampleModal">手动投注'+row.refManualCount+'次</button>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

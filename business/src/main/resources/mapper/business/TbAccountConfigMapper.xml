@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tenant.business.mapper.TbAccountConfigMapper">
+    
+    <resultMap type="TbAccountConfig" id="TbAccountConfigResult">
+        <result property="id"    column="id"    />
+        <result property="payType"    column="pay_type"    />
+        <result property="name"    column="name"    />
+        <result property="account"    column="account"    />
+        <result property="imageId"    column="image_id"    />
+        <result property="bankName"    column="bank_name"    />
+        <result property="quota"    column="quota"    />
+        <result property="isAddMinus"    column="is_add_minus"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="tenantId"    column="tenant_id"    />
+    </resultMap>
+
+    <sql id="selectTbAccountConfigVo">
+        select * from tb_account_config
+    </sql>
+
+    <select id="selectTbAccountConfigList" parameterType="TbAccountConfig" resultMap="TbAccountConfigResult">
+        <include refid="selectTbAccountConfigVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+            <if test="isAddMinus != null  and isAddMinus != ''"> and is_add_minus = #{isAddMinus}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbAccountConfigById" parameterType="Long" resultMap="TbAccountConfigResult">
+        <include refid="selectTbAccountConfigVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTbAccountConfig" parameterType="TbAccountConfig" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_account_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="payType != null">pay_type,</if>
+            <if test="name != null">name,</if>
+            <if test="account != null">account,</if>
+            <if test="imageId != null">image_id,</if>
+            <if test="bankName != null">bank_name,</if>
+            <if test="quota != null">quota,</if>
+            <if test="isAddMinus != null">is_add_minus,</if>
+            <if test="status != null">status,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="tenantId != null">tenant_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="payType != null">#{payType},</if>
+            <if test="name != null">#{name},</if>
+            <if test="account != null">#{account},</if>
+            <if test="imageId != null">#{imageId},</if>
+            <if test="bankName != null">#{bankName},</if>
+            <if test="quota != null">#{quota},</if>
+            <if test="isAddMinus != null">#{isAddMinus},</if>
+            <if test="status != null">#{status},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbAccountConfig" parameterType="TbAccountConfig">
+        update tb_account_config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="payType != null">pay_type = #{payType},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="account != null">account = #{account},</if>
+            <if test="imageId != null">image_id = #{imageId},</if>
+            <if test="bankName != null">bank_name = #{bankName},</if>
+            <if test="quota != null">quota = #{quota},</if>
+            <if test="isAddMinus != null">is_add_minus = #{isAddMinus},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+        </trim>
+        where id = #{id}
+        <if test="createBy != null  and createBy != ''"> and create_by = #{createBy}</if>
+    </update>
+
+    <delete id="deleteTbAccountConfigById" parameterType="Long">
+        delete from tb_account_config where id = #{id}
+    </delete>
+
+    <delete id="deleteTbAccountConfigByIds" parameterType="String">
+        delete from tb_account_config where
+        <if test="createBy != null and createBy != ''">  create_by = #{createBy} and</if>
+id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

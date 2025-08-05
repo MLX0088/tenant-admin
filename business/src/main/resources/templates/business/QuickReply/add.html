@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增私聊设置')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-QuickReply-add">
+            <input type="hidden" name="tenantId" th:value="${tenantId}"/>
+            <div class="form-group row col-sm-12">
+                <div class="control-label">快捷语：</div>
+                <div class="col">
+                    <input type="text" class="form-control" name="content">
+                </div>
+            </div>
+            <div class="form-group row col-sm-12">
+                <div class="control-label">备注：</div>
+                <div class="col">
+                    <textarea name="remark" class="form-control"></textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "business/QuickReply"
+        $("#form-QuickReply-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-QuickReply-add').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

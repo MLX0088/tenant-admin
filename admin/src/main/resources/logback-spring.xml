@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 日志存放路径 -->
+	<property name="log.path" value="logs" />
+    <!-- 日志输出格式 -->
+	<property name="log.pattern" value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{20} - [%method,%line] - %msg%n" />
+
+	<!-- 控制台输出 -->
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>${log.pattern}</pattern>
+		</encoder>
+	</appender>
+    <appender name="consoleErr" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+        <!--ThresholdFilter会过滤低于指定阀值的日志事件，对于等于或者大于阀值的日志事件，该过滤器会响应NEUTRAL，
+        而对于低于阀值的日志事件，过滤器会响应DENY
+        LevelFilter(级别过滤器)
+        LevelFilter基于匹配的具体级别过滤事件，如果日志事件的级别等于配置的级别，那么过滤器会接受或者拒绝日志事件
+        ，这取决于配置的onMatch和onMisMatch属性
+        -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <!-- 过滤的级别 -->
+            <level>WARN</level>
+        </filter>
+    </appender>
+	<!-- 系统日志输出 -->
+	<appender name="file_info" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	    <file>${log.path}/sys-info.log</file>
+        <!-- 循环政策：基于时间创建日志文件 -->
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${log.path}/archived/sys-info.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+            <!-- limit each file to 10MB -->
+            <totalSizeCap>10MB</totalSizeCap>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${log.pattern}</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!-- 过滤的级别 -->
+           <!-- <level>INFO</level>-->
+            <!-- 匹配时的操作：接收（记录） -->
+            <onMatch>ACCEPT</onMatch>
+            <!-- 不匹配时的操作：拒绝（不记录） -->
+            <onMismatch>DENY</onMismatch>
+        </filter>
+	</appender>
+	
+	<appender name="file_error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	    <file>${log.path}/sys-error.log</file>
+        <!-- 循环政策：基于时间创建日志文件 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${log.path}/archived/sys-error.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+            <!-- limit each file to 10MB -->
+            <totalSizeCap>10MB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!-- 过滤的级别 -->
+            <level>ERROR</level>
+			<!-- 匹配时的操作：接收（记录） -->
+            <onMatch>ACCEPT</onMatch>
+			<!-- 不匹配时的操作：拒绝（不记录） -->
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+	
+	<!-- 用户访问日志输出  -->
+    <appender name="sys-user" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log.path}/sys-user.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${log.path}/archived/sys-user.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+            <!-- limit each file to 10MB -->
+            <totalSizeCap>10MB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+    </appender>
+	
+	<!-- 系统模块日志级别控制  -->
+	<logger name="com.tenant" level="info" /><!--在yml配置的level会覆盖这里的-->
+	<!-- Spring日志级别控制  -->
+	<logger name="org.springframework" level="warn" />
+    <springProfile name="dev">
+        <root level="info">
+            <appender-ref ref="console" />
+        </root>
+    </springProfile>
+    <springProfile name="prod">
+        <!--系统操作日志-->
+       <root level="info">
+             <appender-ref ref="file_info" />
+             <appender-ref ref="file_error" />
+             <appender-ref ref="consoleErr" />
+            <appender-ref ref="console" />
+       </root>
+    </springProfile>
+
+	<!--系统用户操作日志-->
+    <logger name="sys-user" level="info">
+        <springProfile name="prod">
+            <appender-ref ref="sys-user"/>
+        </springProfile>
+        <springProfile name="dev">
+            <appender-ref ref="console"/>
+        </springProfile>
+    </logger>
+    <logger name="org.mybatis" level="ERROR">
+        <appender-ref ref="file_info" />
+    </logger>
+    <logger name="org.springframework" level="WARN"/>
+    <logger name="java.sql" level="WARN"/>
+</configuration> 

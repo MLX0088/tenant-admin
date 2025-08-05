@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('操作记录列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <input type="hidden" name="tenantId" th:value="${selectDeptId}"/>
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>操作对象ID：</label>
+                                <input type="text" name="objUserId"/>
+                            </li>
+                            <li>
+                                <label>操作对象名称：</label>
+                                <input type="text" name="objUserName"/>
+                            </li>
+                            <li>
+                                <label>操作人：</label>
+                                <input type="text" name="createBy"/>
+                            </li>
+                            <li class="select-time">
+                                <label>操作时间：</label>
+                                <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginCreateTime]"/>
+                                <span>-</span>
+                                <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endCreateTime]"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+            <div class="col-sm-12 select-table table-bordered">
+                <table id="bootstrap-table" data-resizable="true"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+     <th:block th:include="include :: bootstrap-table-resizable-js" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('business:OperLogs:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('business:OperLogs:remove')}]];
+        var prefix = ctx + "business/OperLogs";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "操作记录",
+                columns: [{
+                    field: 'id',
+                    title: '自增ID',
+                    visible: false
+                },
+                {
+                    field: 'createTime',
+                    title: '操作时间',
+                    width: 200
+                },
+                {
+                    field: 'createBy',
+                    title: '操作人',
+                    width: 100
+                },
+                {
+                    field: 'objUserId',
+                    title: '操作对象',
+                    width: 200,
+                    formatter: function(value, row, index) {
+                        return value+"-"+row.objUserName;
+                    }
+                },
+                {
+                    field: 'type',
+                    title: '操作类型-详情',
+                    formatter: function(value, row, index) {
+                        return value+"-"+row.detail;
+                    }
+                },
+                {
+                    field: 'ipCity',
+                    title: 'IP信息',
+                    width: 200,
+                    formatter: function(value, row, index) {
+                        return "<span title='"+row.ip+"'>"+value+"</span>";
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

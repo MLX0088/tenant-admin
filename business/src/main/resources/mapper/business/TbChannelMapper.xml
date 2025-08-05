@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tenant.business.mapper.TbChannelMapper">
+    
+    <resultMap type="TbChannel" id="TbChannelResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="tenantId"    column="tenant_id"    />
+    </resultMap>
+
+    <sql id="selectTbChannelVo">
+        select * from tb_channel
+    </sql>
+
+    <select id="selectTbChannelList" parameterType="TbChannel" resultMap="TbChannelResult">
+        <include refid="selectTbChannelVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+            <if test="createBy != null  and createBy != ''"> and create_by = #{createBy}</if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
+            <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+        </where>
+    </select>
+
+    <select id="selectChannelList" parameterType="TbChannel" resultType="com.tenant.business.domain.statistics.ChannelRecord">
+        select c.id,u1.user_id,u1.user_name,c.`name`,c.remark,c.create_time
+        ,count(case when u2.create_time >= DATE_FORMAT(CURDATE(), '%Y-%m-%d') then 1 else null end  ) addPeople
+        ,count(case when u2.create_time >= DATE_FORMAT(CURDATE(), '%Y-%m-%d') then 1 else null end  ) totalAddPeople
+        from tb_channel c
+        left join sys_user u1 on c.id = u1.channal_id
+        left join sys_user u2 on c.id = u2.channal_id
+        <where>
+            <if test="id != null "> and c.id = #{id}</if>
+            <if test="createBy != null  and createBy != ''"> and c.create_by = #{createBy}</if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and c.create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
+            <if test="tenantId != null "> and c.tenant_id = #{tenantId}</if>
+        </where>
+        group by u1.user_id,u1.user_name,c.id,c.`name`,c.remark,c.create_time
+    </select>
+    
+    <select id="selectTbChannelById" parameterType="Long" resultMap="TbChannelResult">
+        <include refid="selectTbChannelVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTbChannel" parameterType="TbChannel" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_channel
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="tenantId != null">tenant_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbChannel" parameterType="TbChannel">
+        update tb_channel
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+        </trim>
+        where id = #{id}
+        <if test="createBy != null  and createBy != ''"> and create_by = #{createBy}</if>
+    </update>
+
+    <delete id="deleteTbChannelById" parameterType="Long">
+        delete from tb_channel where id = #{id}
+    </delete>
+
+    <delete id="deleteTbChannelByIds" parameterType="String">
+        delete from tb_channel where
+        <if test="createBy != null and createBy != ''">  create_by = #{createBy} and</if>
+id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

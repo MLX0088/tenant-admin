@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增租客基础设置')" />
+    <th:block th:include="include :: datetimepicker-css" />
+    <th:block th:include="include :: bootstrap-fileinput-css"/>
+    <th:block th:include="include :: summernote-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-TenantConfig-add">
+            <div class="form-group row">    
+                <div class="control-label">登录验证码：</div>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-sm btn-secondary" th:each="dict : ${@dict.getType('enable_status')}">
+                        <input type="radio" th:id="${'needLoginCode_' + dict.dictCode}" name="needLoginCode" th:value="${dict.dictValue}" th:checked="${dict.default}"> <span th:text="${dict.dictLabel}"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">注册邀请：</div>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-sm btn-secondary" th:each="dict : ${@dict.getType('enable_status')}">
+                        <input type="radio" th:id="${'canInvite_' + dict.dictCode}" name="canInvite" th:value="${dict.dictValue}" th:checked="${dict.default}"> <span th:text="${dict.dictLabel}"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">邀请码：</div>
+                <div class="">
+                    <input name="inviteCode" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">短信验证码：</div>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-sm btn-secondary" th:each="dict : ${@dict.getType('enable_status')}">
+                        <input type="radio" th:id="${'needSmsCode_' + dict.dictCode}" name="needSmsCode" th:value="${dict.dictValue}" th:checked="${dict.default}"> <span th:text="${dict.dictLabel}"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="control-label">机器人头像：</div>
+                <div class="">
+                    <input type="hidden" name="rebotImageId">
+                    <div class="file-loading">
+                        <input class="form-control file-upload" id="rebotImageId" name="file" type="file">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">APP名字：</div>
+                <div class="">
+                    <input name="appName" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">机器人名字：</div>
+                <div class="">
+                    <input name="rebotName" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">客服名字：</div>
+                <div class="">
+                    <input name="csName" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">公告弹窗：</div>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-sm btn-secondary" >
+                        <input type="radio" th:id="${'popAction_0'}" name="popAction" value="0" checked> 0
+                    </label>
+                    <label class="btn btn-sm btn-secondary" >
+                        <input type="radio" th:id="${'popAction_1'}" name="popAction" value="1"> 1
+                    </label>
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">开奖信息人数排列：</div>
+                <div class="">
+                    <input name="arrangement" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">版本号：</div>
+                <div class="">
+                    <input name="version" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">最低上分：</div>
+                <div class="">
+                    <input name="minAddScore" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">最低下分：</div>
+                <div class="">
+                    <input name="minMinusScore" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">满把下分：</div>
+                <div class="">
+                    <input name="fullMinusScore" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">用户每天下分次数：</div>
+                <div class="">
+                    <input name="maxMinusCount" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">限时上分：</div>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-sm btn-secondary" th:each="dict : ${@dict.getType('enable_status')}">
+                        <input type="radio" th:id="${'isLimitAdd_' + dict.dictCode}" name="isLimitAdd" th:value="${dict.dictValue}" th:checked="${dict.default}"> <span th:text="${dict.dictLabel}"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">开启时间：</div>
+                <div class="">
+                    <div class="input-group date">
+                        <input name="limitAddStarttime" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">结束时间：</div>
+                <div class="">
+                    <div class="input-group date">
+                        <input name="limitAddEndtime" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="control-label">限时上分备注：</div>
+                <div class="">
+                    <textarea name="limitAddRemark" class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">限时下分：</div>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-sm btn-secondary" th:each="dict : ${@dict.getType('enable_status')}">
+                        <input type="radio" th:id="${'isLimitMinus_' + dict.dictCode}" name="isLimitMinus" th:value="${dict.dictValue}" th:checked="${dict.default}"> <span th:text="${dict.dictLabel}"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">开启时间：</div>
+                <div class="">
+                    <div class="input-group date">
+                        <input name="limitMinusStarttime" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">结束时间：</div>
+                <div class="">
+                    <div class="input-group date">
+                        <input name="limitMinusEndtime" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="control-label">限时下分备注：</div>
+                <div class="">
+                    <textarea name="limitMinusRemark" class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">用户二次修改提现信息：</div>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-sm btn-secondary" >
+                        <input type="radio" th:id="${'allowChangeWithdraw_0'}" name="allowChangeWithdraw" value="0" checked> 0
+                    </label>
+                    <label class="btn btn-sm btn-secondary" >
+                        <input type="radio" th:id="${'allowChangeWithdraw_1'}" name="allowChangeWithdraw" value="1"> 1
+                    </label>
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">绑定提现才能看到上分账户：</div>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-sm btn-secondary" >
+                        <input type="radio" th:id="${'associationWithdraw_0'}" name="associationWithdraw" value="0" checked> 0
+                    </label>
+                    <label class="btn btn-sm btn-secondary" >
+                        <input type="radio" th:id="${'associationWithdraw_1'}" name="associationWithdraw" value="1"> 1
+                    </label>
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">单注最低投注：</div>
+                <div class="">
+                    <input name="minScore" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">是否开启转盘：</div>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-sm btn-secondary" th:each="dict : ${@dict.getType('enable_status')}">
+                        <input type="radio" th:id="${'openTurntable_' + dict.dictCode}" name="openTurntable" th:value="${dict.dictValue}" th:checked="${dict.default}"> <span th:text="${dict.dictLabel}"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">转盘流水阈值：</div>
+                <div class="">
+                    <input name="turntableScore" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">是否显示刮刮乐：</div>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-sm btn-secondary" th:each="dict : ${@dict.getType('enable_status')}">
+                        <input type="radio" th:id="${'showScratchCard_' + dict.dictCode}" name="showScratchCard" th:value="${dict.dictValue}" th:checked="${dict.default}"> <span th:text="${dict.dictLabel}"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">站外客服：</div>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-sm btn-secondary" >
+                        <input type="radio" th:id="${'offSiteCs_0'}" name="offSiteCs" value="0" checked> 0
+                    </label>
+                    <label class="btn btn-sm btn-secondary" >
+                        <input type="radio" th:id="${'offSiteCs_1'}" name="offSiteCs" value="1"> 1
+                    </label>
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">用户私聊第一句：</div>
+                <div class="">
+                    <input type="hidden" class="form-control" name="chatSayHello">
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal_chatSayHello">编辑</button>
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">介绍红：</div>
+                <div class="">
+                    <input type="hidden" class="form-control" name="introduceCommission">
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal_introduceCommission">编辑</button>
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">客户端链接：</div>
+                <div class="">
+                    <input name="clientUrl" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">    
+                <div class="control-label">H5导航链接：</div>
+                <div class="">
+                    <input name="navUrl" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="control-label">关盘段落：</div>
+                <div class="">
+                    <textarea name="closeSection" class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="control-label">关于我们：</div>
+                <div class="">
+                    <textarea name="aboutUs" class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="control-label">备注：</div>
+                <div class="">
+                    <textarea name="remark" class="form-control"></textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="modal inmodal fade" id="myModal_chatSayHello" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" style="margin:0 auto;">
+                    <h4 class="modal-title">用户私聊第一句</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="summernote" id="chatSayHello"></div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal inmodal fade" id="myModal_introduceCommission" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" style="margin:0 auto;">
+                    <h4 class="modal-title">介绍红</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="summernote" id="introduceCommission"></div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <th:block th:include="include :: bootstrap-fileinput-js"/>
+    <th:block th:include="include :: summernote-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "business/TenantConfig"
+        $("#form-TenantConfig-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-TenantConfig-add').serialize());
+            }
+        }
+
+        $("input[name='limitAddStarttime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        $("input[name='limitAddEndtime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        $("input[name='limitMinusStarttime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        $("input[name='limitMinusEndtime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        $(".file-upload").fileinput({
+            uploadUrl: ctx + 'common/upload',
+            maxFileCount: 1,
+            autoReplace: true
+        }).on('fileuploaded', function (event, data, previewId, index) {
+            $("input[name='" + event.currentTarget.id + "']").val(data.response.url)
+        }).on('fileremoved', function (event, id, index) {
+            $("input[name='" + event.currentTarget.id + "']").val('')
+        })
+
+        $(function() {
+            $('.summernote').summernote({
+                lang: 'zh-CN',
+                dialogsInBody: true,
+                height: 500,
+                callbacks: {
+                    onChange: function(contents, $edittable) {
+                        $("input[name='" + this.id + "']").val(contents);
+                    },
+                    onImageUpload: function(files) {
+                        var obj = this;
+                    	var data = new FormData();
+                    	data.append("file", files[0]);
+                    	$.ajax({
+                            type: "post",
+                            url: ctx + "common/upload",
+                    		data: data,
+                    		cache: false,
+                    		contentType: false,
+                    		processData: false,
+                    		dataType: 'json',
+                    		success: function(result) {
+                    		    if (result.code == web_status.SUCCESS) {
+                    		        $('#' + obj.id).summernote('insertImage', result.url);
+                    		    } else {
+                    		        $.modal.alertError(result.msg);
+                    		    }
+                    		},
+                    		error: function(error) {
+                    		    $.modal.alertWarning("图片上传失败。");
+                    		}
+                    	});
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

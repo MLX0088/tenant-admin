@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('清除数据')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-6" style="margin-top:30px">
+                <form class="col-sm-12" id="form-WinReport-clearData">
+                    <input type="hidden" name="tenantId" th:value="${tenantId}"/>
+                    <div class=" col-sm-12 row">
+                        <div class="control-label is-required">时间：</div>
+                        <div class="col row">
+                            <div class="input-daterange input-group">
+                                <input type="text" name="startTime" class="input-sm form-control" id="datetimepicker-startTime" placeholder="yyyy-MM-dd"/>
+                                <span class="input-group-addon">到</span>
+                                <input type="text" name="endTime" class="input-sm form-control" id="datetimepicker-endTime" placeholder="yyyy-MM-dd"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" col-sm-12 row mt-4">
+                        <div class="control-label is-required" >类型：</div>
+                        <div class="col row">
+                            <label class=""><input type="checkbox" name="type" value="1"><i></i> 私聊内容</label>
+                            <label class="ml-3"><input type="checkbox" name="type" value="2"><i></i> 订单数据</label>
+                            <label class="ml-3"><input type="checkbox" name="type" value="3"><i></i> 开奖历史</label>
+                            <label class="ml-3"><input type="checkbox" name="type" value="4"><i></i> 下注历史</label>
+                            <label class="ml-3"><input type="checkbox" name="type" value="5"><i></i> 盈亏报表</label>
+                        </div>
+                    </div>
+                    <div class=" col-sm-12 row mt-4">
+                        <button type="button" class="btn btn-primary btn-sm" onclick="submitHandler()">确定清除</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+     <th:block th:include="include :: datetimepicker-js" />
+    <script th:inline="javascript">
+
+
+        $(function(){
+        	$("#datetimepicker-startTime").datetimepicker({
+        		format: 'yyyy-mm-dd',
+        		minView: "month",
+        	    todayBtn:  true,
+        	    autoclose: true,
+        		endDate : new Date(),
+        	}).on('changeDate', function(event) {
+        		event.preventDefault();
+        		event.stopPropagation();
+        		var startTime = event.date;
+        		$('#datetimepicker-endTime').datetimepicker('setStartDate', startTime);
+        	});
+
+        	$("#datetimepicker-endTime").datetimepicker({
+        		format: 'yyyy-mm-dd',
+        		minView: "month",
+        		todayBtn:  true,
+        		autoclose: true,
+        		endDate : new Date(),
+        	}).on('changeDate', function(event) {
+        		event.preventDefault();
+        		event.stopPropagation();
+        		var endTime = event.date;
+        		$("#datetimepicker-startTime").datetimepicker('setEndDate', endTime);
+        	});
+        });
+        function submitHandler() {
+            if ($.validate.form('form-WinReport-clearData')) {
+                $.operate.saveModal("/business/WinReport/clear", $('#form-WinReport-clearData').serialize());
+            }
+        }
+
+    </script>
+</body>
+</html>

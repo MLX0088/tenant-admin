@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tenant.business.mapper.TbTenantNoticeMapper">
+    
+    <resultMap type="TbTenantNotice" id="TbTenantNoticeResult">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="content"    column="content"    />
+        <result property="isPop"    column="is_pop"    />
+        <result property="rotatingImagesId"    column="rotating_images_id"    />
+        <result property="sort"    column="sort"    />
+        <result property="type"    column="type"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="isRotating"    column="is_rotating"    />
+    </resultMap>
+
+    <sql id="selectTbTenantNoticeVo">
+        select * from tb_tenant_notice
+    </sql>
+
+    <select id="selectTbTenantNoticeList" parameterType="TbTenantNotice" resultMap="TbTenantNoticeResult">
+        <include refid="selectTbTenantNoticeVo"/>
+        <where>  
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="isPop != null  and isPop != ''"> and is_pop = #{isPop}</if>
+            <if test="rotatingImagesId != null "> and rotating_images_id = #{rotatingImagesId}</if>
+            <if test="sort != null "> and sort = #{sort}</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+            <if test="isRotating != null  and isRotating != ''"> and is_rotating = #{isRotating}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbTenantNoticeById" parameterType="Long" resultMap="TbTenantNoticeResult">
+        <include refid="selectTbTenantNoticeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTbTenantNotice" parameterType="TbTenantNotice" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_tenant_notice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null">title,</if>
+            <if test="content != null">content,</if>
+            <if test="isPop != null">is_pop,</if>
+            <if test="rotatingImagesId != null">rotating_images_id,</if>
+            <if test="sort != null">sort,</if>
+            <if test="type != null">type,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="tenantId != null">tenant_id,</if>
+            <if test="isRotating != null">is_rotating,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null">#{title},</if>
+            <if test="content != null">#{content},</if>
+            <if test="isPop != null">#{isPop},</if>
+            <if test="rotatingImagesId != null">#{rotatingImagesId},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="type != null">#{type},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+            <if test="isRotating != null">#{isRotating},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbTenantNotice" parameterType="TbTenantNotice">
+        update tb_tenant_notice
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null">title = #{title},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="isPop != null">is_pop = #{isPop},</if>
+            <if test="rotatingImagesId != null">rotating_images_id = #{rotatingImagesId},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+            <if test="isRotating != null">is_rotating = #{isRotating},</if>
+        </trim>
+        where id = #{id}
+        <if test="createBy != null  and createBy != ''"> and create_by = #{createBy}</if>
+    </update>
+
+    <delete id="deleteTbTenantNoticeById" parameterType="Long">
+        delete from tb_tenant_notice where id = #{id}
+    </delete>
+
+    <delete id="deleteTbTenantNoticeByIds" parameterType="String">
+        delete from tb_tenant_notice where
+        <if test="createBy != null and createBy != ''">  create_by = #{createBy} and</if>
+id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('订单记录列表')" />
+</head>
+<body class="gray-bg">
+<div class="p-4">
+    <div style="border-radius: 1rem !important;" class="col-sm-12 row white-bg pt-3 pb-3">
+        <div class="col-sm-12 row">
+            <div class="col-sm-4">
+                <h1 class="h4 font-weight-bold text-dark">监控中心</h1>
+            </div>
+            <div class="ml-4 h4"><span>有效期：</span><span style="color:red;" id="expireTime">2069-01-05 23:33:22</span></div>
+        </div>
+        <div class="col-sm-12 ">
+            <div class="col-sm-12 row h4 font-weight-bolder">
+                <div><span>在线人数：</span><span id="onlineNo" style="color:blue;">0</span></div>
+                <div class="ml-3"><span>今日新增人：</span><span id="addPeople" style="color:blue;">0</span></div>
+                <div class="ml-3"><span>今日总上分：</span><span id="totalAddScore" style="color:blue;">0</span></div>
+                <div class="ml-3"><span>今日总下分：</span><span id="totalMinusScore" style="color:blue;">0</span></div>
+                <div class="ml-3"><span>实账盈亏：</span><span id="win" style="color:blue;">0</span></div>
+                <div class="ml-3"><span>今日下注人：</span><span id="scorePerson" style="color:blue;">0</span></div>
+                <div class="ml-3"><span>今日总盈亏：</span><span id="totalWin" style="color:red;">0</span></div>
+                <div class="ml-3"><span>当前总分数：</span><span id="totalScore" style="color:red;">0</span></div>
+            </div>
+
+        </div>
+    </div>
+
+    <div style="border-radius: 1rem !important;" class="col-sm-12 row white-bg mt-4 pt-3 pb-3">
+        <div class="col-sm-6 row">
+            <div class="col-sm-12">
+                <h1 class="h4 font-weight-bold text-dark">加拿大</h1>
+            </div>
+            <div class="col-sm-12">
+                <table class="col-sm-12">
+                    <tr class="col-sm-12">
+                        <td style="width:20%">当期</td>
+                        <td style="width:20%">开奖时间</td>
+                        <td style="width:20%">开奖结果</td>
+                        <td style="width:20%">当期人数</td>
+                        <td style="width:20%">当期投注</td>
+                    </tr>
+                    <tr style="color:blue;" class="border-bottom">
+                        <td id="jndFirstPeriodNumber"></td>
+                        <td id="jndFirstTime"></td>
+                        <td id="jndFirstResult"></td>
+                        <td id="jndFirstUserCount"></td>
+                        <td id="jndFirsttotalScore" style="color:red;"></td>
+                    </tr>
+                    <tr>
+                        <td>上期</td>
+                        <td>开奖时间</td>
+                        <td>开奖结果</td>
+                        <td>当期人数</td>
+                        <td>当期投注</td>
+                    </tr>
+                    <tr>
+                        <td id="jndSecondPeriodNumber" ></td>
+                        <td id="jndSecondTime"></td>
+                        <td id="jndSecondResult"></td>
+                        <td id="jndSecondUserCount"></td>
+                        <td id="jndSecondtotalWinScore" style="color:red;"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="col-sm-6 row">
+            <div class="col-sm-12">
+                <h1 class="h4 font-weight-bold text-dark">台湾</h1>
+            </div>
+            <div class="col-sm-12">
+                <table class="col-sm-12">
+                    <tr class="col-sm-12">
+                        <td style="width:20%">当期</td>
+                        <td style="width:20%">开奖时间</td>
+                        <td style="width:20%">开奖结果</td>
+                        <td style="width:20%">当期人数</td>
+                        <td style="width:20%">当期投注</td>
+                    </tr>
+                    <tr style="color:blue;" class="border-bottom">
+                        <td id="twFirstPeriodNumber"></td>
+                        <td id="twFirstTime"></td>
+                        <td id="twFirstResult"></td>
+                        <td id="twFirstUserCount"></td>
+                        <td id="twFirsttotalScore" style="color:red;"></td>
+                    </tr>
+                    <tr>
+                        <td>上期</td>
+                        <td>开奖时间</td>
+                        <td>开奖结果</td>
+                        <td>当期人数</td>
+                        <td>当期投注</td>
+                    </tr>
+                    <tr>
+                        <td id="twSecondPeriodNumber" ></td>
+                        <td id="twSecondTime"></td>
+                        <td id="twSecondResult"></td>
+                        <td id="twSecondUserCount"></td>
+                        <td id="twSecondtotalWinScore" style="color:red;"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="border-bottom col-sm-12"></div>
+        <div class="panel-group col-sm-12 mt-3" id="accordion">
+            <div class="col-sm-12">
+                <a style="font-weight:bold;color:red;" class="h3" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">快速上下分</a>
+            </div>
+            <div class="col-sm-12 mt-3">
+                <div id="collapseOne" class="col-sm-12 panel-collapse collapse in">
+                    <form class="col-sm-12 row" id="form-OrderRecord-add">
+                        <input type="hidden" name="tenantId" th:value="${tenantId}"/>
+                        <input type="hidden" name="status" value="1"/>
+                        <div class="form-group col-sm-6 row">
+                            <div class="control-label is-required">用户ID：</div>
+                            <div class="">
+                                <input name="userId" class="form-control" type="text" required>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6 row">
+                            <div class="control-label is-required">财务类型：</div>
+                            <div class="">
+                                <select name="type" class="form-control" th:with="type=${@dict.getType('finance_type')}">
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" required></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6 row">
+                            <div class="control-label is-required">分数：</div>
+                            <div class="">
+                                <input name="score" class="form-control" type="text" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-6 row">
+                            <div class="control-label">备注：</div>
+                            <div class="">
+                                <input name="remark" class="form-control" type="text" >
+                            </div>
+                        </div>
+
+                        <div class="form-group col-sm-6 row">
+                            <button type="button" class="btn btn-primary btn-sm" onclick="submitHandler()">提交</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="border-radius: 1rem !important;" class="col-sm-12 row white-bg mt-4 pt-3 pb-3">
+
+
+        <div class="btn-group-sm" id="toolbar-up" role="group">
+            <h1 class="h4 font-weight-bold text-dark">上分订单</h1>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table-up"></table>
+        </div>
+    </div>
+
+    <div style="border-radius: 1rem !important;" class="col-sm-12 row white-bg mt-4 pt-3 pb-3">
+
+        <div class="btn-group-sm" id="toolbar-down" role="group">
+            <h1 class="h4 font-weight-bold text-dark">下分订单</h1>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table-down"></table>
+        </div>
+    </div>
+</div>
+<th:block th:include="include :: footer" />
+<script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('business:OrderRecord:edit')}]];
+        var typeDatas = [[${@dict.getType('finance_type')}]];
+        var isSameDatas = [[${@dict.getType('same_name')}]];
+        var statusDatas = [[${@dict.getType('audit_status')}]];
+        var prefix = ctx + "business/OrderRecord";
+
+        let countdownIntervalJnd;
+        let countdownIntervalAm;
+        let jndOpenTime;
+        let amOpenTime;
+        document.addEventListener('click', initAudio, { once: true });
+        function initAudio(){
+            window.parent.initAudio();
+        }
+        // 核心倒计时函数
+        function startCountdownJnd() {
+            clearInterval(countdownIntervalJnd); // 清除旧计时器
+
+            countdownIntervalJnd = setInterval(() => {
+                 // 解析输入字符串为Date对象
+                const targetDate = new Date(jndOpenTime);
+                // 获取当前时间
+                const currentDate = new Date();
+                // 计算毫秒差（有符号值：正数表示未来，负数表示过去）
+                const diffInMs = (targetDate.getTime() - currentDate.getTime())/1000;
+
+                if(diffInMs<0){
+                    $('#jndFirstTime').text('开奖中');
+                    if(diffInMs <= -10){
+                        clearInterval(countdownIntervalJnd);
+                        countdownIntervalJnd = null;
+                        loadJndList();
+                        return;
+                    }
+                    return;
+                }
+
+                if(diffInMs <= 30){
+                    $('#jndFirstTime').text('已封盘');
+                    return;
+                }
+
+                // 计算分钟和秒数并补零格式化[4,7](@ref)
+                const minutes = Math.floor((diffInMs-30) / 60);
+                const seconds = Math.floor((diffInMs-30) % 60);
+                 $('#jndFirstTime').text((minutes<10?'0'+minutes:minutes)+ ':'+ (seconds<10?'0'+seconds:seconds)+ '后封盘');
+
+            }, 1000); // 每秒更新一次
+        }
+
+        function startCountdownAm() {
+            clearInterval(countdownIntervalAm); // 清除旧计时器
+
+            countdownIntervalAm = setInterval(() => {
+                 // 解析输入字符串为Date对象
+                const targetDate = new Date(amOpenTime);
+                // 获取当前时间
+                const currentDate = new Date();
+                // 计算毫秒差（有符号值：正数表示未来，负数表示过去）
+                const diffInMs = (targetDate.getTime() - currentDate.getTime())/1000;
+
+                if(diffInMs<0){
+                    $('#twFirstTime').text('开奖中');
+                    if(diffInMs <= -10){
+                        clearInterval(countdownIntervalAm);
+                        countdownIntervalAm = null;
+                        loadAmList();
+                        return;
+                    }
+                    return;
+                }
+
+                if(diffInMs <= 30){
+                    $('#twFirstTime').text('已封盘');
+                    return;
+                }
+
+                // 计算分钟和秒数并补零格式化[4,7](@ref)
+                const minutes = Math.floor((diffInMs-30) / 60);
+                const seconds = Math.floor((diffInMs-30) % 60);
+                 $('#twFirstTime').text((minutes<10?'0'+minutes:minutes)+ ':'+ (seconds<10?'0'+seconds:seconds)+ '后封盘');
+
+            }, 1000); // 每秒更新一次
+        }
+
+        function loadJndList(){
+            $.operate.get(ctx+"business/DrawRecord/list2?gameType=0&pageSize=2",function(result){
+                if (result.code == 0){
+                    jndOpenTime = null;
+                    if(result.data.length>=1){
+                        $('#jndFirstPeriodNumber').text(result.data[0].periodNumber);
+                        $('#jndFirstUserCount').text(result.data[0].userCount);
+                        $('#jndFirsttotalScore').text(result.data[0].totalScore);
+                        if(result.data[0].resultStatus == 3){
+                            $('#jndFirstTime').text(result.data[0].actualOpenTime.substring(11, result.data[0].actualOpenTime.length));
+                            $('#jndFirstResult').text(result.data[0].resultOne+'+'+result.data[0].resultTwo+'+'+result.data[0].resultThree+'='+result.data[0].resultSum+' '+result.data[0].simpleResult);
+                        }else{
+                            $('#jndFirstResult').text('0+0+0=00 未知');
+                            jndOpenTime = result.data[0].expectOpenTime;
+                            startCountdownJnd();
+                        }
+
+
+                    }
+                    if(result.data.length>=2){
+                        $('#jndSecondPeriodNumber').text(result.data[1].periodNumber);
+                        $('#jndSecondTime').text(result.data[1].actualOpenTime.substring(11, result.data[1].actualOpenTime.length));
+                        $('#jndSecondResult').text(result.data[1].resultOne+'+'+result.data[1].resultTwo+'+'+result.data[1].resultThree+'='+result.data[1].resultSum+' '+result.data[1].simpleResult);
+                        $('#jndSecondUserCount').text(result.data[1].userCount);
+                        $('#jndSecondtotalWinScore').text(result.data[1].totalWinScore);
+                    }
+                }
+            });
+        }
+
+        function loadAmList(){
+            $.operate.get(ctx+"business/DrawRecord/list2?gameType=2&pageSize=2",function(result){
+                if (result.code == 0){
+                    amOpenTime = null;
+                    if(result.data.length>=1){
+                        $('#twFirstPeriodNumber').text(result.data[0].periodNumber);
+                        $('#twFirstUserCount').text(result.data[0].userCount);
+                        $('#twFirsttotalScore').text(result.data[0].totalScore);
+                        if(result.data[0].resultStatus == 3){
+                            $('#twFirstTime').text(result.data[0].actualOpenTime.substring(11, result.data[0].actualOpenTime.length));
+                            $('#twFirstResult').text(result.data[0].resultOne+'+'+result.data[0].resultTwo+'+'+result.data[0].resultThree+'='+result.data[0].resultSum+' '+result.data[0].simpleResult);
+                        }else{
+                            $('#twFirstResult').text('0+0+0=00 未知');
+                            amOpenTime = result.data[0].expectOpenTime;
+                            startCountdownAm();
+
+                        }
+
+
+                    }
+                    if(result.data.length>=2){
+                        $('#twSecondPeriodNumber').text(result.data[1].periodNumber);
+                        if(result.data[1].actualOpenTime){
+                            $('#twSecondTime').text(result.data[1].actualOpenTime.substring(11, result.data[1].actualOpenTime.length));
+                        }
+                        if(result.data[1].resultOne){
+                            $('#twSecondResult').text(result.data[1].resultOne+'+'+result.data[1].resultTwo+'+'+result.data[1].resultThree+'='+result.data[1].resultSum+' '+result.data[1].simpleResult);
+                        }
+                        $('#twSecondUserCount').text(result.data[1].userCount);
+                        $('#twSecondtotalWinScore').text(result.data[1].totalWinScore);
+                    }
+                }
+            });
+        }
+
+        function auditPass(id){
+            var data = {"id":id,status:1};
+            $.operate.saveModal(prefix+"/audit",data,function(result){
+                $.table.refresh('bootstrap-table-up');
+                $.table.refresh('bootstrap-table-down');
+            });
+        }
+
+        function submitHandler() {
+            if ($.validate.form('form-OrderRecord-add')) {
+                $.operate.saveModal(prefix + "/add", $('#form-OrderRecord-add').serialize(),function(result){
+                    if(result.code == 0){
+                        $("#form-OrderRecord-add")[0].reset();
+                        refreshData();
+                    }
+                });
+            }
+        }
+
+        function loadStatistics(op){
+            $.operate.get(ctx+"business/dashboard/monitor",function(result){
+                if (result.code == 0){
+                    $('#onlineNo').text(result.data.onlineNo);
+                    $('#addPeople').text(result.data.addPeople);
+                    $('#totalAddScore').text(result.data.totalAddScore);
+                    $('#totalMinusScore').text(result.data.totalMinusScore);
+                    $('#win').text(result.data.win);
+                    $('#scorePerson').text(result.data.scorePerson);
+                    $('#totalWin').text(result.data.totalWin);
+                    $('#totalScore').text(result.data.totalScore);
+                    $('#expireTime').text(result.data.expireTime);
+                    if(op==1){
+                        $.table.refresh('bootstrap-table-up');
+                        $.table.refresh('bootstrap-table-down');
+
+                        if(!countdownIntervalJnd && !jndOpenTime){
+                            loadJndList();
+                        }
+                        if(!countdownIntervalAm && !amOpenTime){
+                            loadAmList();
+                        }
+                    }
+                }
+            });
+        }
+
+
+        function refreshData(){
+            loadStatistics(1);
+        }
+        let upData = [];
+        let downData = [];
+        let isUpFirstLoad = true;
+        let isDownFirstLoad = true;
+        function upLoadSuccess(data){
+            if(isUpFirstLoad){
+                upData = data;
+                isUpFirstLoad = false;
+                return;
+            }
+            var upFirstRowData1 = upData && upData.rows && upData.rows.length>0?upData.rows[0]:null; // 获取第一行的数据
+            var upFirstRowData2 = data && data.rows && data.rows.length>0 ? data.rows[0]:null; // 获取第一行的数据
+            if(data && upFirstRowData2 && upFirstRowData2.id ){
+                if(!upFirstRowData1 || !(upFirstRowData1.id) || (upFirstRowData1.id < upFirstRowData2.id && upFirstRowData2.status == 0)){
+                    window.parent.playNewMsgSound();
+                }
+            }
+            upData = data;
+        }
+        function downLoadSuccess(data){
+            if(isDownFirstLoad){
+                downData = data;
+                isDownFirstLoad = false;
+                return;
+            }
+            var downFirstRowData1 = downData && downData.rows && downData.rows.length>0?downData.rows[0]:null; // 获取第一行的数据
+            var downFirstRowData2 = data && data.rows && data.rows.length>0 ? data.rows[0]:null; // 获取第一行的数据
+            if(data && downFirstRowData2 && downFirstRowData2.id ){
+                if(!downFirstRowData1 || !(downFirstRowData1.id) || (downFirstRowData2.id < downFirstRowData2.id && downFirstRowData2.status == 0)){
+                    window.parent.playNewMsgSound();
+                }
+            }
+            downData = data;
+        }
+        $(function() {
+            var intervalId = setInterval(function() {
+                refreshData();
+            }, 10000); // 1000毫秒等于1秒
+            loadStatistics();
+            loadJndList();
+            loadAmList();
+            var options = {
+                url: ctx + "business/dashboard/upList",
+                updateUrl: prefix + "/audit/{id}",
+            	id: "bootstrap-table-up",
+            	toolbar: "toolbar-up",
+                modalName: "订单记录",
+                onLoadSuccess: upLoadSuccess,
+                columns: [{
+                    field: 'id',
+                    title: '自增ID',
+                    visible: false
+                },
+                {
+                    field: 'userId',
+                    title: 'ID-用户名',
+                    formatter: function(value, row, index) {
+                       return value+"-"+row.userName;
+                    }
+                },
+                {
+                    field: 'type',
+                    title: '财务类型',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(typeDatas, value);
+                    }
+                },
+                {
+                    field: 'payType',
+                    title: '支付类型',
+                },
+                {
+                    field: 'name',
+                    title: '上次来款名/支付人名字',
+                },
+                {
+                    field: 'score',
+                    title: '分数',
+                },
+                {
+                    field: 'leftScore',
+                    title: '当前余分',
+                },
+                {
+                    field: 'isSame',
+                    title: '是否同名',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(isSameDatas, value);
+                    }
+                },
+                {
+                    field: 'createTime',
+                    title: '申请时间',
+                },
+                {
+                    title: '操作审核',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        if(row.status == 0){
+                            actions.push('<a class="btn btn-success btn-sm ' + editFlag + '" href="javascript:void(0)" onclick="auditPass(\'' + row.id + '\')"><i class="fa fa-edit"></i>审核通过</a> ');
+                            actions.push('<a class="btn btn-danger btn-sm ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>审核不通过</a> ');
+                        }else if(row.status == 1){
+                            actions.push('<a disabled class="btn btn-info btn-sm href="javascript:void(0)" ><i class="fa fa-edit"></i>已审核通过</a> ');
+
+                        }else if(row.status == 2){
+                            actions.push('<a disabled class="btn btn-warning btn-sm href="javascript:void(0)" ><i class="fa fa-remove"></i>审核不通过</a>');
+
+                        }
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+
+
+        $(function() {
+            var options = {
+                url: ctx + "business/dashboard/downList",
+                updateUrl: prefix + "/audit/{id}",
+            	id: "bootstrap-table-down",
+            	toolbar: "toolbar-down",
+                modalName: "订单记录",
+                onLoadSuccess: downLoadSuccess,
+                columns: [{
+                    field: 'id',
+                    title: '自增ID',
+                    visible: false
+                },
+                {
+                    field: 'userId',
+                    title: 'ID-用户名',
+                    formatter: function(value, row, index) {
+                       return value+"-"+row.userName;
+                    }
+                },
+                {
+                    field: 'type',
+                    title: '财务类型',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(typeDatas, value);
+                    }
+                },
+                {
+                    field: 'payType',
+                    title: '支付类型',
+                },
+                {
+                    field: 'lastPayName',
+                    title: '上次来款名',
+                },
+                {
+                    field: 'name',
+                    title: '姓名',
+                },
+                {
+                    field: 'account',
+                    title: '账号',
+                },
+                {
+                    field: 'imageId',
+                    title: '二维码',
+                    formatter: function(value, row, index) {
+                        if(!(typeof value === 'number' && value>0 )){
+                            return "";
+                        }
+				    	return $.table.imageView(ctx + "business/images/"+value,320,320);
+				    }
+                },
+                {
+                    field: 'score',
+                    title: '分数',
+                },
+                {
+                    field: 'leftScore',
+                    title: '当前余分',
+                },
+                {
+                    field: 'isSame',
+                    title: '是否同名',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(isSameDatas, value);
+                    }
+                },
+                {
+                    field: 'createTime',
+                    title: '申请时间',
+                },
+                {
+                    title: '操作审核',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        if(row.status == 0){
+                            actions.push('<a class="btn btn-success btn-sm ' + editFlag + '" href="javascript:void(0)" onclick="auditPass(\'' + row.id + '\')"><i class="fa fa-edit"></i>审核通过</a> ');
+                            actions.push('<a class="btn btn-success btn-sm ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.editWithSize(\'' + row.id + '\',500,400)"><i class="fa fa-edit"></i>审核不通过</a> ');
+                        }else if(row.status == 1){
+                            actions.push('<a disabled class="btn btn-info btn-sm href="javascript:void(0)" ><i class="fa fa-edit"></i>已审核通过</a> ');
+
+                        }else if(row.status == 2){
+                            actions.push('<a disabled class="btn btn-warning btn-sm href="javascript:void(0)" ><i class="fa fa-remove"></i>审核不通过</a>');
+
+                        }
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

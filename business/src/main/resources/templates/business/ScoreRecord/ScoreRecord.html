@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('投注记录列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <input type="hidden" name="tenantId" th:value="${selectDeptId}"/>
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>用户ID：</label>
+                                <input type="text" name="userId" th:value="${userId}"/>
+                            </li>
+                            <li>
+                                <label>用户名：</label>
+                                <input type="text" name="userName"/>
+                            </li>
+                            <li>
+                                <label>期号：</label>
+                                <input type="text" name="periodNumber" th:value="${periodNumber}"/>
+                            </li>
+                            <li>
+                                <label>房间：</label>
+                                <select name="roomName" th:with="type=${@dict.getType('room_name')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li>
+                                <label>状态：</label>
+                                <select name="status" th:with="type=${@dict.getType('bet_status')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li>
+                                <label>IP：</label>
+                                <input type="text" name="registerIp"/>
+                            </li>
+                            <li class="select-time">
+                                <label>投注时间：</label>
+                                <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginCreateTime]" th:value="${beginCreateTime}"/>
+                                <span>-</span>
+                                <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endCreateTime]" th:value="${endCreateTime}"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('business:ScoreRecord:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('business:ScoreRecord:remove')}]];
+        var statusDatas = [[${@dict.getType('bet_status')}]];
+        var prefix = ctx + "business/ScoreRecord";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "投注记录",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'id',
+                    title: '自增ID',
+                    visible: false
+                },
+                {
+                    field: 'userId',
+                    title: '用户ID',
+                    formatter: function(value, row, index) {
+                       return '<a href="javascript:void(0)" onclick="$.modal.openTab(\'个人中心\',\'/system/user/edit/' + row.userId+'\' ,true)"><i class="fa fa-edit">'+row.userId+'-'+row.userName+'</i></a> ';
+                    }
+                },
+		        {
+		            field: 'registerIp',
+		            title: '投注IP',
+		        	formatter: function (value, row, index) {
+		        		if(value){
+							if(row.registerIpRepeat==1){
+								return "<span style='color:red'>"+value+"-"+row.registerAddress+"</span>";
+							}
+							return value+"-"+row.registerAddress;
+
+		        		}
+		        		return "-";
+		        	}
+		        },
+                {
+                    field: 'roomName',
+                    title: '房间',
+                },
+                {
+                    field: 'periodNumber',
+                    title: '期号',
+                },
+                {
+                    field: 'result',
+                    title: '开奖结果',
+                    formatter: function(value, row, index) {
+                        if(!row.resultSum){
+                            return '';
+                        }
+                       return row.resultOne+"+"+row.resultTwo+"+"+row.resultThree+"="+row.resultSum+ " "+ value;
+                    }
+                },
+                {
+                    field: 'betting',
+                    title: '投码',
+                },
+                {
+                    field: 'score',
+                    title: '总投分',
+                },
+                {
+                    field: 'winScore',
+                    title: '盈亏分',
+                },
+                {
+                    field: 'leftScore',
+                    title: '当前余分',
+                },
+                {
+                    field: 'createTime',
+                    title: '创建时间',
+                },
+                {
+                    field: 'diffSecond',
+                    title: '相差秒',
+                },
+                {
+                    field: 'status',
+                    title: '状态',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(statusDatas, value);
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

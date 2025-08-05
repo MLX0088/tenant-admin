@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tenant.system.mapper.SysPayconfigMapper">
+    
+    <resultMap type="SysPayconfig" id="SysPayconfigResult">
+        <result property="id"    column="id"    />
+        <result property="status"    column="status"    />
+        <result property="appType"    column="appType"    />
+        <result property="payType"    column="payType"    />
+        <result property="remark"    column="remark"    />
+        <result property="appID"    column="appID"    />
+        <result property="wxpayMchno"    column="wxpay_mchNo"    />
+        <result property="wxpayAppsecret"    column="wxpay_appSecret"    />
+        <result property="wxpayVersion"    column="wxpay_version"    />
+        <result property="wxpayApiv2key"    column="wxpay_apiv2Key"    />
+        <result property="wxpayApiv3key"    column="wxpay_apiV3Key"    />
+        <result property="wxpayMerchantserialnumber"    column="wxpay_merchantSerialNumber"    />
+        <result property="wxpayApiclientCertpem"    column="wxpay_apiclient_certpem"    />
+        <result property="wxpayApiclientKeypem"    column="wxpay_apiclient_keypem"    />
+        <result property="alipayIsusecert"    column="alipay_isUseCert"    />
+        <result property="alipayAppkey"    column="alipay_appkey"    />
+        <result property="alipayPublickey"    column="alipay_publicKey"    />
+        <result property="alipayAppcertpublickey"    column="alipay_appCertPublicKey"    />
+        <result property="alipayAlipaycertpublickey"    column="alipay_alipayCertPublicKey"    />
+        <result property="alipayAlipayrootcert"    column="alipay_alipayRootCert"    />
+        <result property="createTime"    column="createTime"    />
+    </resultMap>
+
+    <sql id="selectSysPayconfigVo">
+        select * from sys_payconfig
+    </sql>
+
+    <select id="selectSysPayconfigList" parameterType="SysPayconfig" resultMap="SysPayconfigResult">
+        <include refid="selectSysPayconfigVo"/>
+        <where>  
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="appType != null  and appType != ''"> and appType = #{appType}</if>
+            <if test="payType != null  and payType != ''"> and payType = #{payType}</if>
+            <if test="appID != null  and appID != ''"> and appID = #{appID}</if>
+            <if test="wxpayMchno != null  and wxpayMchno != ''"> and wxpay_mchNo = #{wxpayMchno}</if>
+            <if test="wxpayVersion != null  and wxpayVersion != ''"> and wxpay_version = #{wxpayVersion}</if>
+            <if test="wxpayMerchantserialnumber != null  and wxpayMerchantserialnumber != ''"> and wxpay_merchantSerialNumber = #{wxpayMerchantserialnumber}</if>
+            <if test="alipayIsusecert != null  and alipayIsusecert != ''"> and alipay_isUseCert = #{alipayIsusecert}</if>
+            <if test="alipayAlipayrootcert != null  and alipayAlipayrootcert != ''"> and alipay_alipayRootCert = #{alipayAlipayrootcert}</if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and createTime between #{params.beginCreateTime} and #{params.endCreateTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysPayconfigById" parameterType="Long" resultMap="SysPayconfigResult">
+        <include refid="selectSysPayconfigVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSysPayconfig" parameterType="SysPayconfig" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_payconfig
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="status != null">status,</if>
+            <if test="appType != null">appType,</if>
+            <if test="payType != null">payType,</if>
+            <if test="remark != null">remark,</if>
+            <if test="appID != null">appID,</if>
+            <if test="wxpayMchno != null">wxpay_mchNo,</if>
+            <if test="wxpayAppsecret != null">wxpay_appSecret,</if>
+            <if test="wxpayVersion != null">wxpay_version,</if>
+            <if test="wxpayApiv2key != null">wxpay_apiv2Key,</if>
+            <if test="wxpayApiv3key != null">wxpay_apiV3Key,</if>
+            <if test="wxpayMerchantserialnumber != null">wxpay_merchantSerialNumber,</if>
+            <if test="wxpayApiclientCertpem != null">wxpay_apiclient_certpem,</if>
+            <if test="wxpayApiclientKeypem != null">wxpay_apiclient_keypem,</if>
+            <if test="alipayIsusecert != null">alipay_isUseCert,</if>
+            <if test="alipayAppkey != null">alipay_appkey,</if>
+            <if test="alipayPublickey != null">alipay_publicKey,</if>
+            <if test="alipayAppcertpublickey != null">alipay_appCertPublicKey,</if>
+            <if test="alipayAlipaycertpublickey != null">alipay_alipayCertPublicKey,</if>
+            <if test="alipayAlipayrootcert != null">alipay_alipayRootCert,</if>
+            <if test="createTime != null">createTime,</if>
+            <if test="weight != null">weight,</if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="status != null">#{status},</if>
+            <if test="appType != null">#{appType},</if>
+            <if test="payType != null">#{payType},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="appID != null">#{appID},</if>
+            <if test="wxpayMchno != null">#{wxpayMchno},</if>
+            <if test="wxpayAppsecret != null">#{wxpayAppsecret},</if>
+            <if test="wxpayVersion != null">#{wxpayVersion},</if>
+            <if test="wxpayApiv2key != null">#{wxpayApiv2key},</if>
+            <if test="wxpayApiv3key != null">#{wxpayApiv3key},</if>
+            <if test="wxpayMerchantserialnumber != null">#{wxpayMerchantserialnumber},</if>
+            <if test="wxpayApiclientCertpem != null">#{wxpayApiclientCertpem},</if>
+            <if test="wxpayApiclientKeypem != null">#{wxpayApiclientKeypem},</if>
+            <if test="alipayIsusecert != null">#{alipayIsusecert},</if>
+            <if test="alipayAppkey != null">#{alipayAppkey},</if>
+            <if test="alipayPublickey != null">#{alipayPublickey},</if>
+            <if test="alipayAppcertpublickey != null">#{alipayAppcertpublickey},</if>
+            <if test="alipayAlipaycertpublickey != null">#{alipayAlipaycertpublickey},</if>
+            <if test="alipayAlipayrootcert != null">#{alipayAlipayrootcert},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="weight != null">#{weight},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysPayconfig" parameterType="SysPayconfig">
+        update sys_payconfig
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="status != null">status = #{status},</if>
+            <if test="appType != null">appType = #{appType},</if>
+            <if test="payType != null">payType = #{payType},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="appID != null">appID = #{appID},</if>
+            <if test="wxpayMchno != null">wxpay_mchNo = #{wxpayMchno},</if>
+            <if test="wxpayAppsecret != null">wxpay_appSecret = #{wxpayAppsecret},</if>
+            <if test="wxpayVersion != null">wxpay_version = #{wxpayVersion},</if>
+            <if test="wxpayApiv2key != null">wxpay_apiv2Key = #{wxpayApiv2key},</if>
+            <if test="wxpayApiv3key != null">wxpay_apiV3Key = #{wxpayApiv3key},</if>
+            <if test="wxpayMerchantserialnumber != null">wxpay_merchantSerialNumber = #{wxpayMerchantserialnumber},</if>
+            <if test="wxpayApiclientCertpem != null">wxpay_apiclient_certpem = #{wxpayApiclientCertpem},</if>
+            <if test="wxpayApiclientKeypem != null">wxpay_apiclient_keypem = #{wxpayApiclientKeypem},</if>
+            <if test="alipayIsusecert != null">alipay_isUseCert = #{alipayIsusecert},</if>
+            <if test="alipayAppkey != null">alipay_appkey = #{alipayAppkey},</if>
+            <if test="alipayPublickey != null">alipay_publicKey = #{alipayPublickey},</if>
+            <if test="alipayAppcertpublickey != null">alipay_appCertPublicKey = #{alipayAppcertpublickey},</if>
+            <if test="alipayAlipaycertpublickey != null">alipay_alipayCertPublicKey = #{alipayAlipaycertpublickey},</if>
+            <if test="alipayAlipayrootcert != null">alipay_alipayRootCert = #{alipayAlipayrootcert},</if>
+            <if test="createTime != null">createTime = #{createTime},</if>
+            <if test="weight != null">weight = #{weight},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysPayconfigById" parameterType="Long">
+        delete from sys_payconfig where id = #{id}
+    </delete>
+
+    <delete id="deleteSysPayconfigByIds" parameterType="String">
+        delete from sys_payconfig where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

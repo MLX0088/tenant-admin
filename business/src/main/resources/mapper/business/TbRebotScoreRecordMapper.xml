@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tenant.business.mapper.TbRebotScoreRecordMapper">
+    
+    <resultMap type="TbRebotScoreRecord" id="TbRebotScoreRecordResult">
+        <result property="id"    column="id"    />
+        <result property="robotId"    column="robot_id"    />
+        <result property="drawId"    column="draw_id"    />
+        <result property="roomName"    column="room_name"    />
+        <result property="periodNumber"    column="period_number"    />
+        <result property="result"    column="result"    />
+        <result property="betting"    column="betting"    />
+        <result property="score"    column="score"    />
+        <result property="winScore"    column="win_score"    />
+        <result property="leftScore"    column="left_score"    />
+        <result property="status"    column="status"    />
+        <result property="type"    column="type"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="robotName"    column="robot_name"    />
+        <result property="roomConfigId"    column="room_config_id"    />
+    </resultMap>
+
+    <sql id="selectTbRebotScoreRecordVo">
+        select * from tb_rebot_score_record
+    </sql>
+
+    <select id="selectTbRebotScoreRecordList" parameterType="TbRebotScoreRecord" resultMap="TbRebotScoreRecordResult">
+        <include refid="selectTbRebotScoreRecordVo"/>
+        <where>
+            <if test="id != null "> and id = #{id}</if>
+            <if test="drawId != null "> and draw_id = #{drawId}</if>
+            <if test="roomName != null  and roomName != ''"> and room_name like concat('%', #{roomName}, '%')</if>
+            <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbRebotScoreRecordById" parameterType="Long" resultMap="TbRebotScoreRecordResult">
+        <include refid="selectTbRebotScoreRecordVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTbRebotScoreRecord" parameterType="TbRebotScoreRecord" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_rebot_score_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="robotId != null">robot_id,</if>
+            <if test="drawId != null">draw_id,</if>
+            <if test="roomName != null">room_name,</if>
+            <if test="periodNumber != null">period_number,</if>
+            <if test="result != null">result,</if>
+            <if test="betting != null">betting,</if>
+            <if test="score != null">score,</if>
+            <if test="winScore != null">win_score,</if>
+            <if test="leftScore != null">left_score,</if>
+            <if test="status != null">status,</if>
+            <if test="type != null">type,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="tenantId != null">tenant_id,</if>
+            <if test="robotName != null">robot_name,</if>
+            <if test="roomConfigId != null">room_config_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="robotId != null">#{robotId},</if>
+            <if test="drawId != null">#{drawId},</if>
+            <if test="roomName != null">#{roomName},</if>
+            <if test="periodNumber != null">#{periodNumber},</if>
+            <if test="result != null">#{result},</if>
+            <if test="betting != null">#{betting},</if>
+            <if test="score != null">#{score},</if>
+            <if test="winScore != null">#{winScore},</if>
+            <if test="leftScore != null">#{leftScore},</if>
+            <if test="status != null">#{status},</if>
+            <if test="type != null">#{type},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+            <if test="robotName != null">#{robotName},</if>
+            <if test="roomConfigId != null">#{roomConfigId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbRebotScoreRecord" parameterType="TbRebotScoreRecord">
+        update tb_rebot_score_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="robotId != null">robot_id = #{robotId},</if>
+            <if test="drawId != null">draw_id = #{drawId},</if>
+            <if test="roomName != null">room_name = #{roomName},</if>
+            <if test="periodNumber != null">period_number = #{periodNumber},</if>
+            <if test="result != null">result = #{result},</if>
+            <if test="betting != null">betting = #{betting},</if>
+            <if test="score != null">score = #{score},</if>
+            <if test="winScore != null">win_score = #{winScore},</if>
+            <if test="leftScore != null">left_score = #{leftScore},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+        </trim>
+        where id = #{id}
+        <if test="createBy != null  and createBy != ''"> and create_by = #{createBy}</if>
+    </update>
+
+    <delete id="deleteTbRebotScoreRecordById" parameterType="Long">
+        delete from tb_rebot_score_record where id = #{id}
+    </delete>
+
+    <delete id="deleteTbRebotScoreRecordByIds" parameterType="String">
+        delete from tb_rebot_score_record where
+        <if test="createBy != null and createBy != ''">  create_by = #{createBy} and</if>
+id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,25 @@
+.btn-group-toggle .btn-secondary{
+    color:#909399;
+    background-color:white;
+    border-color:#c8c9cc;
+}
+
+.btn-secondary:not(:disabled):not(.disabled).active, .btn-secondary:not(:disabled):not(.disabled):active, .show>.btn-secondary.dropdown-toggle{
+    color:white;
+    background-color:#409eff;
+    border-color:#409eff;
+    box-shadow:none;
+}
+.form-group{
+    align-items: center;
+    display: flex;
+    height: auto;
+
+}
+.control-label{
+    margin-right: 20px;min-width: 6.5rem;
+}
+.select-table{
+    min-height:75%;
+}
+

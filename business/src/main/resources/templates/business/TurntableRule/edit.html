@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改转盘设置')" />
+</head>
+<body class="white-bg">
+    <div class="row col-sm-6">
+        <form class="form-horizontal m col-sm-12" id="form-TurntableRule-edit" >
+            <div class="form-group col-sm-12">
+                <h1 class="h4 font-weight-bold text-dark">奖品配置</h1>
+            </div>
+            <table class="col-sm-12">
+                <tr class="col-sm-12" >
+                    <td class="col-sm-6">红包金额（元）</td><td class="col-sm-6">中奖概率（%）</td>
+                </tr>
+                <tr th:each="obj,loopStatus : ${list}">
+                    <td>
+                        <input th:name="'list['+${loopStatus.count-1}+'].id'" th:value="${obj.id}" type="hidden">
+                        <input th:name="'list['+${loopStatus.count-1}+'].tenantId'" th:value="${obj.tenantId}" type="hidden">
+
+                        <div class="input-group m-b"><span class="input-group-addon">&yen;</span>
+                            <input th:name="'list['+${loopStatus.count-1}+'].amount'" th:value="${obj.amount}" class="form-control" type="number">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="input-group m-b">
+                            <input th:name="'list['+${loopStatus.count-1}+'].rate'" th:value="${obj.rate}" class="form-control" type="number"> <span class="input-group-addon">%</span>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <div class="form-group col-sm-12">
+                <h1 class="h4 font-weight-bold text-dark">条件设定</h1>
+            </div>
+            <div class="form-group row col-sm-12">
+                <div class="control-label">当日流水超过：</div>
+                <div class="">
+                    <input id="turntableScore" name="turntableScore" th:value="${turntableScore}" class="form-control" type="text">
+                </div>
+            </div>
+
+            <div class="form-group col-sm-12">
+                <h1 class="h4 font-weight-bold text-dark">活动规则</h1>
+            </div>
+            <div class="form-group row col-sm-12">
+                <textarea id="turntableRule" name="turntableRule" style="width: 100%;" rows="5" class="form-control">[[${turntableRule}]]</textarea>
+            </div>
+
+            <div class="form-group row col-sm-12">
+                <button type="button" class="btn btn-primary btn-sm" onclick="submitHandler()">确定修改设置</button>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "business/TurntableRule";
+        $("#form-TurntableRule-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.saveModal(prefix + "/edit", $('#form-TurntableRule-edit').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

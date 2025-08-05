@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tenant.business.mapper.TbChatMessageMapper">
+    
+    <resultMap type="TbChatMessage" id="TbChatMessageResult">
+        <result property="id"    column="id"    />
+        <result property="senderType"    column="sender_type"    />
+        <result property="senderId"    column="sender_id"    />
+        <result property="receiverId"    column="receiver_id"    />
+        <result property="groupId"    column="group_id"    />
+        <result property="content"    column="content"    />
+        <result property="type"    column="type"    />
+        <result property="createdTime"    column="created_time"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="senderUserName"  column="user_name"   />
+        <result property="senderHeadImageId"    column="head_image_id"      />
+        <result property="senderGrade"    column="grade" />
+        <result property="drawId"    column="draw_id" />
+        <result property="success"    column="success" />
+        <result property="scoreId"    column="score_id" />
+        <result property="readStatus"    column="read_status" />
+        <result property="status"    column="status" />
+        <result property="imageId"    column="image_id" />
+    </resultMap>
+
+    <sql id="selectTbChatMessageVo">
+        select a.*,case when a.sender_id = 0 then config.cs_name when b.user_id is not null and b.user_id>0 then b.user_name when c.id is not null and c.id>0 then c.name else '' end user_name,case when a.sender_id = 0 then config.rebot_image_id when b.user_id is not null and b.user_id>0 then b.head_image_id when c.id is not null and c.id>0 then c.avatar_id else 0 end head_image_id,case when b.user_id is not null and b.user_id>0 then b.grade when c.id is not null and c.id>0 then c.grade else 0 end grade from tb_chat_message a left join sys_user b on(a.sender_id = b.user_id) left join tb_robot c on(a.sender_id = c.id) left join tb_tenant_config config on(a.tenant_id=config.tenant_id)
+    </sql>
+
+    <select id="selectContactList" resultMap="TbChatMessageResult">
+        SELECT t1.id,t2.unreadCount read_status,t1.sender_type,case when t1.sender_id =0 then t1.receiver_id else t1.sender_id end sender_id,t1.receiver_id,t1.group_id,t1.content,t1.created_time, case when t1.sender_id =0 then c.user_name else b.user_name end user_name, case when t1.sender_id =0 then c.head_image_id else b.head_image_id end head_image_id
+        FROM tb_chat_message t1
+        JOIN (
+        SELECT MAX(id) AS id,count(case when read_status=0 and sender_id>0 then 1 else null end) unreadCount
+        FROM tb_chat_message
+        where group_id=0 and status=0 and tenant_id = #{tenantId}
+        GROUP BY sender_id+receiver_id
+        ) t2 ON t1.id = t2.id
+        left join sys_user b on(t1.sender_id = b.user_id and b.del_flag='0' and b.status='0')
+        left join sys_user c on(t1.receiver_id = c.user_id and c.del_flag='0' and c.status='0')
+        where b.user_id is not null or c.user_id is not null
+        order by t1.id desc
+    </select>
+
+    <select id="selectTbChatMessageList" parameterType="TbChatMessage" resultMap="TbChatMessageResult">
+        <include refid="selectTbChatMessageVo"/>
+        <where>
+            a.status = 0
+            <if test="senderType != null "> and a.sender_type = #{senderType}</if>
+            <if test="senderId != null "> and a.sender_id = #{senderId}</if>
+            <if test="drawId != null "> and a.draw_id = #{drawId}</if>
+            <if test="receiverId != null "> and a.receiver_id = #{receiverId}</if>
+            <if test="groupId != null "> and a.group_id = #{groupId}</if>
+            <if test="tenantId != null "> and a.tenant_id = #{tenantId}</if>
+            <if test="id != null "> and #{id} > a.id </if>
+            <if test="privateIds != null ">
+                and sender_id IN
+                <foreach item='id' collection='privateIds' open='(' separator=',' close=')' >
+                    #{id}
+                </foreach>
+
+                and receiver_id IN
+                <foreach item='id' collection='privateIds' open='(' separator=',' close=')' >
+                    #{id}
+                </foreach>
+            </if>
+            <if test="params.beginCreatedTime != null and params.beginCreatedTime != '' and params.endCreatedTime != null and params.endCreatedTime != ''"> and a.created_time between #{params.beginCreatedTime} and #{params.endCreatedTime}</if>
+        </where>
+        order by a.id desc
+    </select>
+    
+    <select id="selectTbChatMessageById" parameterType="Long" resultMap="TbChatMessageResult">
+        <include refid="selectTbChatMessageVo"/>
+        where a.id = #{id}
+    </select>
+
+    <select id="selectUnreadCountByReceiverId" parameterType="TbChatMessage" resultType="int">
+        select count(1) from tb_chat_message where receiver_id=#{receiverId} and read_status=0
+        <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+    </select>
+        
+    <insert id="insertTbChatMessage" parameterType="TbChatMessage" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_chat_message
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="senderType != null and senderType != ''">sender_type,</if>
+            <if test="senderId != null">sender_id,</if>
+            <if test="receiverId != null">receiver_id,</if>
+            <if test="groupId != null">group_id,</if>
+            <if test="content != null and content != ''">content,</if>
+            <if test="type != null">type,</if>
+            <if test="createdTime != null">created_time,</if>
+            <if test="tenantId != null">tenant_id,</if>
+            <if test="drawId != null">draw_id,</if>
+            <if test="success != null">success,</if>
+            <if test="scoreId != null">score_id,</if>
+            <if test="imageId != null">image_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="senderType != null and senderType != ''">#{senderType},</if>
+            <if test="senderId != null">#{senderId},</if>
+            <if test="receiverId != null">#{receiverId},</if>
+            <if test="groupId != null">#{groupId},</if>
+            <if test="content != null and content != ''">#{content},</if>
+            <if test="type != null">#{type},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+            <if test="drawId != null">#{drawId},</if>
+            <if test="success != null">#{success},</if>
+            <if test="scoreId != null">#{scoreId},</if>
+            <if test="imageId != null">#{imageId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbChatMessage" parameterType="TbChatMessage">
+        update tb_chat_message
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="senderType != null and senderType != ''">sender_type = #{senderType},</if>
+            <if test="senderId != null">sender_id = #{senderId},</if>
+            <if test="receiverId != null">receiver_id = #{receiverId},</if>
+            <if test="groupId != null">group_id = #{groupId},</if>
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="createdTime != null">created_time = #{createdTime},</if>
+            <if test="success != null">success = #{success},</if>
+        </trim>
+        where id = #{id}
+        <if test="createBy != null  and createBy != ''"> and create_by = #{createBy}</if>
+    </update>
+
+    <update id="updateReadStatus" parameterType="TbChatMessage">
+        update tb_chat_message
+        set read_status = 1
+        where 1=1
+        <if test="id != null "> and #{id} = id </if>
+        <if test="senderId != null and receiverId != null"> and sender_id = #{senderId} and receiver_id = #{receiverId}</if>
+
+    </update>
+
+    <update id="updateStatusForYesterday">
+        UPDATE tb_chat_message
+        SET status = 1
+        WHERE group_id>0 and CURDATE() - INTERVAL 1 DAY > created_time
+
+    </update>
+    <delete id="deleteTbChatMessageForDays" >
+        delete from tb_chat_message
+        WHERE group_id>0 and CURDATE() - INTERVAL 7 DAY > created_time
+    </delete>
+    <delete id="deleteTbChatMessageById" parameterType="Long">
+        delete from tb_chat_message where id = #{id}
+    </delete>
+
+    <delete id="deleteTbChatMessageByIds" parameterType="String">
+        delete from tb_chat_message where
+        <if test="createBy != null and createBy != ''">  create_by = #{createBy} and</if>
+id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tenant.system.mapper.SysAdMapper">
+    
+    <resultMap type="SysAd" id="SysAdResult">
+        <result property="id"    column="id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="imgUrl"    column="imgUrl"    />
+        <result property="alink"    column="alink"    />
+        <result property="appid"    column="appid"    />
+        <result property="position"    column="position"    />
+        <result property="expireTime"    column="expireTime"    />
+        <result property="orderNum"    column="order_num"    />
+    </resultMap>
+
+    <sql id="selectSysAdVo">
+        select * from sys_ad
+    </sql>
+
+    <select id="selectSysAdList" parameterType="SysAd" resultMap="SysAdResult">
+        <include refid="selectSysAdVo"/>
+        <where>  
+            <if test="appid != null  and appid != ''"> and appid = #{appid}</if>
+            <if test="position != null  and position != ''"> and position = #{position}</if>
+            <if test="params.beginExpireTime != null and params.beginExpireTime != '' and params.endExpireTime != null and params.endExpireTime != ''"> and expireTime between #{params.beginExpireTime} and #{params.endExpireTime}</if>
+            <if test="createBy != null "> and expireTime>now() </if>
+        </where>
+        order by order_num
+    </select>
+
+    <select id="selectSysAdById" parameterType="Long" resultMap="SysAdResult">
+        <include refid="selectSysAdVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSysAd" parameterType="SysAd" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_ad
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="imgUrl != null">imgUrl,</if>
+            <if test="alink != null">alink,</if>
+            <if test="appid != null">appid,</if>
+            <if test="position != null">position,</if>
+            <if test="expireTime != null">expireTime,</if>
+            <if test="orderNum != null">order_num,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="imgUrl != null">#{imgUrl},</if>
+            <if test="alink != null">#{alink},</if>
+            <if test="appid != null">#{appid},</if>
+            <if test="position != null">#{position},</if>
+            <if test="expireTime != null">#{expireTime},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSysAd" parameterType="SysAd">
+        update sys_ad
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="imgUrl != null">imgUrl = #{imgUrl},</if>
+            <if test="alink != null">alink = #{alink},</if>
+            <if test="appid != null">appid = #{appid},</if>
+            <if test="position != null">position = #{position},</if>
+            <if test="expireTime != null">expireTime = #{expireTime},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+        </trim>
+        where id = #{id}
+        <if test="createBy != null  and createBy != ''"> and create_by = #{createBy}</if>
+    </update>
+
+    <delete id="deleteSysAdById" parameterType="Long">
+        delete from sys_ad where id = #{id}
+    </delete>
+
+    <delete id="deleteSysAdByIds" parameterType="String">
+        delete from sys_ad where
+        <if test="createBy != null and createBy != ''">  create_by = #{createBy} and</if>
+        id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
